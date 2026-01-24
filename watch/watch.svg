@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" class="circle" onload="Horloge()">	
+	<style type='text/css'><![CDATA[
+		.circle {	
+			border-radius: 50%;
+			width: 200px;
+			height: 200px; 
+		}
+		#ah {
+		  filter: url(#myfilter);
+		  -webkit-filter: url(#myfilter);
+		}
+		#blanc {
+		  stroke:white;
+		  fill:white;
+		}
+	]]></style>
+	<script type="text/javascript"><![CDATA[
+		function process(event) {
+			// Read out the inclination value
+			var beta = event.beta == null ? -200 : Math.round(event.beta)*2-300;
+			var gamma = Math.round(event.gamma*.6)*-1/.6;
+			document.getElementById('ah').setAttribute("transform", "rotate("+ gamma +" 100 200) translate(0 " + beta +")");
+			//document.getElementById("lu").innerHTML = beta;
+		}
+
+		if(window.DeviceOrientationEvent) {
+			window.addEventListener("deviceorientation", process, true);
+		} else {
+			document.getElementById('log').innerHTML += '<p class="warning">Votre navigateur ne semble pas supporter <code>deviceorientation</code></p>';
+		}
+
+		function Horloge() {
+			var date = new Date();
+			var minute = date.getUTCMinutes()*6;
+			var heure  = date.getUTCHours()%12*30+Math.round(minute/12);
+			
+			document.getElementById('h').setAttribute("transform", "rotate("+ heure +" 100 100)");
+			document.getElementById('m').setAttribute("transform", "rotate("+ minute +" 100 100)");
+		}
+
+		window.addEventListener("devicelight", function (event) {
+			// Read out the lux value
+			var lux = Math.round(event.value/250+2)/10;
+			var elt = document.getElementsByClassName('bri');
+			elt[0].setAttribute("slope", lux);
+			elt[1].setAttribute("slope", lux);
+			elt[2].setAttribute("slope", lux);
+			var couleur = lux < .3 ? 'hsl(120, 100%, 80%)' : 'white' ;
+			var ecr = document.getElementById('blanc');
+			ecr.style.stroke = couleur;
+			ecr.style.fill   = couleur;
+			document.getElementById('m1').style.fill   = couleur;
+			document.getElementById('h1').style.fill   = couleur;
+			//document.getElementById("lux").innerHTML = lux;
+		});
+
+		var timer=setInterval("Horloge()", 1000);
+		// conception Emmanuel Pierrez, march 2016, licence cc by. please, keep this line.
+
+	]]></script>
+	<filter id="myfilter">
+		<!-- Brightness -->
+		<feComponentTransfer>
+		  <feFuncR class="bri" type="linear" slope="0.9"/>
+		  <feFuncG class="bri" type="linear" slope="0.9"/>
+		  <feFuncB class="bri" type="linear" slope="0.9"/>
+		</feComponentTransfer>
+	</filter>
+	<filter id="otfilter">
+		<feColorMatrix type="hueRotate" values=" 80"/>
+	</filter>
+	<g id="ah" transform="rotate(0 200 300) translate(0 -200)">
+		<rect width="400" height="300" x="-100" y="-300" style="fill:rgb(128,76,25);stroke:none" />
+		<rect width="400" height="300" x="-100" style="fill:rgb(114,159,207);stroke:none" />
+		<rect width="400" height="300" x="-100" y="300" style="fill:rgb(128,76,25);stroke:none" />
+		<rect width="400" height="300" x="-100" y="600" style="fill:rgb(114,159,207);stroke:none" />
+	</g>
+	<g id="blanc">
+		<line x1="92" y1="70" x2="108" y2="70" style="stroke-width:2" />
+		<line x1="92" y1="80" x2="108" y2="80" style="stroke-width:2" />
+		<line x1="85" y1="90" x2="115" y2="90" style="stroke-width:2" />
+		<line x1="50" y1="100" x2="150" y2="100" style="stroke-width:2" />
+		<line x1="85" y1="110" x2="115" y2="110" style="stroke-width:2" />
+		<line x1="92" y1="120" x2="108" y2="120" style="stroke-width:2" />
+		<line x1="92" y1="130" x2="108" y2="130" style="stroke-width:2" />
+		<polygon points="95,12 105,12 100,24" style="stroke:none" />
+		<text x="88" y="43" style="font-family:Verdana;font-size:24;font-weight:bolder;stroke:none;">12</text>
+		<text x="163" y="105" style="font-family:Verdana;font-size:24;font-weight:bolder;stroke:none;">3</text>
+		<text x="95" y="175" style="font-family:Verdana;font-size:24;font-weight:bolder;stroke:none;">6</text>
+		<text x="25" y="105" style="font-family:Verdana;font-size:24;font-weight:bolder;stroke:none;">9</text>
+		<line x1="180" y1="100" x2="188" y2="100" style="stroke-width:4" />
+		<line x1="180" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(90 100 100)" />
+		<line x1="180" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(180 100 100)" />
+		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(-60 100 100)" />
+		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(-30 100 100)" />
+		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(30 100 100)" />
+		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(60 100 100)" />
+		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(120 100 100)" />
+		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(150 100 100)" />
+		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(210 100 100)" />
+		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(240 100 100)" />
+	</g>
+	<g id="m" transform="rotate(0 100 100)">
+		<path fill="rgb(89,63,68)"  style="stroke:black;stroke-width:1" d="M 98,99 L 95,43 100,17 106,41 100,99 98,99 Z"/>
+		<path id="m1" fill="white" stroke="none" d="M 98,77 L 96,43 100,21 105,40 101,77 98,77 Z"/>
+	</g>
+	<g id="h" transform="rotate(0 100 100)">
+		<path fill="rgb(89,63,68)" style="stroke:black;stroke-width:1" d="M 97,97 L 92,56 98,41 106,56 102,97 97,97 Z"/>
+		<path id="h1" fill="white" stroke="none" d="M 96,80 L 93,57 98,43 105,57 103,80 96,80 Z"/>
+	</g>
+</svg>
