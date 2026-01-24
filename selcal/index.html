@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur SELCAL - aeronautique.xyz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b;
+            --primary: #0284c7; --accent: #f59e0b; --border: #e2e8f0; --error: #ef4444;
+        }
+        [data-theme='dark'] {
+            --bg: #0f172a; --card-bg: #1e293b; --text: #f1f5f9;
+            --primary: #38bdf8; --border: #334155;
+        }
+        body {
+            font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text);
+            margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; transition: all 0.3s ease;
+        }
+        .container { max-width: 800px; text-align: center; }
+        h1 { font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 30px; }
+        
+        /* Grille des inputs */
+        .selcal-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px; margin: 30px 0;
+        }
+        .selcal-input-group { 
+            background: var(--card-bg); padding: 15px; border-radius: 15px; 
+            border: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px;
+        }
+        input.car {
+            font-family: 'Orbitron', sans-serif; font-size: 3.5rem; text-align: center;
+            text-transform: uppercase; background: transparent; color: var(--text);
+            border: 2px solid var(--border); border-radius: 8px; width: 100%;
+        }
+        input.car:focus { border-color: var(--primary); outline: none; }
+        input.car.invalid { border-color: var(--error); background-color: rgba(239, 68, 68, 0.1); }
+
+        .btn {
+            background: var(--primary); color: white; border: none; padding: 12px 20px;
+            border-radius: 8px; cursor: pointer; font-weight: 600; transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.95); }
+        .btn-play { background: #10b981; font-size: 1.2rem; padding: 15px 40px; }
+        .controls-top { margin-bottom: 20px; display: flex; gap: 10px; justify-content: center; }
+
+        .info-section {
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 25px; border-radius: 16px; text-align: left; margin-top: 30px;
+        }
+        .info-section p { margin-bottom: 15px; line-height: 1.7; }
+        .theme-toggle { position: fixed; top: 20px; right: 20px; cursor: pointer; border: none; background: none; font-size: 1.5rem; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.2s ease-in-out;
+        }
+
+        /* Style pour indiquer qu'une seule lettre était possible */
+        .unique-choice {
+            border-color: var(--accent) !important;
+            transition: border-color 0.5s;
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <button class="theme-toggle" id="themeToggle">🌓</button>
+
+    <div class="container">
+        <h1>Système SELCAL</h1>
+
+        <div class="controls-top">
+            <button class="btn" id="aleaAll">Générer un nouveau code</button>
+            <button class="btn" id="reinit">Réinitialiser</button>
+        </div>
+
+        <div class="selcal-grid">
+            <div class="selcal-input-group">
+                <input type="text" id="selcal1" class="car" maxlength="1">
+                <button class="btn" onclick="modifyChar(0)">Modifier</button>
+            </div>
+            <div class="selcal-input-group">
+                <input type="text" id="selcal2" class="car" maxlength="1">
+                <button class="btn" onclick="modifyChar(1)">Modifier</button>
+            </div>
+            <div class="selcal-input-group">
+                <input type="text" id="selcal3" class="car" maxlength="1">
+                <button class="btn" onclick="modifyChar(2)">Modifier</button>
+            </div>
+            <div class="selcal-input-group">
+                <input type="text" id="selcal4" class="car" maxlength="1">
+                <button class="btn" onclick="modifyChar(3)">Modifier</button>
+            </div>
+        </div>
+
+        <button class="btn btn-play" id="play">▶ ÉCOUTER LE CODE</button>
+
+        <div class="info-section">
+            <p>En option, cliquez sur les boutons pour changer l'une des 4 lettres. Si vous écoutez le code, vous entendrez deux bi-tonalités. Exemple, le code ABCD sera constitué d'une première bitonalité (2 sons de fréquence 312.6 et 346.7 hertz) puis d'une seconde (384.6 et 426.6 hertz).</p>
+            <p>Le système Selcal est un système d'appel sélectif permettant à un opérateur au sol d'avertir un équipage d'un aéronef qu'il souhaite le contacter. Chaque appareil se voit attribuer un code en 4 lettres qui forme un code à deux bi-tonalités audio.</p>
+        </div>
+    </div>
+
+    <script>
+        const car = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'P', 'Q', 'R', 'S'];
+        const frq = [312.6, 346.7, 384.6, 426.6, 473.2, 524.8, 582.1, 645.7, 716.1, 794.3, 881.0, 977.2, 1083.9, 1202.3, 1333.5, 1479.1];
+        
+        let codes = [0, 1, 2, 3]; // Index des lettres
+
+        const inputs = [
+            document.getElementById('selcal1'),
+            document.getElementById('selcal2'),
+            document.getElementById('selcal3'),
+            document.getElementById('selcal4')
+        ];
+
+        // Fonction pour un petit son de bouton "gentil" (Bip doux)
+        function playUISound(type = 'click') {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'sine';
+            // Fréquence plus haute et courte pour un clic, plus basse pour une "limite"
+            osc.frequency.setValueAtTime(type === 'unique' ? 220 : 660, ctx.currentTime);
+            
+            gain.gain.setValueAtTime(0.05, ctx.currentTime); // Très bas volume
+            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start();
+            osc.stop(ctx.currentTime + 0.1);
+        }
+
+        // Fonction de modification générique avec feedback
+        window.modifyChar = (index) => {
+            const oldVal = codes[index];
+            const inputEl = inputs[index];
+            
+            // Calcul des possibilités restantes (pour savoir si c'est l'unique choix)
+            // C'est une simplification, mais ça permet de jouer le son "unique"
+            
+            let attempts = 0;
+            let newVal;
+            
+            do {
+                if (index === 0) newVal = getNumber(0, 15);
+                else if (index === 1) newVal = getNumber(codes[0] + 1, 16);
+                else if (index === 2) newVal = getNumber(0, 15);
+                else if (index === 3) newVal = getNumber(codes[2] + 1, 16);
+                attempts++;
+                // On boucle tant que c'est déjà utilisé OU que c'est la même lettre (si possible d'en changer)
+            } while ((isAlreadyUsed(newVal, index) || newVal === oldVal) && attempts < 50);
+
+            // Feedback visuel
+            inputEl.classList.remove('shake');
+            void inputEl.offsetWidth; // Force le repaint pour relancer l'animation
+            inputEl.classList.add('shake');
+
+            if (newVal === oldVal) {
+                // Si après 50 tentatives on a la même lettre, c'est qu'il n'y a pas d'autre choix
+                playUISound('unique');
+                inputEl.classList.add('unique-choice');
+                setTimeout(() => inputEl.classList.remove('unique-choice'), 500);
+            } else {
+                playUISound('click');
+                codes[index] = newVal;
+                updateDisplay();
+            }
+        };
+
+        function getNumber(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        // Vérification des contraintes SELCAL : 
+        // 1. Pas de doublons sur les 4 lettres.
+        // 2. Lettre 1 < Lettre 2
+        // 3. Lettre 3 < Lettre 4
+        function testValide() {
+            inputs.forEach(input => input.classList.remove('invalid'));
+            
+            const n = inputs.map(i => car.indexOf(i.value.toUpperCase()));
+
+            if (n[0] >= n[1] || n[0] === n[2] || n[0] === n[3]) inputs[0].classList.add('invalid');
+            if (n[1] <= n[0] || n[1] === n[2] || n[1] === n[3]) inputs[1].classList.add('invalid');
+            if (n[2] >= n[3] || n[2] === n[0] || n[2] === n[1]) inputs[2].classList.add('invalid');
+            if (n[3] <= n[2] || n[3] === n[0] || n[3] === n[1]) inputs[3].classList.add('invalid');
+        }
+
+        function updateDisplay() {
+            inputs.forEach((input, i) => input.value = car[codes[i]]);
+            testValide();
+        }
+
+        // Fonction utilitaire pour vérifier si une valeur est déjà utilisée ailleurs
+        function isAlreadyUsed(valueIndex, currentIndex) {
+            return codes.some((code, idx) => idx !== currentIndex && code === valueIndex);
+        }
+
+        document.getElementById('aleaAll').onclick = () => {
+            codes[0] = getNumber(0, 13);
+            codes[1] = getNumber(codes[0] + 1, 15);
+            codes[2] = getNumber(0, 13);
+            do { codes[2] = getNumber(0, 13); } while (codes[2] === codes[0] || codes[2] === codes[1]);
+            do { codes[3] = getNumber(codes[2] + 1, 16); } while (codes[3] === codes[0] || codes[3] === codes[1]);
+            updateDisplay();
+        };
+
+        document.getElementById('reinit').onclick = () => {
+            inputs.forEach(i => i.value = "");
+            codes = [0,0,0,0];
+        };
+
+        document.getElementById('play').onclick = () => {
+            const n = inputs.map(i => car.indexOf(i.value.toUpperCase()));
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            const playPair = (f1, f2, start) => {
+                [f1, f2].forEach(f => {
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.frequency.value = f;
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + start);
+                    osc.stop(audioCtx.currentTime + start + 1);
+                });
+            };
+
+            playPair(frq[n[0]], frq[n[1]], 0);
+            playPair(frq[n[2]], frq[n[3]], 1.2);
+        };
+
+        // Theme toggle
+        document.getElementById('themeToggle').onclick = () => {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        };
+
+        inputs.forEach(i => i.oninput = testValide);
+        document.getElementById('aleaAll').onclick();
+    </script>
+</body>
+</html>
