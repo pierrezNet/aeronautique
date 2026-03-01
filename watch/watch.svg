@@ -1,31 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" class="circle" onload="Horloge()">	
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" id="clock-svg"> 
     <style type='text/css'><![CDATA[
-        .circle { border-radius: 50%; background: #000; }
+        #clock-svg { background-color: transparent; }
+        
+        /* Le fond du cercle est noir, l'extérieur sera transparent */
+        #watch-face {
+            fill: black;
+            stroke: white;
+            stroke-width: 2;
+        }
+
         #ah { filter: url(#myfilter); }
-        #blanc { stroke: white; fill: white; transition: fill 0.3s, stroke 0.3s; }
-        /* Bouton invisible pour activer les capteurs sur mobile */
-        #overlay { fill: transparent; cursor: pointer; }
+
+        #blanc { 
+            stroke: white; 
+            fill: white; 
+            transition: all 0.3s; 
+        }
+
+        #overlay { 
+            fill: transparent; 
+            cursor: pointer; 
+        }
     ]]></style>
 
     <script type="text/javascript"><![CDATA[
         const getEl = id => document.getElementById(id);
 
         function updateLightMode(isDark) {
-            const lux = isDark ? 0.4 : 0.9;
             const color = isDark ? 'hsl(120, 100%, 80%)' : 'white';
-            
-            document.querySelectorAll('.bri').forEach(el => el.setAttribute("slope", lux));
-            
+            const opacite = isDark ? '0.4' : '1';
+            const slope = isDark ? '0.4' : '0.9';
+
+            // Correction de la couleur
             const b = getEl('blanc');
             b.style.stroke = b.style.fill = color;
-            getEl('m1').style.fill = getEl('h1').style.fill = color;
+            getEl('m1').style.fill = getEl('h1').style.fill = getEl('r1').style.fill = color;
+            
+            // Correction de l'opacité du décor
+            getEl('ah').style.opacity = opacite;
+
+            // Mise à jour du filtre de luminosité
+            document.querySelectorAll('.bri').forEach(el => el.setAttribute("slope", slope));
         }
 
         function rotateClock() {
             const now = new Date();
-            const m = (now.getUTCMinutes() + now.getUTCSeconds()/60) * 6;
-            const h = (now.getUTCHours() % 12) * 30 + (m / 12);
-            
+            const m = (now.getMinutes() + now.getSeconds()/60) * 6;
+            const h = (now.getHours() % 12) * 30 + (m / 12);
             getEl('h').setAttribute("transform", `rotate(${h} 100 100)`);
             getEl('m').setAttribute("transform", `rotate(${m} 100 100)`);
             requestAnimationFrame(rotateClock);
@@ -38,8 +59,7 @@
         }
 
         async function initSensors() {
-            // Pour iOS 13+ : demande de permission explicite
-            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 try {
                     const permission = await DeviceOrientationEvent.requestPermission();
                     if (permission === 'granted') window.addEventListener("deviceorientation", handleOrientation);
@@ -47,10 +67,9 @@
             } else {
                 window.addEventListener("deviceorientation", handleOrientation);
             }
-            getEl('overlay').style.display = 'none'; // Cache le bouton après activation
+            getEl('overlay').style.display = 'none'; 
         }
 
-        // Initialisation
         window.addEventListener('load', () => {
             rotateClock();
             const query = window.matchMedia('(prefers-color-scheme: dark)');
@@ -59,7 +78,7 @@
         });
     ]]></script>
 
-	<defs>
+    <defs>
         <filter id="myfilter">
             <feComponentTransfer>
                 <feFuncR class="bri" type="linear" slope="0.9"/>
@@ -67,14 +86,21 @@
                 <feFuncB class="bri" type="linear" slope="0.9"/>
             </feComponentTransfer>
         </filter>
+        <clipPath id="ma-decoupe">
+            <circle cx="100" cy="100" r="98" />
+        </clipPath>
     </defs>
-	
-	<g id="ah" transform="rotate(0 200 300) translate(0 -200)">
-		<rect width="400" height="300" x="-100" y="-300" style="fill:rgb(128,76,25);stroke:none" />
-		<rect width="400" height="300" x="-100" style="fill:rgb(114,159,207);stroke:none" />
-		<rect width="400" height="300" x="-100" y="300" style="fill:rgb(128,76,25);stroke:none" />
-		<rect width="400" height="300" x="-100" y="600" style="fill:rgb(114,159,207);stroke:none" />
-	</g>
+
+    <g clip-path="url(#ma-decoupe)">
+        <circle id="watch-face" cx="100" cy="100" r="98" />
+        <g id="ah" transform="rotate(0 100 200) translate(0 -200)">
+            <rect width="400" height="300" x="-100" y="-300" fill="rgb(128,76,25)" />
+            <rect width="400" height="300" x="-100" fill="rgb(114,159,207)" />
+            <rect width="400" height="300" x="-100" y="300" fill="rgb(128,76,25)" />
+            <rect width="400" height="300" x="-100" y="600" fill="rgb(114,159,207)" />
+        </g>
+    </g>
+
 	<g id="blanc">
 		<line x1="92" y1="70" x2="108" y2="70" style="stroke-width:2" />
 		<line x1="92" y1="80" x2="108" y2="80" style="stroke-width:2" />
@@ -84,7 +110,7 @@
 		<line x1="92" y1="120" x2="108" y2="120" style="stroke-width:2" />
 		<line x1="92" y1="130" x2="108" y2="130" style="stroke-width:2" />
 		<polygon points="95,12 105,12 100,24" style="stroke:none" />
-		<text x="88" y="43" style="font-family:Verdana;font-size:24;font-weight:bolder;stroke:none;">12</text>
+		<text x="91" y="43" style="font-family:Verdana;font-size:24;font-weight:bolder;stroke:none;">12</text>
 		<text x="163" y="105" style="font-family:Verdana;font-size:24;font-weight:bolder;stroke:none;">3</text>
 		<text x="95" y="175" style="font-family:Verdana;font-size:24;font-weight:bolder;stroke:none;">6</text>
 		<text x="25" y="105" style="font-family:Verdana;font-size:24;font-weight:bolder;stroke:none;">9</text>
@@ -99,13 +125,20 @@
 		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(150 100 100)" />
 		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(210 100 100)" />
 		<line x1="168" y1="100" x2="188" y2="100" style="stroke-width:4" transform="rotate(240 100 100)" />
+
+		<circle cx="100" cy="100" r="85" fill="none" stroke-width="2" stroke-dasharray="1,15.7" transform="rotate(-90 100 100)" />
 	</g>
-	<g id="m" transform="rotate(0 100 100)">
-		<path fill="rgb(89,63,68)"  style="stroke:black;stroke-width:1" d="M 98,99 L 95,43 100,17 106,41 100,99 98,99 Z"/>
-		<path id="m1" fill="white" stroke="none" d="M 98,77 L 96,43 100,21 105,40 101,77 98,77 Z"/>
-	</g>
-	<g id="h" transform="rotate(0 100 100)">
-		<path fill="rgb(89,63,68)" style="stroke:black;stroke-width:1" d="M 97,97 L 92,56 98,41 106,56 102,97 97,97 Z"/>
-		<path id="h1" fill="white" stroke="none" d="M 96,80 L 93,57 98,43 105,57 103,80 96,80 Z"/>
-	</g>
+
+    <g id="m" transform="rotate(0 100 100)">
+        <path fill="rgb(89,63,68)" stroke="black" d="M 98,99 L 95,43 100,17 106,41 100,99 Z"/>
+        <path id="m1" fill="white" d="M 98,77 L 96,43 100,21 105,40 101,77 Z"/>
+    </g>
+
+    <g id="h" transform="rotate(0 100 100)">
+        <path fill="rgb(89,63,68)" stroke="black" d="M 97,97 L 92,56 98,41 106,56 102,97 Z"/>
+        <path id="h1" fill="white" d="M 96,80 L 93,57 98,43 105,57 103,80 Z"/>
+        <circle id="r1" cx="100" cy="100" r="5" fill="white" stroke="black" />
+    </g>
+
+    <rect id="overlay" width="200" height="200" onclick="initSensors()"/>
 </svg>
