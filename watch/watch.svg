@@ -1,74 +1,74 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" class="circle" onload="Horloge()">	
-	<style type='text/css'><![CDATA[
-		.circle {	
-			border-radius: 50%;
-			width: 200px;
-			height: 200px; 
-		}
-		#ah {
-		  filter: url(#myfilter);
-		  -webkit-filter: url(#myfilter);
-		}
-		#blanc {
-		  stroke:white;
-		  fill:white;
-		}
-	]]></style>
-	<script type="text/javascript"><![CDATA[
-		function process(event) {
-			// Read out the inclination value
-			var beta = event.beta == null ? -200 : Math.round(event.beta)*2-300;
-			var gamma = Math.round(event.gamma*.6)*-1/.6;
-			document.getElementById('ah').setAttribute("transform", "rotate("+ gamma +" 100 200) translate(0 " + beta +")");
-			//document.getElementById("lu").innerHTML = beta;
-		}
+    <style type='text/css'><![CDATA[
+        .circle { border-radius: 50%; background: #000; }
+        #ah { filter: url(#myfilter); }
+        #blanc { stroke: white; fill: white; transition: fill 0.3s, stroke 0.3s; }
+        /* Bouton invisible pour activer les capteurs sur mobile */
+        #overlay { fill: transparent; cursor: pointer; }
+    ]]></style>
 
-		if(window.DeviceOrientationEvent) {
-			window.addEventListener("deviceorientation", process, true);
-		} else {
-			document.getElementById('log').innerHTML += '<p class="warning">Votre navigateur ne semble pas supporter <code>deviceorientation</code></p>';
-		}
+    <script type="text/javascript"><![CDATA[
+        const getEl = id => document.getElementById(id);
 
-		function Horloge() {
-			var date = new Date();
-			var minute = date.getUTCMinutes()*6;
-			var heure  = date.getUTCHours()%12*30+Math.round(minute/12);
-			
-			document.getElementById('h').setAttribute("transform", "rotate("+ heure +" 100 100)");
-			document.getElementById('m').setAttribute("transform", "rotate("+ minute +" 100 100)");
-		}
+        function updateLightMode(isDark) {
+            const lux = isDark ? 0.4 : 0.9;
+            const color = isDark ? 'hsl(120, 100%, 80%)' : 'white';
+            
+            document.querySelectorAll('.bri').forEach(el => el.setAttribute("slope", lux));
+            
+            const b = getEl('blanc');
+            b.style.stroke = b.style.fill = color;
+            getEl('m1').style.fill = getEl('h1').style.fill = color;
+        }
 
-		window.addEventListener("devicelight", function (event) {
-			// Read out the lux value
-			var lux = Math.round(event.value/250+2)/10;
-			var elt = document.getElementsByClassName('bri');
-			elt[0].setAttribute("slope", lux);
-			elt[1].setAttribute("slope", lux);
-			elt[2].setAttribute("slope", lux);
-			var couleur = lux < .3 ? 'hsl(120, 100%, 80%)' : 'white' ;
-			var ecr = document.getElementById('blanc');
-			ecr.style.stroke = couleur;
-			ecr.style.fill   = couleur;
-			document.getElementById('m1').style.fill   = couleur;
-			document.getElementById('h1').style.fill   = couleur;
-			//document.getElementById("lux").innerHTML = lux;
-		});
+        function rotateClock() {
+            const now = new Date();
+            const m = (now.getUTCMinutes() + now.getUTCSeconds()/60) * 6;
+            const h = (now.getUTCHours() % 12) * 30 + (m / 12);
+            
+            getEl('h').setAttribute("transform", `rotate(${h} 100 100)`);
+            getEl('m').setAttribute("transform", `rotate(${m} 100 100)`);
+            requestAnimationFrame(rotateClock);
+        }
 
-		var timer=setInterval("Horloge()", 1000);
-		// conception Emmanuel Pierrez, march 2016, licence cc by. please, keep this line.
+        function handleOrientation(event) {
+            const beta = event.beta == null ? -200 : Math.round(event.beta) * 2 - 300;
+            const gamma = Math.round(event.gamma * 0.6) * -1 / 0.6;
+            getEl('ah').setAttribute("transform", `rotate(${gamma} 100 200) translate(0 ${beta})`);
+        }
 
-	]]></script>
-	<filter id="myfilter">
-		<!-- Brightness -->
-		<feComponentTransfer>
-		  <feFuncR class="bri" type="linear" slope="0.9"/>
-		  <feFuncG class="bri" type="linear" slope="0.9"/>
-		  <feFuncB class="bri" type="linear" slope="0.9"/>
-		</feComponentTransfer>
-	</filter>
-	<filter id="otfilter">
-		<feColorMatrix type="hueRotate" values=" 80"/>
-	</filter>
+        async function initSensors() {
+            // Pour iOS 13+ : demande de permission explicite
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                try {
+                    const permission = await DeviceOrientationEvent.requestPermission();
+                    if (permission === 'granted') window.addEventListener("deviceorientation", handleOrientation);
+                } catch (e) { console.error(e); }
+            } else {
+                window.addEventListener("deviceorientation", handleOrientation);
+            }
+            getEl('overlay').style.display = 'none'; // Cache le bouton après activation
+        }
+
+        // Initialisation
+        window.addEventListener('load', () => {
+            rotateClock();
+            const query = window.matchMedia('(prefers-color-scheme: dark)');
+            updateLightMode(query.matches);
+            query.addEventListener('change', e => updateLightMode(e.matches));
+        });
+    ]]></script>
+
+	<defs>
+        <filter id="myfilter">
+            <feComponentTransfer>
+                <feFuncR class="bri" type="linear" slope="0.9"/>
+                <feFuncG class="bri" type="linear" slope="0.9"/>
+                <feFuncB class="bri" type="linear" slope="0.9"/>
+            </feComponentTransfer>
+        </filter>
+    </defs>
+	
 	<g id="ah" transform="rotate(0 200 300) translate(0 -200)">
 		<rect width="400" height="300" x="-100" y="-300" style="fill:rgb(128,76,25);stroke:none" />
 		<rect width="400" height="300" x="-100" style="fill:rgb(114,159,207);stroke:none" />
