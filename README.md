@@ -37,3 +37,7 @@ Pour lancer le projet sur votre machine :
 1. Cloner le dépôt :
    ```bash
    git clone [https://github.com/pierrezNet/aeronautique.git](https://github.com/pierrezNet/aeronautique.git)
+   ```
+
+2. Lancer l'application en local :
+   npx serve .
