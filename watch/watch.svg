@@ -17,10 +17,6 @@
             transition: all 0.3s; 
         }
 
-        #overlay { 
-            fill: transparent; 
-            cursor: pointer; 
-        }
     ]]></style>
 
     <script type="text/javascript"><![CDATA[
@@ -58,7 +54,13 @@
             getEl('ah').setAttribute("transform", `rotate(${gamma} 100 200) translate(0 ${beta})`);
         }
 
-        async function initSensors() {
+        window.addEventListener('load', async () => {
+            rotateClock();
+            const query = window.matchMedia('(prefers-color-scheme: dark)');
+            updateLightMode(query.matches);
+            query.addEventListener('change', e => updateLightMode(e.matches));
+
+            // Activation des capteurs d'orientation
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 try {
                     const permission = await DeviceOrientationEvent.requestPermission();
@@ -67,14 +69,6 @@
             } else {
                 window.addEventListener("deviceorientation", handleOrientation);
             }
-            getEl('overlay').style.display = 'none'; 
-        }
-
-        window.addEventListener('load', () => {
-            rotateClock();
-            const query = window.matchMedia('(prefers-color-scheme: dark)');
-            updateLightMode(query.matches);
-            query.addEventListener('change', e => updateLightMode(e.matches));
         });
     ]]></script>
 
@@ -139,6 +133,4 @@
         <path id="h1" fill="white" d="M 96,80 L 93,57 98,43 105,57 103,80 Z"/>
         <circle id="r1" cx="100" cy="100" r="5" fill="white" stroke="black" />
     </g>
-
-    <rect id="overlay" width="200" height="200" onclick="initSensors()"/>
 </svg>

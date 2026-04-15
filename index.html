@@ -1,9 +1,35 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" prefix="dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes applications aéronautiques</title>
+    <title>Aero Hub - Outils aéronautiques interactifs | aeronautique.xyz</title>
+    <meta name="description" content="Suite d'outils aéronautiques interactifs : phraséologie radio, horloge UTC avec horizon artificiel et générateur SELCAL. Pour pilotes réels, virtuels et passionnés d'aviation.">
+    <link rel="canonical" href="https://aeronautique.xyz/">
+
+    <!-- Dublin Core -->
+    <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/">
+    <meta name="dc.title" content="Aero Hub - Outils aéronautiques interactifs">
+    <meta name="dc.creator" content="Emmanuel Pierrez">
+    <meta name="dc.description" content="Suite d'outils aéronautiques interactifs pour pilotes et passionnés d'aviation.">
+    <meta name="dc.language" content="fr">
+    <meta name="dc.source" content="https://aeronautique.xyz/">
+
+    <!-- Open Graph -->
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Aero Hub - Outils aéronautiques interactifs">
+    <meta property="og:description" content="Phraséologie radio, horloge UTC avec horizon artificiel et générateur SELCAL. Pour pilotes réels, virtuels et passionnés d'aviation.">
+    <meta property="og:url" content="https://aeronautique.xyz/">
+    <meta property="og:image" content="https://aeronautique.xyz/images/phraseologie.png">
+    <meta property="og:site_name" content="Aero Hub">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -63,9 +89,10 @@
         }
 
         .theme-switcher {
-            text-align: right;
-            margin-bottom: 20px;
-            grid-column: 1 / -1;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
         }
 
         .theme-switcher button {
@@ -94,6 +121,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
         }
 
         body[data-theme='dark'] .app-card {
@@ -104,6 +133,16 @@
 
         .app-card:hover {
             transform: translateY(-5px);
+        }
+
+        .app-card:focus-visible {
+            outline: 3px solid var(--link-light);
+            outline-offset: 4px;
+            transform: translateY(-5px);
+        }
+
+        body[data-theme='dark'] .app-card:focus-visible {
+            outline-color: var(--link-dark);
         }
 
         .app-card img {
@@ -140,27 +179,26 @@
             flex-grow: 1;
         }
 
-        .app-card a {
+        .app-card .card-cta {
             display: inline-block;
             background-color: var(--link-light);
             color: white;
             padding: 12px 25px;
             border-radius: 7px;
-            text-decoration: none;
             font-weight: bold;
             transition: background-color 0.3s;
         }
 
-        body[data-theme='dark'] .app-card a {
+        body[data-theme='dark'] .app-card .card-cta {
             background-color: var(--link-dark);
             color: var(--text-light);
         }
 
-        .app-card a:hover {
+        .app-card:hover .card-cta {
             background-color: var(--link-hover-light);
         }
 
-        body[data-theme='dark'] .app-card a:hover {
+        body[data-theme='dark'] .app-card:hover .card-cta {
             background-color: var(--link-hover-dark);
         }
 
@@ -185,31 +223,31 @@
         <h1>Applications aéronautiques</h1>
     </header>
 
-    <div class="theme-switcher">
-        <button id="themeToggle">Activer le mode sombre</button>
-    </div>
-
     <div class="container">
-        <div class="app-card">
+        <a class="app-card" href="https://phraseo.aeronautique.xyz/" target="_blank" rel="noopener">
             <h2>Phraséologie</h2>
             <img id="phraseo-image" src="images/phraseologie.png" alt="Icône Phraséologie">
-            <p>Une web app particulièrement intéressante pour les débutants ou les personnes souhaitant réviser leur phraséologie en français comme en anglais.</p>
-            <a href="https://phraseo.aeronautique.xyz/" target="_blank">Visiter l'application</a>
-        </div>
+            <p>Une web app particulièrement intéressante pour les débutants ou les personnes souhaitant réviser leur phraséologie aéronautique en français comme en anglais.</p>
+            <span class="card-cta">Visiter l'application</span>
+        </a>
 
-        <div class="app-card">
+        <a class="app-card" href="https://aeronautique.xyz/watch/" target="_blank" rel="noopener">
             <h2>Montre UTC</h2>
             <img id="utc-watch-image" src="images/utc_watch.png" alt="Icône Montre UTC">
             <p>Une horloge à l'heure UTC à intégrer dans votre site Internet. Elle utilise les capteurs de mouvements et de lumière pour vous offrir une expérience amusante.</p>
-            <a href="https://aeronautique.xyz/watch/" target="_blank">Visiter l'application</a>
-        </div>
+            <span class="card-cta">Visiter l'application</span>
+        </a>
 
-        <div class="app-card">
+        <a class="app-card" href="https://aeronautique.xyz/selcal/" target="_blank" rel="noopener">
             <h2>SELCAL</h2>
             <img id="selcal-image" src="images/selcal.png" alt="Icône SELCAL">
             <p>Le système Selcal est un système d'appel sélectif permettant à un opérateur au sol d'avertir un équipage d'un aéronef qu'il souhaite entrer en communication avec l'appareil. Chaque appareil se voit attribuer un code en 4 lettres qui forme un code à deux bi-tonalités audio.</p>
-            <a href="https://aeronautique.xyz/selcal/" target="_blank">Visiter l'application</a>
-        </div>
+            <span class="card-cta">Visiter l'application</span>
+        </a>
+    </div>
+
+    <div class="theme-switcher">
+        <button id="themeToggle">Activer le mode sombre</button>
     </div>
 
     <script>
@@ -239,32 +277,6 @@
             } else {
                 setTheme('light');
             }
-        }
-
-        // Ajoutez ici le JavaScript pour les capteurs de mouvement et lumière si vous le souhaitez pour la montre UTC.
-        // C'est plus complexe à implémenter directement dans un extrait HTML/JS sans serveur.
-        // Vous pouvez utiliser l'API DeviceMotionEvent et DeviceLightEvent (si supporté par le navigateur).
-
-        // Exemple pour le DeviceMotionEvent (mouvement)
-        if (window.DeviceMotionEvent) {
-            window.addEventListener('devicemotion', function(event) {
-                // event.accelerationIncludingGravity.x, y, z
-                // event.rotationRate.alpha, beta, gamma
-                // Utilisez ces données pour animer votre montre UTC si vous le souhaitez
-                // console.log("Mouvement détecté:", event);
-            });
-        } else {
-            // console.log("DeviceMotionEvent non supporté");
-        }
-
-        // Exemple pour le DeviceLightEvent (lumière) - Moins supporté
-        if (window.DeviceLightEvent) {
-            window.addEventListener('devicelight', function(event) {
-                // event.value contient la luminosité ambiante en lux
-                // console.log("Luminosité détectée:", event.value, "lux");
-            });
-        } else {
-            // console.log("DeviceLightEvent non supporté");
         }
     </script>
 </body>
