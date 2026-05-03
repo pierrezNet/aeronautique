@@ -88,26 +88,28 @@
             margin-bottom: 10px;
         }
 
-        .theme-switcher {
+        .theme-toggle {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 100;
-        }
-
-        .theme-switcher button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            background: var(--card-background-light);
+            border: 1px solid var(--border-light);
+            padding: 10px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
-        .theme-switcher button:hover {
-            background-color: #2980b9;
+        body[data-theme='dark'] .theme-toggle {
+            background: var(--card-background-dark);
+            border-color: var(--border-dark);
         }
 
         .app-card {
@@ -246,9 +248,7 @@
         </a>
     </div>
 
-    <div class="theme-switcher">
-        <button id="themeToggle">Activer le mode sombre</button>
-    </div>
+    <button class="theme-toggle" id="themeToggle">🌓</button>
 
     <script>
         // JavaScript pour la gestion du mode sombre
@@ -258,7 +258,7 @@
         function setTheme(theme) {
             body.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
-            themeToggle.textContent = theme === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre';
+            themeToggle.innerHTML = theme === 'dark' ? '☀️' : '🌓';
         }
 
         themeToggle.addEventListener('click', () => {
