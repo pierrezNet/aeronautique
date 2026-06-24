@@ -64,6 +64,22 @@
         input.car:focus { border-color: var(--primary); outline: none; }
         input.car.invalid { border-color: var(--error); background-color: rgba(239, 68, 68, 0.1); }
 
+        /* Zone de message d'erreur (région aria-live) */
+        .selcal-erreurs {
+            list-style: none; margin: 16px auto 0; padding: 12px 16px; max-width: 600px;
+            background: rgba(239, 68, 68, 0.08); border: 1px solid var(--error);
+            border-radius: 8px; color: var(--error); text-align: left;
+            font-size: 0.95rem; line-height: 1.5;
+        }
+        .selcal-erreurs li { margin: 4px 0; }
+        .selcal-erreurs[hidden] { display: none; }
+
+        /* Label réservé aux lecteurs d'écran (RGAA) */
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+        }
+
         .btn {
             background: var(--primary); color: white; border: none; padding: 12px 20px;
             border-radius: 8px; cursor: pointer; font-weight: 600; transition: transform 0.1s;
@@ -97,7 +113,7 @@
 </head>
 <body data-theme="light">
 
-    <button class="theme-toggle" id="themeToggle">🌓</button>
+    <button class="theme-toggle" id="themeToggle" aria-label="Basculer le thème clair/sombre">🌓</button>
 
     <div class="container">
         <h1>Système SELCAL</h1>
@@ -109,24 +125,30 @@
 
         <div class="selcal-grid">
             <div class="selcal-input-group">
-                <input type="text" id="selcal1" class="car" maxlength="1">
-                <button class="btn" onclick="modifyChar(0)">Modifier</button>
+                <label class="sr-only" for="selcal1">1re lettre (paire 1)</label>
+                <input type="text" id="selcal1" class="car" maxlength="1" aria-describedby="erreurSelcal">
+                <button class="btn" onclick="modifyChar(0)" aria-label="Changer la 1re lettre">Modifier</button>
             </div>
             <div class="selcal-input-group">
-                <input type="text" id="selcal2" class="car" maxlength="1">
-                <button class="btn" onclick="modifyChar(1)">Modifier</button>
+                <label class="sr-only" for="selcal2">2e lettre (paire 1)</label>
+                <input type="text" id="selcal2" class="car" maxlength="1" aria-describedby="erreurSelcal">
+                <button class="btn" onclick="modifyChar(1)" aria-label="Changer la 2e lettre">Modifier</button>
             </div>
             <div class="selcal-input-group">
-                <input type="text" id="selcal3" class="car" maxlength="1">
-                <button class="btn" onclick="modifyChar(2)">Modifier</button>
+                <label class="sr-only" for="selcal3">3e lettre (paire 2)</label>
+                <input type="text" id="selcal3" class="car" maxlength="1" aria-describedby="erreurSelcal">
+                <button class="btn" onclick="modifyChar(2)" aria-label="Changer la 3e lettre">Modifier</button>
             </div>
             <div class="selcal-input-group">
-                <input type="text" id="selcal4" class="car" maxlength="1">
-                <button class="btn" onclick="modifyChar(3)">Modifier</button>
+                <label class="sr-only" for="selcal4">4e lettre (paire 2)</label>
+                <input type="text" id="selcal4" class="car" maxlength="1" aria-describedby="erreurSelcal">
+                <button class="btn" onclick="modifyChar(3)" aria-label="Changer la 4e lettre">Modifier</button>
             </div>
         </div>
 
         <button class="btn btn-play" id="play">▶ ÉCOUTER LE CODE</button>
+
+        <ul class="selcal-erreurs" id="erreurSelcal" aria-live="polite" hidden></ul>
 
         <div class="info-section">
             <p>En option, cliquez sur les boutons pour changer l'une des 4 lettres. Si vous écoutez le code, vous entendrez deux bi-tonalités. Exemple, le code ABCD sera constitué d'une première bitonalité (2 sons de fréquence 312.6 et 346.7 hertz) puis d'une seconde (384.6 et 426.6 hertz).</p>
@@ -147,9 +169,17 @@
             document.getElementById('selcal4')
         ];
 
+        // AudioContext unique partagé (les navigateurs limitent le nombre de contextes simultanés)
+        let _audioCtx = null;
+        function getAudioContext() {
+            if (!_audioCtx) _audioCtx = new (window.AudioContext || window['webkitAudioContext'])();
+            if (_audioCtx.state === 'suspended') _audioCtx.resume();
+            return _audioCtx;
+        }
+
         // Fonction pour un petit son de bouton "gentil" (Bip doux)
         function playUISound(type = 'click') {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const ctx = getAudioContext();
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
 
@@ -167,60 +197,118 @@
             osc.stop(ctx.currentTime + 0.1);
         }
 
-        // Fonction de modification générique avec feedback
+        // Lettres SELCAL valides pour ce champ : ordre alphabétique respecté avec la lettre
+        // partenaire de la paire, distinctes des 3 autres, et différentes de la lettre courante.
+        function lettresPossibles(index) {
+            const premier = index % 2 === 0;                 // champs 0 et 2 = 1re lettre de la paire
+            const partenaire = premier ? codes[index + 1] : codes[index - 1];
+            const autres = codes.filter((_, j) => j !== index);
+            const candidats = [];
+            for (let i = 0; i < car.length; i++) {
+                if (i === codes[index]) continue;                          // doit changer de lettre
+                if (premier ? i >= partenaire : i <= partenaire) continue; // 1re < partenaire ; 2e > partenaire
+                if (autres.includes(i)) continue;                          // 4 lettres distinctes
+                candidats.push(i);
+            }
+            return candidats;
+        }
+
+        // Change une lettre via le bouton « Modifier », en ne proposant que des lettres valides.
         window.modifyChar = (index) => {
-            const oldVal = codes[index];
             const inputEl = inputs[index];
-            
-            // Calcul des possibilités restantes (pour savoir si c'est l'unique choix)
-            // C'est une simplification, mais ça permet de jouer le son "unique"
-            
-            let attempts = 0;
-            let newVal;
-            
-            do {
-                if (index === 0) newVal = getNumber(0, 15);
-                else if (index === 1) newVal = getNumber(codes[0] + 1, 16);
-                else if (index === 2) newVal = getNumber(0, 15);
-                else if (index === 3) newVal = getNumber(codes[2] + 1, 16);
-                attempts++;
-                // On boucle tant que c'est déjà utilisé OU que c'est la même lettre (si possible d'en changer)
-            } while ((isAlreadyUsed(newVal, index) || newVal === oldVal) && attempts < 50);
+            const candidats = lettresPossibles(index);
 
             // Feedback visuel
             inputEl.classList.remove('shake');
             void inputEl.offsetWidth; // Force le repaint pour relancer l'animation
             inputEl.classList.add('shake');
 
-            if (newVal === oldVal) {
-                // Si après 50 tentatives on a la même lettre, c'est qu'il n'y a pas d'autre choix
+            if (candidats.length === 0) {
+                // Aucune autre lettre ne respecte l'ordre de la paire : choix unique
                 playUISound('unique');
                 inputEl.classList.add('unique-choice');
                 setTimeout(() => inputEl.classList.remove('unique-choice'), 500);
-            } else {
-                playUISound('click');
-                codes[index] = newVal;
-                updateDisplay();
+                return;
             }
+            playUISound('click');
+            codes[index] = candidats[getNumber(0, candidats.length)];
+            updateDisplay();
         };
 
         function getNumber(min, max) {
             return Math.floor(Math.random() * (max - min)) + min;
         }
 
-        // Vérification des contraintes SELCAL : 
-        // 1. Pas de doublons sur les 4 lettres.
-        // 2. Lettre 1 < Lettre 2
-        // 3. Lettre 3 < Lettre 4
-        function testValide() {
-            inputs.forEach(input => input.classList.remove('invalid'));
-            
-            const n = inputs.map(i => car.indexOf(i.value.toUpperCase()));
+        // === Source de vérité unique pour la validité d'un code SELCAL ===
+        // Fonction pure (aucune écriture DOM) : retourne un diagnostic complet.
+        // - indices : index dans `car` pour chaque champ (-1 si vide ou lettre interdite)
+        // - champsInvalides : booléen par champ (pose/retire .invalid + aria-invalid)
+        // - raisons : messages expliquant pourquoi le code est invalide
+        // Règles : 4 lettres distinctes + ordre alphabétique strict dans chaque paire.
+        // Aucune contrainte entre les paires (AB-CD et CD-AB sont tous deux valides).
+        function analyserCode() {
+            const valeurs = inputs.map(i => i.value.trim().toUpperCase());
+            const indices = valeurs.map(v => car.indexOf(v)); // -1 si vide ou hors des 16
+            const champsInvalides = [false, false, false, false];
+            const raisons = [];
 
-            if (n[0] >= n[1] || n[0] === n[2] || n[0] === n[3]) inputs[0].classList.add('invalid');
-            if (n[1] <= n[0] || n[1] === n[2] || n[1] === n[3]) inputs[1].classList.add('invalid');
-            if (n[2] >= n[3] || n[2] === n[0] || n[2] === n[1]) inputs[2].classList.add('invalid');
-            if (n[3] <= n[2] || n[3] === n[0] || n[3] === n[1]) inputs[3].classList.add('invalid');
+            // 1. Champ vide ou lettre hors des 16 tonalités
+            valeurs.forEach((v, i) => {
+                if (v === '') {
+                    champsInvalides[i] = true;
+                } else if (indices[i] === -1) {
+                    champsInvalides[i] = true;
+                    raisons.push(`La lettre « ${v} » n'est pas une tonalité SELCAL (A à S, sans I, N ni O).`);
+                }
+            });
+            if (valeurs.some(v => v === '')) raisons.unshift('Le code doit comporter 4 lettres.');
+
+            // Les contrôles d'ordre/doublons n'ont de sens que sur des lettres valides.
+            if (indices.every(idx => idx !== -1)) {
+                // 2. Doublons sur les 4 lettres
+                if (indices.some((idx, i) => indices.some((a, j) => j !== i && a === idx))) {
+                    indices.forEach((idx, i) => {
+                        if (indices.some((a, j) => j !== i && a === idx)) champsInvalides[i] = true;
+                    });
+                    raisons.push('Les 4 lettres doivent être différentes.');
+                }
+                // 3. Ordre alphabétique strict dans chaque paire
+                if (indices[0] >= indices[1]) {
+                    champsInvalides[0] = champsInvalides[1] = true;
+                    raisons.push("Dans la 1re paire, la lettre 1 doit précéder la lettre 2 (ordre alphabétique).");
+                }
+                if (indices[2] >= indices[3]) {
+                    champsInvalides[2] = champsInvalides[3] = true;
+                    raisons.push("Dans la 2e paire, la lettre 3 doit précéder la lettre 4 (ordre alphabétique).");
+                }
+            }
+
+            const valide = champsInvalides.every(c => !c) && raisons.length === 0;
+            return { valide, indices, champsInvalides, raisons };
+        }
+
+        // Applique le diagnostic au DOM : bordures, aria-invalid, zone de message.
+        function testValide() {
+            const { valide, champsInvalides, raisons } = analyserCode();
+            inputs.forEach((input, i) => {
+                input.classList.toggle('invalid', champsInvalides[i]);
+                input.setAttribute('aria-invalid', champsInvalides[i] ? 'true' : 'false');
+            });
+            afficherErreurs(valide ? [] : raisons);
+            return valide;
+        }
+
+        // Remplit/masque la région aria-live (textContent : pas d'innerHTML sur entrée utilisateur).
+        function afficherErreurs(raisons) {
+            const zone = document.getElementById('erreurSelcal');
+            zone.textContent = '';
+            if (raisons.length === 0) { zone.hidden = true; return; }
+            zone.hidden = false;
+            raisons.forEach(r => {
+                const li = document.createElement('li');
+                li.textContent = r;
+                zone.appendChild(li);
+            });
         }
 
         function updateDisplay() {
@@ -228,33 +316,47 @@
             testValide();
         }
 
-        // Fonction utilitaire pour vérifier si une valeur est déjà utilisée ailleurs
-        function isAlreadyUsed(valueIndex, currentIndex) {
-            return codes.some((code, idx) => idx !== currentIndex && code === valueIndex);
-        }
-
-        document.getElementById('aleaAll').onclick = () => {
+        function genererCode() {
             codes[0] = getNumber(0, 13);
             codes[1] = getNumber(codes[0] + 1, 15);
             codes[2] = getNumber(0, 13);
             do { codes[2] = getNumber(0, 13); } while (codes[2] === codes[0] || codes[2] === codes[1]);
             do { codes[3] = getNumber(codes[2] + 1, 16); } while (codes[3] === codes[0] || codes[3] === codes[1]);
             updateDisplay();
-        };
+        }
+        document.getElementById('aleaAll').onclick = genererCode;
 
         document.getElementById('reinit').onclick = () => {
-            inputs.forEach(i => i.value = "");
-            codes = [0,0,0,0];
+            inputs.forEach(input => {
+                input.value = "";
+                input.classList.remove('invalid', 'shake', 'unique-choice');
+                input.setAttribute('aria-invalid', 'false');
+            });
+            codes = [0, 0, 0, 0];
+            afficherErreurs([]);
         };
 
         document.getElementById('play').onclick = () => {
-            const n = inputs.map(i => car.indexOf(i.value.toUpperCase()));
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            
+            const { valide, indices, raisons } = analyserCode();
+            testValide(); // synchronise l'affichage des erreurs
+
+            if (!valide) {
+                // Code invalide : aucune bitonalité, mais feedback visuel + sonore + annonce
+                inputs.forEach(input => {
+                    input.classList.remove('shake');
+                    void input.offsetWidth; // force le repaint pour relancer l'animation
+                    input.classList.add('shake');
+                });
+                playUISound('unique');
+                afficherErreurs(raisons.length ? raisons : ['Code SELCAL invalide.']);
+                return;
+            }
+
+            const audioCtx = getAudioContext();
             const playPair = (f1, f2, start) => {
                 [f1, f2].forEach(f => {
-                    let osc = audioCtx.createOscillator();
-                    let gain = audioCtx.createGain();
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
                     osc.frequency.value = f;
                     gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
                     osc.connect(gain); gain.connect(audioCtx.destination);
@@ -263,18 +365,26 @@
                 });
             };
 
-            playPair(frq[n[0]], frq[n[1]], 0);
-            playPair(frq[n[2]], frq[n[3]], 1.2);
+            playPair(frq[indices[0]], frq[indices[1]], 0);
+            playPair(frq[indices[2]], frq[indices[3]], 1.2);
         };
 
-        // Theme toggle
+        // Thème clair/sombre, persisté dans localStorage
+        function appliquerTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            try { localStorage.setItem('selcal-theme', theme); } catch (e) {}
+        }
         document.getElementById('themeToggle').onclick = () => {
             const isDark = document.body.getAttribute('data-theme') === 'dark';
-            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            appliquerTheme(isDark ? 'light' : 'dark');
         };
+        try {
+            const themeSauve = localStorage.getItem('selcal-theme');
+            if (themeSauve) document.body.setAttribute('data-theme', themeSauve);
+        } catch (e) {}
 
         inputs.forEach(i => i.oninput = testValide);
-        document.getElementById('aleaAll').onclick();
+        genererCode();
     </script>
 </body>
 </html>

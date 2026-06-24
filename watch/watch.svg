@@ -74,14 +74,18 @@
                 }
             }, 60000);
 
-            // Activation des capteurs d'orientation
-            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                try {
-                    const permission = await DeviceOrientationEvent.requestPermission();
-                    if (permission === 'granted') window.addEventListener("deviceorientation", handleOrientation);
-                } catch (e) { console.error(e); }
-            } else {
+            // Activation des capteurs d'orientation (API absente ou restreinte selon l'appareil)
+            const DOE = window['DeviceOrientationEvent'];
+            if (!DOE) return;
+            try {
+                // iOS 13+ exige une autorisation explicite
+                if (typeof DOE.requestPermission === 'function') {
+                    const permission = await DOE.requestPermission();
+                    if (permission !== 'granted') return;
+                }
                 window.addEventListener("deviceorientation", handleOrientation);
+            } catch (e) {
+                console.error(e);
             }
         });
     ]]></script>

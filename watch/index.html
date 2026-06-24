@@ -160,16 +160,13 @@
         // afin de ne pas déformer toute l'image de la montre.
 
         // --- CAPTEUR DE LUMINOSITÉ (Ambient Light) ---
-        // Note: Cette API est très restreinte pour des raisons de sécurité.
-        if ('AmbientLightSensor' in window) {
+        // Note : Cette API est très restreinte pour des raisons de sécurité.
+        const AmbientLight = window['AmbientLightSensor'];
+        if (AmbientLight) {
             try {
-                const sensor = new AmbientLightSensor();
+                const sensor = new AmbientLight();
                 sensor.addEventListener('reading', () => {
-                    if (sensor.lux < 10) {
-                        setTheme('dark');
-                    } else {
-                        setTheme('light');
-                    }
+                    setTheme(sensor.lux < 10 ? 'dark' : 'light');
                 });
                 sensor.start();
             } catch (err) {
