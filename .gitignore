@@ -1,0 +1,14 @@
+# Cache de l'outil Cloudflare Wrangler (vestige d'un autre projet, n'a rien à faire ici)
+.wrangler/
+
+# Configuration des éditeurs / IDE
+.idea/
+.DS_Store
+
+# Réglages locaux de l'assistant Claude
+.claude/settings.local.json
+
+# Fichiers Markdown : docs pour l'assistant (CLAUDE.md) et notes de travail.
+# On garde le README, page d'accueil publique du dépôt.
+*.md
+!README.md
