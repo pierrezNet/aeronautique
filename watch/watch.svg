@@ -41,8 +41,8 @@
 
         function rotateClock() {
             const now = new Date();
-            const m = (now.getMinutes() + now.getSeconds()/60) * 6;
-            const h = (now.getHours() % 12) * 30 + (m / 12);
+            const m = (now.getUTCMinutes() + now.getUTCSeconds()/60) * 6;
+            const h = (now.getUTCHours() % 12) * 30 + (m / 12);
             getEl('h').setAttribute("transform", `rotate(${h} 100 100)`);
             getEl('m').setAttribute("transform", `rotate(${m} 100 100)`);
             requestAnimationFrame(rotateClock);
@@ -54,11 +54,25 @@
             getEl('ah').setAttribute("transform", `rotate(${gamma} 100 200) translate(0 ${beta})`);
         }
 
+        // Mode nuit aéronautique : actif de 21h00 à 06h00 UTC
+        function isNightUTC() {
+            const h = new Date().getUTCHours();
+            return h >= 21 || h < 6;
+        }
+
         window.addEventListener('load', async () => {
             rotateClock();
-            const query = window.matchMedia('(prefers-color-scheme: dark)');
-            updateLightMode(query.matches);
-            query.addEventListener('change', e => updateLightMode(e.matches));
+
+            // Le mode sombre suit l'heure UTC (21h–6h), et non le choix de l'utilisateur
+            let nuit = isNightUTC();
+            updateLightMode(nuit);
+            setInterval(() => {
+                const courant = isNightUTC();
+                if (courant !== nuit) {
+                    nuit = courant;
+                    updateLightMode(nuit);
+                }
+            }, 60000);
 
             // Activation des capteurs d'orientation
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {

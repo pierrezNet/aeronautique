@@ -85,7 +85,6 @@
         }
 
         .watch-container {
-            transition: transform 0.1s ease-out;
             filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.2));
         }
 
@@ -145,7 +144,6 @@
     <script>
         const btn = document.getElementById('themeToggle');
         const body = document.body;
-        const watch = document.getElementById('watch');
 
         // --- GESTION DU THÈME ---
         btn.addEventListener('click', () => {
@@ -158,17 +156,8 @@
             btn.innerHTML = theme === 'dark' ? '☀️' : '🌓';
         }
 
-        // --- GYROSCOPE (Mouvement) ---
-        window.addEventListener('deviceorientation', (event) => {
-            const x = event.beta;  // inclinaison avant/arrière
-            const y = event.gamma; // inclinaison gauche/droite
-            
-            if (x !== null && y !== null) {
-                const moveX = Math.max(Math.min(y / 2, 15), -15);
-                const moveY = Math.max(Math.min(x / 2, 15), -15);
-                watch.style.transform = `perspective(1000px) rotateY(${moveX}deg) rotateX(${-moveY}deg)`;
-            }
-        });
+        // Le mouvement de l'appareil est géré à l'intérieur du SVG (horizon artificiel),
+        // afin de ne pas déformer toute l'image de la montre.
 
         // --- CAPTEUR DE LUMINOSITÉ (Ambient Light) ---
         // Note: Cette API est très restreinte pour des raisons de sécurité.
