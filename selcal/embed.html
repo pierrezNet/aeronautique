@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : bloc <style> propre à la page. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Widget destiné à être intégré en iframe : la page de référence est /selcal/ -->
+    <meta name="robots" content="noindex">
+    <link rel="canonical" href="https://aeronautique.xyz/selcal/">
+    <title>Lecteur SELCAL | aeronautique.xyz</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/theme.css">
+    <!-- Thème (paramètre ?theme= ou réglage de l'appareil) posé avant l'affichage -->
+    <script src="embed-theme.js"></script>
+    <style>
+        /* Fond transparent pour se fondre dans le site hôte.
+           color-scheme reste « normal » même en thème sombre : sinon le navigateur
+           peindrait un fond opaque derrière l'iframe d'un site hôte en thème clair. */
+        :root, [data-theme='dark'] { color-scheme: normal; }
+
+        html, body {
+            margin: 0;
+            background: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            padding: 4px;
+        }
+
+        .lecteur {
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 304px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 10px 16px 8px;
+            text-align: center;
+        }
+
+        .code {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            line-height: 1.2;
+            color: var(--text);
+            margin: 0 0 8px;
+        }
+
+        .code-invalide {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            letter-spacing: normal;
+            font-size: 0.9rem;
+            color: #ef4444;
+            margin: 6px 0 12px;
+        }
+
+        .btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 22px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .btn:disabled { opacity: 0.6; cursor: default; }
+
+        .btn:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .credit {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.7rem;
+            color: var(--primary);
+            text-decoration: none;
+            opacity: 0.85;
+        }
+    </style>
+</head>
+<body>
+    <div class="lecteur">
+        <p class="code" id="code" aria-live="polite">––-––</p>
+        <button type="button" class="btn" id="play" disabled>▶ Écouter</button>
+        <a class="credit" id="credit" href="https://aeronautique.xyz/selcal/" target="_blank" rel="noopener">SELCAL · aeronautique.xyz</a>
+    </div>
+
+    <script src="selcal-commun.js"></script>
+    <script src="embed.js"></script>
+</body>
+</html>

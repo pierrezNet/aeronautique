@@ -2,13 +2,17 @@
 <html lang="fr" prefix="dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
+    <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : blocs <style> propres à chaque page. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4f7f6" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#2c3e50" media="(prefers-color-scheme: dark)">
     <title>Aero Hub - Outils aéronautiques interactifs | aeronautique.xyz</title>
     <meta name="description" content="Suite d'outils aéronautiques interactifs : phraséologie radio, horloge UTC avec horizon artificiel et générateur SELCAL. Pour pilotes réels, virtuels et passionnés d'aviation.">
     <link rel="canonical" href="https://aeronautique.xyz/">
 
     <!-- Dublin Core -->
-    <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/">
+    <link rel="schema.dc" href="http://purl.org/dc/terms/">
     <meta name="dc.title" content="Aero Hub - Outils aéronautiques interactifs">
     <meta name="dc.creator" content="Emmanuel Pierrez">
     <meta name="dc.description" content="Suite d'outils aéronautiques interactifs pour pilotes et passionnés d'aviation.">
@@ -21,8 +25,49 @@
     <meta property="og:title" content="Aero Hub - Outils aéronautiques interactifs">
     <meta property="og:description" content="Phraséologie radio, horloge UTC avec horizon artificiel et générateur SELCAL. Pour pilotes réels, virtuels et passionnés d'aviation.">
     <meta property="og:url" content="https://aeronautique.xyz/">
-    <meta property="og:image" content="https://aeronautique.xyz/images/phraseologie.png">
+    <meta property="og:image" content="https://aeronautique.xyz/images/og-accueil.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Icônes des trois outils d'Aero Hub : phraséologie, montre UTC et SELCAL">
     <meta property="og:site_name" content="Aero Hub">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Données structurées Schema.org (bloc de données, non exécuté : compatible CSP) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Aero Hub",
+        "alternateName": "aeronautique.xyz",
+        "url": "https://aeronautique.xyz/",
+        "inLanguage": "fr",
+        "description": "Suite d'outils aéronautiques interactifs : phraséologie radio, horloge UTC avec horizon artificiel et générateur SELCAL.",
+        "author": {
+            "@type": "Person",
+            "name": "Emmanuel Pierrez",
+            "url": "https://pierrez.net"
+        },
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "hasPart": [
+            {
+                "@type": "WebApplication",
+                "name": "Phraséologie",
+                "url": "https://phraseo.aeronautique.xyz/"
+            },
+            {
+                "@type": "WebApplication",
+                "name": "Montre UTC",
+                "url": "https://aeronautique.xyz/watch/"
+            },
+            {
+                "@type": "WebApplication",
+                "name": "Générateur SELCAL",
+                "url": "https://aeronautique.xyz/selcal/"
+            }
+        ]
+    }
+    </script>
 
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -30,41 +75,42 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/theme.css">
+    <script src="/theme.js"></script>
     <style>
+        /* Palette propre à la page d'accueil (surcharge de theme.css) */
         :root {
-            --background-light: #f4f7f6;
-            --text-light: #2c3e50;
-            --card-background-light: #ffffff;
-            --border-light: #e0e0e0;
-            --link-light: #3498db;
-            --link-hover-light: #2980b9;
+            --bg: #f4f7f6;
+            --text: #2c3e50;
+            --card-bg: #ffffff;
+            --border: #e0e0e0;
+            --primary: #3498db;
+            --primary-hover: #2980b9;
+            --cta-text: #ffffff;
+            --titre-carte: #e67e22;
+            --ombre-carte: rgba(0, 0, 0, 0.1);
         }
 
         [data-theme='dark'] {
-            --background-dark: #2c3e50;
-            --text-dark: #ecf0f1;
-            --card-background-dark: #34495e;
-            --border-dark: #44607a;
-            --link-dark: #9adbf6;
-            --link-hover-dark: #6fa0bc;
+            --bg: #2c3e50;
+            --text: #ecf0f1;
+            --card-bg: #34495e;
+            --border: #44607a;
+            --primary: #9adbf6;
+            --primary-hover: #6fa0bc;
+            --cta-text: #2c3e50;
+            --titre-carte: #f39c12;
+            --ombre-carte: rgba(0, 0, 0, 0.3);
         }
 
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: var(--background-light);
-            color: var(--text-light);
+            background-color: var(--bg);
+            color: var(--text);
             transition: background-color 0.3s, color 0.3s;
             line-height: 1.6;
-        }
-
-        body[data-theme='dark'] {
-            background-color: var(--background-dark);
-            color: var(--text-dark);
         }
 
         .container {
@@ -88,37 +134,13 @@
             margin-bottom: 10px;
         }
 
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            background: var(--card-background-light);
-            border: 1px solid var(--border-light);
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        body[data-theme='dark'] .theme-toggle {
-            background: var(--card-background-dark);
-            border-color: var(--border-dark);
-        }
-
         .app-card {
-            background-color: var(--card-background-light);
-            border: 1px solid var(--border-light);
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
             border-radius: 10px;
             padding: 25px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px var(--ombre-carte);
             transition: transform 0.3s ease-in-out, background-color 0.3s, border-color 0.3s;
             display: flex;
             flex-direction: column;
@@ -127,30 +149,19 @@
             color: inherit;
         }
 
-        body[data-theme='dark'] .app-card {
-            background-color: var(--card-background-dark);
-            border-color: var(--border-dark);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-
         .app-card:hover {
             transform: translateY(-5px);
         }
 
         .app-card:focus-visible {
-            outline: 3px solid var(--link-light);
+            outline: 3px solid var(--primary);
             outline-offset: 4px;
             transform: translateY(-5px);
-        }
-
-        body[data-theme='dark'] .app-card:focus-visible {
-            outline-color: var(--link-dark);
         }
 
         .app-card img {
             max-width: 150px;
             height: auto;
-            margin-bottom: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             display: block;
@@ -166,13 +177,9 @@
 
         .app-card h2 {
             font-family: 'Orbitron', sans-serif;
-            color: #e67e22;
+            color: var(--titre-carte);
             margin-top: 0;
             font-size: 1.8em;
-        }
-
-        body[data-theme='dark'] .app-card h2 {
-            color: #f39c12;
         }
 
         .app-card p {
@@ -183,25 +190,16 @@
 
         .app-card .card-cta {
             display: inline-block;
-            background-color: var(--link-light);
-            color: white;
+            background-color: var(--primary);
+            color: var(--cta-text);
             padding: 12px 25px;
             border-radius: 7px;
             font-weight: bold;
             transition: background-color 0.3s;
         }
 
-        body[data-theme='dark'] .app-card .card-cta {
-            background-color: var(--link-dark);
-            color: var(--text-light);
-        }
-
         .app-card:hover .card-cta {
-            background-color: var(--link-hover-light);
-        }
-
-        body[data-theme='dark'] .app-card:hover .card-cta {
-            background-color: var(--link-hover-dark);
+            background-color: var(--primary-hover);
         }
 
         @media (max-width: 768px) {
@@ -228,59 +226,30 @@
     <div class="container">
         <a class="app-card" href="https://phraseo.aeronautique.xyz/" target="_blank" rel="noopener">
             <h2>Phraséologie</h2>
-            <img id="phraseo-image" src="images/phraseologie.png" alt="Icône Phraséologie">
+            <img id="phraseo-image" src="images/phraseologie.webp" alt="Icône Phraséologie" width="150" height="150">
             <p>Une web app particulièrement intéressante pour les débutants ou les personnes souhaitant réviser leur phraséologie aéronautique en français comme en anglais.</p>
             <span class="card-cta">Visiter l'application</span>
         </a>
 
-        <a class="app-card" href="https://aeronautique.xyz/watch/" target="_blank" rel="noopener">
+        <a class="app-card" href="/watch/">
             <h2>Montre UTC</h2>
-            <img id="utc-watch-image" src="images/utc_watch.png" alt="Icône Montre UTC">
+            <img id="utc-watch-image" src="images/utc_watch.webp" alt="Icône Montre UTC" width="150" height="150">
             <p>Une horloge à l'heure UTC à intégrer dans votre site Internet. Elle utilise les capteurs de mouvements et de lumière pour vous offrir une expérience amusante.</p>
             <span class="card-cta">Visiter l'application</span>
         </a>
 
-        <a class="app-card" href="https://aeronautique.xyz/selcal/" target="_blank" rel="noopener">
+        <a class="app-card" href="/selcal/">
             <h2>SELCAL</h2>
-            <img id="selcal-image" src="images/selcal.png" alt="Icône SELCAL">
+            <img id="selcal-image" src="images/selcal.webp" alt="Icône SELCAL" width="150" height="150">
             <p>Le système Selcal est un système d'appel sélectif permettant à un opérateur au sol d'avertir un équipage d'un aéronef qu'il souhaite entrer en communication avec l'appareil. Chaque appareil se voit attribuer un code en 4 lettres qui forme un code à deux bi-tonalités audio.</p>
             <span class="card-cta">Visiter l'application</span>
         </a>
     </div>
 
-    <button class="theme-toggle" id="themeToggle">🌓</button>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Basculer le thème clair/sombre">🌓</button>
 
-    <script>
-        // JavaScript pour la gestion du mode sombre
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-
-        function setTheme(theme) {
-            body.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            themeToggle.innerHTML = theme === 'dark' ? '☀️' : '🌓';
-        }
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-        });
-
-        // Charger le thème sauvegardé
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            setTheme(savedTheme);
-        } else {
-            // Détecter la préférence système par défaut
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
-        }
-    </script>
     <!-- Cloudflare Web Analytics (sans cookie, sans traçage d'IP exploitable) -->
-        <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
     <!-- End Cloudflare Web Analytics -->
 </body>
 </html>

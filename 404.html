@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : bloc <style> propre à la page. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <!-- Page d'erreur servie par GitHub Pages : ne pas indexer -->
+    <meta name="robots" content="noindex">
+    <title>Page introuvable | aeronautique.xyz</title>
+
+    <!-- Favicons (chemins absolus : la page peut être servie à n'importe quelle profondeur) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/theme.css">
+    <script src="/theme.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .code-erreur {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(4rem, 20vw, 8rem);
+            font-weight: 900;
+            color: var(--primary);
+            margin: 0;
+            line-height: 1;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            max-width: 480px;
+            line-height: 1.6;
+        }
+
+        .liens {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .liens a {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .liens a:hover,
+        .liens a:focus-visible {
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Basculer le thème clair/sombre">🌓</button>
+
+    <main>
+        <p class="code-erreur" aria-hidden="true">404</p>
+        <h1>Page introuvable</h1>
+        <p>Cette page n'existe pas ou a été déplacée. Remettez le cap sur l'une de nos applications :</p>
+        <nav class="liens" aria-label="Applications">
+            <a href="/">Accueil</a>
+            <a href="/watch/">Montre UTC</a>
+            <a href="/selcal/">SELCAL</a>
+            <a href="https://phraseo.aeronautique.xyz/">Phraséologie</a>
+        </nav>
+    </main>
+
+    <!-- Cloudflare Web Analytics (sans cookie, sans traçage d'IP exploitable) -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+</body>
+</html>

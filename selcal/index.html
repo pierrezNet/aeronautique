@@ -2,13 +2,17 @@
 <html lang="fr" prefix="dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
+    <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : blocs <style> propres à chaque page. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     <title>Générateur SELCAL - Simulateur d'appel sélectif | aeronautique.xyz</title>
     <meta name="description" content="Simulateur réaliste du système d'appel sélectif SELCAL. Génère les bitonalités audio exactes, vérifie les contraintes de codage et permet de tester n'importe quel code SELCAL.">
     <link rel="canonical" href="https://aeronautique.xyz/selcal/">
 
     <!-- Dublin Core -->
-    <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/">
+    <link rel="schema.dc" href="http://purl.org/dc/terms/">
     <meta name="dc.title" content="Générateur SELCAL - Simulateur d'appel sélectif">
     <meta name="dc.creator" content="Emmanuel Pierrez">
     <meta name="dc.description" content="Simulateur réaliste du système d'appel sélectif SELCAL avec génération des bitonalités audio.">
@@ -21,8 +25,46 @@
     <meta property="og:title" content="Générateur SELCAL - Simulateur d'appel sélectif">
     <meta property="og:description" content="Simulateur réaliste du système SELCAL. Génère les bitonalités audio exactes et vérifie les contraintes de codage en temps réel.">
     <meta property="og:url" content="https://aeronautique.xyz/selcal/">
-    <meta property="og:image" content="https://aeronautique.xyz/images/selcal.png">
+    <meta property="og:image" content="https://aeronautique.xyz/images/og-selcal.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Code SELCAL « ABCD » entouré de deux ondes sonores">
     <meta property="og:site_name" content="Aero Hub">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Données structurées Schema.org (bloc de données, non exécuté : compatible CSP) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Générateur SELCAL",
+        "url": "https://aeronautique.xyz/selcal/",
+        "description": "Simulateur du système d'appel sélectif SELCAL : génère les bitonalités audio normalisées et vérifie les contraintes de codage.",
+        "inLanguage": "fr",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Tout navigateur web",
+        "browserRequirements": "Nécessite l'API Web Audio",
+        "isAccessibleForFree": true,
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+        },
+        "image": "https://aeronautique.xyz/images/og-selcal.jpg",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "author": {
+            "@type": "Person",
+            "name": "Emmanuel Pierrez",
+            "url": "https://pierrez.net"
+        },
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Aero Hub",
+            "url": "https://aeronautique.xyz/"
+        }
+    }
+    </script>
 
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -30,16 +72,10 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/theme.css">
+    <script src="/theme.js"></script>
     <style>
-        :root {
-            --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b;
-            --primary: #0284c7; --accent: #f59e0b; --border: #e2e8f0; --error: #ef4444;
-        }
-        [data-theme='dark'] {
-            --bg: #0f172a; --card-bg: #1e293b; --text: #f1f5f9;
-            --primary: #38bdf8; --border: #334155;
-        }
+        :root { --error: #ef4444; }
         body {
             font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text);
             margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; transition: all 0.3s ease;
@@ -94,7 +130,16 @@
             padding: 25px; border-radius: 16px; text-align: left; margin-top: 30px;
         }
         .info-section p { margin-bottom: 15px; line-height: 1.7; }
-        .theme-toggle { position: fixed; top: 20px; right: 20px; cursor: pointer; border: none; background: none; font-size: 1.5rem; }
+        .info-section h2 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--primary); margin: 25px 0 10px; }
+        .info-section pre {
+            background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+            padding: 12px 15px; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.85rem;
+        }
+
+        /* Boutons Écouter / Copier le lien */
+        .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .btn-partager { background: var(--card-bg); color: var(--primary); border: 1px solid var(--border); }
+        .statut-partage { min-height: 1.5em; margin: 10px 0 0; font-size: 0.9rem; overflow-wrap: anywhere; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
@@ -114,9 +159,9 @@
         }
     </style>
 </head>
-<body data-theme="light">
+<body>
 
-    <button class="theme-toggle" id="themeToggle" aria-label="Basculer le thème clair/sombre">🌓</button>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Basculer le thème clair/sombre">🌓</button>
 
     <div class="container">
         <h1>Système SELCAL</h1>
@@ -130,267 +175,51 @@
             <div class="selcal-input-group">
                 <label class="sr-only" for="selcal1">1re lettre (paire 1)</label>
                 <input type="text" id="selcal1" class="car" maxlength="1" aria-describedby="erreurSelcal">
-                <button class="btn" onclick="modifyChar(0)" aria-label="Changer la 1re lettre">Modifier</button>
+                <button type="button" class="btn" data-modifier="0" aria-label="Changer la 1re lettre">Modifier</button>
             </div>
             <div class="selcal-input-group">
                 <label class="sr-only" for="selcal2">2e lettre (paire 1)</label>
                 <input type="text" id="selcal2" class="car" maxlength="1" aria-describedby="erreurSelcal">
-                <button class="btn" onclick="modifyChar(1)" aria-label="Changer la 2e lettre">Modifier</button>
+                <button type="button" class="btn" data-modifier="1" aria-label="Changer la 2e lettre">Modifier</button>
             </div>
             <div class="selcal-input-group">
                 <label class="sr-only" for="selcal3">3e lettre (paire 2)</label>
                 <input type="text" id="selcal3" class="car" maxlength="1" aria-describedby="erreurSelcal">
-                <button class="btn" onclick="modifyChar(2)" aria-label="Changer la 3e lettre">Modifier</button>
+                <button type="button" class="btn" data-modifier="2" aria-label="Changer la 3e lettre">Modifier</button>
             </div>
             <div class="selcal-input-group">
                 <label class="sr-only" for="selcal4">4e lettre (paire 2)</label>
                 <input type="text" id="selcal4" class="car" maxlength="1" aria-describedby="erreurSelcal">
-                <button class="btn" onclick="modifyChar(3)" aria-label="Changer la 4e lettre">Modifier</button>
+                <button type="button" class="btn" data-modifier="3" aria-label="Changer la 4e lettre">Modifier</button>
             </div>
         </div>
 
-        <button class="btn btn-play" id="play">▶ ÉCOUTER LE CODE</button>
+        <div class="actions">
+            <button type="button" class="btn btn-play" id="play">▶ ÉCOUTER LE CODE</button>
+            <button type="button" class="btn btn-partager" id="partager">🔗 Copier le lien</button>
+        </div>
+        <p class="statut-partage" id="statutPartage" aria-live="polite"></p>
 
         <ul class="selcal-erreurs" id="erreurSelcal" aria-live="polite" hidden></ul>
 
         <div class="info-section">
             <p>En option, cliquez sur les boutons pour changer l'une des 4 lettres. Si vous écoutez le code, vous entendrez deux bi-tonalités. Exemple, le code ABCD sera constitué d'une première bitonalité (2 sons de fréquence 312.6 et 346.7 hertz) puis d'une seconde (384.6 et 426.6 hertz).</p>
             <p>Le système Selcal est un système d'appel sélectif permettant à un opérateur au sol d'avertir un équipage d'un aéronef qu'il souhaite le contacter. Chaque appareil se voit attribuer un code en 4 lettres qui forme un code à deux bi-tonalités audio.</p>
+
+            <h2>Partager un code</h2>
+            <p>Le bouton « Copier le lien » donne l'adresse de cette page avec le code affiché, par exemple <code>aeronautique.xyz/selcal/?code=AB-CD</code>. La personne qui l'ouvre retrouve directement ce code, prêt à être écouté.</p>
+
+            <h2>Intégrer le SELCAL sur votre site</h2>
+            <p>Un petit lecteur autonome, à fond transparent, affiche le code et le joue au clic. Pour l'ajouter à votre page, copiez cette ligne (elle reprend le code affiché ci-dessus) :</p>
+            <pre><code id="codeIntegration">&lt;iframe src="https://aeronautique.xyz/selcal/embed.html?code=AB-CD" width="320" height="140" title="SELCAL AB-CD" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
+            <p>Ajoutez <code>&amp;theme=dark</code> à l'adresse pour forcer le thème sombre, ou <code>&amp;theme=light</code> pour le thème clair ; sans précision, le lecteur suit le réglage de l'appareil. Seule condition : citer l'auteur avec un lien vers aeronautique.xyz.</p>
         </div>
     </div>
 
-    <script>
-        const car = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'P', 'Q', 'R', 'S'];
-        const frq = [312.6, 346.7, 384.6, 426.6, 473.2, 524.8, 582.1, 645.7, 716.1, 794.3, 881.0, 977.2, 1083.9, 1202.3, 1333.5, 1479.1];
-        
-        let codes = [0, 1, 2, 3]; // Index des lettres
-
-        const inputs = [
-            document.getElementById('selcal1'),
-            document.getElementById('selcal2'),
-            document.getElementById('selcal3'),
-            document.getElementById('selcal4')
-        ];
-
-        // AudioContext unique partagé (les navigateurs limitent le nombre de contextes simultanés)
-        let _audioCtx = null;
-        function getAudioContext() {
-            if (!_audioCtx) _audioCtx = new (window.AudioContext || window['webkitAudioContext'])();
-            if (_audioCtx.state === 'suspended') _audioCtx.resume();
-            return _audioCtx;
-        }
-
-        // Fonction pour un petit son de bouton "gentil" (Bip doux)
-        function playUISound(type = 'click') {
-            const ctx = getAudioContext();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            osc.type = 'sine';
-            // Fréquence plus haute et courte pour un clic, plus basse pour une "limite"
-            osc.frequency.setValueAtTime(type === 'unique' ? 220 : 660, ctx.currentTime);
-            
-            gain.gain.setValueAtTime(0.05, ctx.currentTime); // Très bas volume
-            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start();
-            osc.stop(ctx.currentTime + 0.1);
-        }
-
-        // Lettres SELCAL valides pour ce champ : ordre alphabétique respecté avec la lettre
-        // partenaire de la paire, distinctes des 3 autres, et différentes de la lettre courante.
-        function lettresPossibles(index) {
-            const premier = index % 2 === 0;                 // champs 0 et 2 = 1re lettre de la paire
-            const partenaire = premier ? codes[index + 1] : codes[index - 1];
-            const autres = codes.filter((_, j) => j !== index);
-            const candidats = [];
-            for (let i = 0; i < car.length; i++) {
-                if (i === codes[index]) continue;                          // doit changer de lettre
-                if (premier ? i >= partenaire : i <= partenaire) continue; // 1re < partenaire ; 2e > partenaire
-                if (autres.includes(i)) continue;                          // 4 lettres distinctes
-                candidats.push(i);
-            }
-            return candidats;
-        }
-
-        // Change une lettre via le bouton « Modifier », en ne proposant que des lettres valides.
-        window.modifyChar = (index) => {
-            const inputEl = inputs[index];
-            const candidats = lettresPossibles(index);
-
-            // Feedback visuel
-            inputEl.classList.remove('shake');
-            void inputEl.offsetWidth; // Force le repaint pour relancer l'animation
-            inputEl.classList.add('shake');
-
-            if (candidats.length === 0) {
-                // Aucune autre lettre ne respecte l'ordre de la paire : choix unique
-                playUISound('unique');
-                inputEl.classList.add('unique-choice');
-                setTimeout(() => inputEl.classList.remove('unique-choice'), 500);
-                return;
-            }
-            playUISound('click');
-            codes[index] = candidats[getNumber(0, candidats.length)];
-            updateDisplay();
-        };
-
-        function getNumber(min, max) {
-            return Math.floor(Math.random() * (max - min)) + min;
-        }
-
-        // === Source de vérité unique pour la validité d'un code SELCAL ===
-        // Fonction pure (aucune écriture DOM) : retourne un diagnostic complet.
-        // - indices : index dans `car` pour chaque champ (-1 si vide ou lettre interdite)
-        // - champsInvalides : booléen par champ (pose/retire .invalid + aria-invalid)
-        // - raisons : messages expliquant pourquoi le code est invalide
-        // Règles : 4 lettres distinctes + ordre alphabétique strict dans chaque paire.
-        // Aucune contrainte entre les paires (AB-CD et CD-AB sont tous deux valides).
-        function analyserCode() {
-            const valeurs = inputs.map(i => i.value.trim().toUpperCase());
-            const indices = valeurs.map(v => car.indexOf(v)); // -1 si vide ou hors des 16
-            const champsInvalides = [false, false, false, false];
-            const raisons = [];
-
-            // 1. Champ vide ou lettre hors des 16 tonalités
-            valeurs.forEach((v, i) => {
-                if (v === '') {
-                    champsInvalides[i] = true;
-                } else if (indices[i] === -1) {
-                    champsInvalides[i] = true;
-                    raisons.push(`La lettre « ${v} » n'est pas une tonalité SELCAL (A à S, sans I, N ni O).`);
-                }
-            });
-            if (valeurs.some(v => v === '')) raisons.unshift('Le code doit comporter 4 lettres.');
-
-            // Les contrôles d'ordre/doublons n'ont de sens que sur des lettres valides.
-            if (indices.every(idx => idx !== -1)) {
-                // 2. Doublons sur les 4 lettres
-                if (indices.some((idx, i) => indices.some((a, j) => j !== i && a === idx))) {
-                    indices.forEach((idx, i) => {
-                        if (indices.some((a, j) => j !== i && a === idx)) champsInvalides[i] = true;
-                    });
-                    raisons.push('Les 4 lettres doivent être différentes.');
-                }
-                // 3. Ordre alphabétique strict dans chaque paire
-                if (indices[0] >= indices[1]) {
-                    champsInvalides[0] = champsInvalides[1] = true;
-                    raisons.push("Dans la 1re paire, la lettre 1 doit précéder la lettre 2 (ordre alphabétique).");
-                }
-                if (indices[2] >= indices[3]) {
-                    champsInvalides[2] = champsInvalides[3] = true;
-                    raisons.push("Dans la 2e paire, la lettre 3 doit précéder la lettre 4 (ordre alphabétique).");
-                }
-            }
-
-            const valide = champsInvalides.every(c => !c) && raisons.length === 0;
-            return { valide, indices, champsInvalides, raisons };
-        }
-
-        // Applique le diagnostic au DOM : bordures, aria-invalid, zone de message.
-        function testValide() {
-            const { valide, champsInvalides, raisons } = analyserCode();
-            inputs.forEach((input, i) => {
-                input.classList.toggle('invalid', champsInvalides[i]);
-                input.setAttribute('aria-invalid', champsInvalides[i] ? 'true' : 'false');
-            });
-            afficherErreurs(valide ? [] : raisons);
-            return valide;
-        }
-
-        // Remplit/masque la région aria-live (textContent : pas d'innerHTML sur entrée utilisateur).
-        function afficherErreurs(raisons) {
-            const zone = document.getElementById('erreurSelcal');
-            zone.textContent = '';
-            if (raisons.length === 0) { zone.hidden = true; return; }
-            zone.hidden = false;
-            raisons.forEach(r => {
-                const li = document.createElement('li');
-                li.textContent = r;
-                zone.appendChild(li);
-            });
-        }
-
-        function updateDisplay() {
-            inputs.forEach((input, i) => input.value = car[codes[i]]);
-            testValide();
-        }
-
-        function genererCode() {
-            codes[0] = getNumber(0, 13);
-            codes[1] = getNumber(codes[0] + 1, 15);
-            codes[2] = getNumber(0, 13);
-            do { codes[2] = getNumber(0, 13); } while (codes[2] === codes[0] || codes[2] === codes[1]);
-            do { codes[3] = getNumber(codes[2] + 1, 16); } while (codes[3] === codes[0] || codes[3] === codes[1]);
-            updateDisplay();
-        }
-        document.getElementById('aleaAll').onclick = genererCode;
-
-        document.getElementById('reinit').onclick = () => {
-            inputs.forEach(input => {
-                input.value = "";
-                input.classList.remove('invalid', 'shake', 'unique-choice');
-                input.setAttribute('aria-invalid', 'false');
-            });
-            codes = [0, 0, 0, 0];
-            afficherErreurs([]);
-        };
-
-        document.getElementById('play').onclick = () => {
-            const { valide, indices, raisons } = analyserCode();
-            testValide(); // synchronise l'affichage des erreurs
-
-            if (!valide) {
-                // Code invalide : aucune bitonalité, mais feedback visuel + sonore + annonce
-                inputs.forEach(input => {
-                    input.classList.remove('shake');
-                    void input.offsetWidth; // force le repaint pour relancer l'animation
-                    input.classList.add('shake');
-                });
-                playUISound('unique');
-                afficherErreurs(raisons.length ? raisons : ['Code SELCAL invalide.']);
-                return;
-            }
-
-            const audioCtx = getAudioContext();
-            const playPair = (f1, f2, start) => {
-                [f1, f2].forEach(f => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.frequency.value = f;
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    osc.connect(gain); gain.connect(audioCtx.destination);
-                    osc.start(audioCtx.currentTime + start);
-                    osc.stop(audioCtx.currentTime + start + 1);
-                });
-            };
-
-            playPair(frq[indices[0]], frq[indices[1]], 0);
-            playPair(frq[indices[2]], frq[indices[3]], 1.2);
-        };
-
-        // Thème clair/sombre, persisté dans localStorage
-        function appliquerTheme(theme) {
-            document.body.setAttribute('data-theme', theme);
-            try { localStorage.setItem('selcal-theme', theme); } catch (e) {}
-        }
-        document.getElementById('themeToggle').onclick = () => {
-            const isDark = document.body.getAttribute('data-theme') === 'dark';
-            appliquerTheme(isDark ? 'light' : 'dark');
-        };
-        try {
-            const themeSauve = localStorage.getItem('selcal-theme');
-            if (themeSauve) document.body.setAttribute('data-theme', themeSauve);
-        } catch (e) {}
-
-        inputs.forEach(i => i.oninput = testValide);
-        genererCode();
-    </script>
+    <script src="selcal-commun.js"></script>
+    <script src="selcal.js"></script>
     <!-- Cloudflare Web Analytics (sans cookie, sans traçage d'IP exploitable) -->
-        <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
     <!-- End Cloudflare Web Analytics -->
 </body>
 </html>

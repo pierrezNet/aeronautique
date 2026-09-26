@@ -1,0 +1,5 @@
+# Aero Hub - aeronautique.xyz
+User-agent: *
+Allow: /
+
+Sitemap: https://aeronautique.xyz/sitemap.xml

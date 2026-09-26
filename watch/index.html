@@ -2,13 +2,17 @@
 <html lang="fr" prefix="dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
+    <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : blocs <style> propres à chaque page. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'self'; base-uri 'self'; form-action 'none'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     <title>Horloge UTC avec horizon artificiel | aeronautique.xyz</title>
     <meta name="description" content="Horloge haute précision calée sur le temps universel (UTC) avec horizon artificiel interactif. Utilise les capteurs de mouvement et de lumière de votre appareil.">
     <link rel="canonical" href="https://aeronautique.xyz/watch/">
 
     <!-- Dublin Core -->
-    <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/">
+    <link rel="schema.dc" href="http://purl.org/dc/terms/">
     <meta name="dc.title" content="Horloge UTC avec horizon artificiel">
     <meta name="dc.creator" content="Emmanuel Pierrez">
     <meta name="dc.description" content="Horloge haute précision UTC avec horizon artificiel interactif utilisant les capteurs de mouvement et de lumière.">
@@ -21,8 +25,46 @@
     <meta property="og:title" content="Horloge UTC avec horizon artificiel">
     <meta property="og:description" content="Horloge haute précision UTC avec horizon artificiel interactif. Capteurs de mouvement et de lumière pour une expérience immersive.">
     <meta property="og:url" content="https://aeronautique.xyz/watch/">
-    <meta property="og:image" content="https://aeronautique.xyz/images/utc_watch.png">
+    <meta property="og:image" content="https://aeronautique.xyz/images/og-utc_watch.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Cadran de montre futuriste affichant 12:00:00 UTC">
     <meta property="og:site_name" content="Aero Hub">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Données structurées Schema.org (bloc de données, non exécuté : compatible CSP) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Montre UTC",
+        "url": "https://aeronautique.xyz/watch/",
+        "description": "Horloge calée sur le temps universel coordonné (UTC) avec horizon artificiel piloté par les capteurs de mouvement.",
+        "inLanguage": "fr",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Tout navigateur web",
+        "browserRequirements": "Capteurs d'orientation facultatifs (DeviceOrientation)",
+        "isAccessibleForFree": true,
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+        },
+        "image": "https://aeronautique.xyz/images/og-utc_watch.jpg",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "author": {
+            "@type": "Person",
+            "name": "Emmanuel Pierrez",
+            "url": "https://pierrez.net"
+        },
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Aero Hub",
+            "url": "https://aeronautique.xyz/"
+        }
+    }
+    </script>
 
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -30,25 +72,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/theme.css">
+    <script src="/theme.js"></script>
     <style>
-        :root {
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #1e293b;
-            --primary: #0284c7;
-            --accent: #f59e0b;
-            --border: #e2e8f0;
-        }
-
-        [data-theme='dark'] {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text: #f1f5f9;
-            --primary: #38bdf8;
-            --border: #334155;
-        }
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
@@ -74,108 +100,82 @@
             letter-spacing: 2px;
         }
 
-        .description {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 40px;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
         .watch-container {
             filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.2));
         }
 
-
-        .license {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            margin-top: auto;
-            padding: 20px;
+        /* Le SVG intégré n'a pas de color-scheme : si l'<object> héritait de « dark »,
+           le navigateur peindrait un fond opaque (blanc) derrière le cadran. */
+        #utc-clock {
+            color-scheme: normal;
         }
 
-        .license a { color: var(--primary); text-decoration: none; }
-
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
+        /* Bloc d'informations sous la montre (même présentation que la page SELCAL) */
+        .info-section {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            z-index: 100;
+            padding: 25px;
+            border-radius: 16px;
+            text-align: left;
+            margin-top: 30px;
         }
+
+        .info-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin: 25px 0 10px;
+        }
+
+        .info-section h2:first-child { margin-top: 0; }
+
+        .info-section p { margin: 0 0 15px; line-height: 1.7; }
+
+        .info-section pre {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 15px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            font-size: 0.85rem;
+        }
+
     </style>
 </head>
-<body data-theme="light">
+<body>
 
-    <button class="theme-toggle" id="themeToggle">🌓</button>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Basculer le thème clair/sombre">🌓</button>
 
     <div class="content-wrapper">
         <h1>Horloge UTC</h1>
-        
-        <div class="description">
-            <p>Cette horloge est réglée à l'heure UTC (Greenwich Mean Time). Elle utilise les capteurs de mouvements et de lumière de votre appareil pour une expérience immersive.</p>
-        </div>
 
         <div class="watch-container" id="watch">
             <object id="utc-clock" type="image/svg+xml" data="./watch.svg">Montre UTC</object>
         </div>
 
-        <div class="license">
-            <a rel="cc:license" href="https://creativecommons.org/licenses/by/4.0/">
-                <img alt="Licence Creative Commons" src="https://i.creativecommons.org/l/by/4.0/80x15.png" style="border:0; margin-bottom:10px;">
-            </a><br>
-            <span property="dc:title">Montre UTC</span> de <a href="https://pierrez.net" property="cc:attributionName">Emmanuel Pierrez</a> pour <a href="https://aeronautique.xyz/">aeronautique.xyz</a><br>
-            Licence Creative Commons Attribution 4.0 International.
+        <div class="info-section">
+            <p>Cette horloge est réglée à l'heure UTC (temps universel coordonné). Elle utilise les capteurs de mouvements et de lumière de votre appareil pour une expérience immersive.</p>
+            <p id="aide-ios" hidden>Touchez la montre pour autoriser l'accès aux capteurs de mouvement et activer l'horizon artificiel.</p>
+        
+            <h2>Pourquoi l'heure UTC ?</h2>
+            <p>En aviation, tout le monde règle sa montre sur la même heure : le <strong>temps universel coordonné (UTC)</strong>, aussi appelé heure « Zulu ». Plans de vol, METAR, TAF, NOTAM, heures de décollage et d'atterrissage : tout est exprimé en UTC et suivi de la lettre <strong>Z</strong> (par exemple <code>1430Z</code>). Un équipage qui traverse plusieurs fuseaux horaires et un contrôleur au sol partagent ainsi la même référence, sans confusion possible.</p>
+            <p>En France hexagonale, l'heure légale vaut UTC&nbsp;+&nbsp;1 en hiver et UTC&nbsp;+&nbsp;2 en été. Quand il est 14&nbsp;h&nbsp;30 à Paris en juillet, il est donc 12&nbsp;h&nbsp;30&nbsp;UTC.</p>
+
+            <h2>Un cadran inspiré du tableau de bord</h2>
+            <p>Le fond de la montre reprend l'<strong>horizon artificiel</strong>, l'instrument qui indique au pilote l'assiette de son avion. Sur un téléphone ou une tablette, inclinez l'appareil : le ciel et la terre basculent comme sur un vrai instrument. Sur iPhone et iPad, touchez d'abord la montre pour autoriser l'accès aux capteurs de mouvement.</p>
+            <p>Entre 21&nbsp;h et 6&nbsp;h&nbsp;UTC, le cadran passe en <strong>mode nuit</strong> : luminosité réduite et aiguilles vertes, comme l'éclairage d'un cockpit de nuit. Sur les navigateurs compatibles, le thème de la page s'adapte aussi à la lumière ambiante.</p>
+
+            <h2>Intégrer la montre sur votre site</h2>
+            <p>La montre est un simple fichier SVG, librement réutilisable sous licence Creative Commons BY&nbsp;4.0. Pour l'afficher sur votre page, il suffit d'une ligne :</p>
+            <pre><code>&lt;object type="image/svg+xml" data="https://aeronautique.xyz/watch/watch.svg" width="200" height="200"&gt;Montre UTC&lt;/object&gt;</code></pre>
+            <p>Seule condition : citer l'auteur avec un lien vers aeronautique.xyz.</p>
         </div>
     </div>
 
-    <script>
-        const btn = document.getElementById('themeToggle');
-        const body = document.body;
-
-        // --- GESTION DU THÈME ---
-        btn.addEventListener('click', () => {
-            const isDark = body.getAttribute('data-theme') === 'dark';
-            setTheme(isDark ? 'light' : 'dark');
-        });
-
-        function setTheme(theme) {
-            body.setAttribute('data-theme', theme);
-            btn.innerHTML = theme === 'dark' ? '☀️' : '🌓';
-        }
-
-        // Le mouvement de l'appareil est géré à l'intérieur du SVG (horizon artificiel),
-        // afin de ne pas déformer toute l'image de la montre.
-
-        // --- CAPTEUR DE LUMINOSITÉ (Ambient Light) ---
-        // Note : Cette API est très restreinte pour des raisons de sécurité.
-        const AmbientLight = window['AmbientLightSensor'];
-        if (AmbientLight) {
-            try {
-                const sensor = new AmbientLight();
-                sensor.addEventListener('reading', () => {
-                    setTheme(sensor.lux < 10 ? 'dark' : 'light');
-                });
-                sensor.start();
-            } catch (err) {
-                console.log("Capteur de lumière non accessible.");
-            }
-        }
-    </script>
+    <script src="watch.js"></script>
     <!-- Cloudflare Web Analytics (sans cookie, sans traçage d'IP exploitable) -->
-        <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
     <!-- End Cloudflare Web Analytics -->
 </body>
 </html>

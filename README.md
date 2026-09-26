@@ -41,3 +41,14 @@ Pour lancer le projet sur votre machine :
 
 2. Lancer l'application en local :
    npx serve .
+
+---
+
+## 📜 Licences
+
+Le projet est sous double licence :
+
+* **Code source** (HTML, CSS, JavaScript, y compris les scripts intégrés au SVG de la montre) : [licence MIT](LICENSE).
+* **Contenus** (textes, images, favicons et graphisme du cadran de la montre) : [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE-CC-BY-4.0). Vous pouvez les réutiliser et les adapter librement, à condition de citer l'auteur (Emmanuel Pierrez, [aeronautique.xyz](https://aeronautique.xyz/)).
+
+Les polices Orbitron, Roboto et Inter (dossier `fonts/`) restent sous licence [SIL Open Font License 1.1](https://openfontlicense.org/).

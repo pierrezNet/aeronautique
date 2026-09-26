@@ -45,7 +45,8 @@
             const h = (now.getUTCHours() % 12) * 30 + (m / 12);
             getEl('h').setAttribute("transform", `rotate(${h} 100 100)`);
             getEl('m').setAttribute("transform", `rotate(${m} 100 100)`);
-            requestAnimationFrame(rotateClock);
+            // Pas de trotteuse : une mise à jour par seconde suffit (économie de batterie)
+            setTimeout(rotateClock, 1000 - now.getMilliseconds());
         }
 
         function handleOrientation(event) {
@@ -60,7 +61,7 @@
             return h >= 21 || h < 6;
         }
 
-        window.addEventListener('load', async () => {
+        window.addEventListener('load', () => {
             rotateClock();
 
             // Le mode sombre suit l'heure UTC (21h–6h), et non le choix de l'utilisateur
@@ -77,15 +78,22 @@
             // Activation des capteurs d'orientation (API absente ou restreinte selon l'appareil)
             const DOE = window['DeviceOrientationEvent'];
             if (!DOE) return;
-            try {
-                // iOS 13+ exige une autorisation explicite
-                if (typeof DOE.requestPermission === 'function') {
-                    const permission = await DOE.requestPermission();
-                    if (permission !== 'granted') return;
-                }
-                window.addEventListener("deviceorientation", handleOrientation);
-            } catch (e) {
-                console.error(e);
+
+            // Sans autorisation (iOS), l'écoute est sans effet : aucun événement n'arrive
+            window.addEventListener("deviceorientation", handleOrientation);
+
+            // iOS 13+ exige une autorisation demandée lors d'un geste de l'utilisateur :
+            // un appel au chargement est systématiquement refusé. On attend donc un toucher sur la montre.
+            if (typeof DOE.requestPermission === 'function') {
+                document.documentElement.addEventListener('click', async function demanderPermission() {
+                    try {
+                        if (await DOE.requestPermission() === 'granted') {
+                            document.documentElement.removeEventListener('click', demanderPermission);
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                });
             }
         });
     ]]></script>

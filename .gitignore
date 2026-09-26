@@ -12,3 +12,6 @@
 # On garde le README, page d'accueil publique du dépôt.
 *.md
 !README.md
+
+# Fichiers temporaires FUSE (fichier supprimé encore ouvert sur un disque monté)
+.fuse_hidden*
