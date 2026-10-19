@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr" prefix="dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : blocs <style> propres à chaque page. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <title>Phraséologie aéronautique : simulateur VFR et IFR avec voix | aeronautique.xyz</title>
+    <meta name="description" content="Entraînez-vous aux communications radio VFR et IFR, en français et en anglais : trois niveaux, quiz noté, vol complet guidé, voix de l'ATC et réponse à la voix. Gratuit, conforme au manuel DGAC.">
+    <link rel="canonical" href="https://aeronautique.xyz/phraseologie/">
+
+    <!-- Dublin Core -->
+    <link rel="schema.dc" href="http://purl.org/dc/terms/">
+    <meta name="dc.title" content="Phraséologie aéronautique : simulateur VFR et IFR avec voix">
+    <meta name="dc.creator" content="Emmanuel Pierrez">
+    <meta name="dc.description" content="Présentation du simulateur de phraséologie aéronautique VFR et IFR, conforme au manuel DGAC.">
+    <meta name="dc.language" content="fr">
+    <meta name="dc.source" content="https://aeronautique.xyz/phraseologie/">
+
+    <!-- Open Graph -->
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Phraséologie aéronautique : simulateur VFR et IFR avec voix">
+    <meta property="og:description" content="Communications radio VFR et IFR, en français et en anglais : quiz noté, vol complet guidé, voix de l'ATC et réponse à la voix. Gratuit.">
+    <meta property="og:url" content="https://aeronautique.xyz/phraseologie/">
+    <meta property="og:image" content="https://aeronautique.xyz/images/og-phraseologie.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Icône de la phraséologie : bulle radio ATC / pilote autour d'un avion">
+    <meta property="og:site_name" content="Aero Hub">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Données structurées Schema.org (bloc de données, non exécuté : compatible CSP) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Phraséologie aéronautique : simulateur VFR et IFR avec voix",
+        "url": "https://aeronautique.xyz/phraseologie/",
+        "inLanguage": "fr",
+        "description": "Présentation du simulateur de phraséologie aéronautique : VFR et IFR, français et anglais, trois niveaux, quiz noté, vol complet guidé, voix de l'ATC et réponse à la voix.",
+        "image": "https://aeronautique.xyz/images/og-phraseologie.jpg",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Aero Hub",
+            "url": "https://aeronautique.xyz/"
+        },
+        "about": {
+            "@type": "WebApplication",
+            "name": "Phraséologie aéronautique pour les pilotes virtuels",
+            "url": "https://phraseo.aeronautique.xyz/",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Tout navigateur web",
+            "inLanguage": ["fr", "en"],
+            "isAccessibleForFree": true,
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR"
+            },
+            "license": "https://creativecommons.org/licenses/by/4.0/",
+            "author": {
+                "@type": "Person",
+                "name": "Emmanuel Pierrez",
+                "url": "https://pierrez.net"
+            }
+        }
+    }
+    </script>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/theme.css">
+    <script src="/theme.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text);
+            margin: 0; padding: 20px; line-height: 1.7; transition: background-color 0.3s, color 0.3s;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        a { color: var(--primary); }
+
+        .retour { display: inline-block; margin-bottom: 10px; font-size: 0.95rem; text-decoration: none; }
+        .retour:hover { text-decoration: underline; }
+
+        /* En-tête */
+        .hero { text-align: center; margin: 10px 0 40px; }
+        .hero img {
+            width: 150px; height: 150px; border-radius: 50%;
+            box-shadow: 0 0 20px 5px rgba(52, 152, 219, 0.45);
+        }
+        h1 { font-family: 'Orbitron', sans-serif; color: var(--primary); font-size: 2.2rem; margin: 20px 0 10px; line-height: 1.25; }
+        .accroche { font-size: 1.15rem; max-width: 700px; margin: 0 auto 25px; }
+
+        .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+        .btn {
+            display: inline-block; background: var(--primary); color: #fff; text-decoration: none;
+            padding: 13px 26px; border-radius: 8px; font-weight: 600; transition: transform 0.1s, filter 0.2s;
+        }
+        [data-theme='dark'] .btn { color: #0f172a; }
+        .btn:hover { filter: brightness(1.08); }
+        .btn:active { transform: scale(0.97); }
+        .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+        .btn-secondaire { background: var(--card-bg); color: var(--primary); border: 1px solid var(--border); }
+        [data-theme='dark'] .btn-secondaire { color: var(--primary); }
+
+        /* Sections */
+        section { margin: 45px 0; }
+        h2 { font-family: 'Orbitron', sans-serif; color: var(--primary); font-size: 1.35rem; margin: 0 0 15px; }
+
+        .grille {
+            display: grid; gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            list-style: none; padding: 0; margin: 0;
+        }
+        .grille li {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px;
+        }
+        .grille h3 { margin: 0 0 6px; font-size: 1.05rem; }
+        .grille p { margin: 0; font-size: 0.95rem; }
+        .picto { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+
+        .etapes { counter-reset: etape; list-style: none; padding: 0; margin: 0; }
+        .etapes li {
+            counter-increment: etape; position: relative; padding: 0 0 14px 48px;
+        }
+        .etapes li::before {
+            content: counter(etape); position: absolute; left: 0; top: 0;
+            width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+            background: var(--primary); color: var(--bg); font-weight: 700;
+        }
+
+        .encadre {
+            background: var(--card-bg); border: 1px solid var(--border); border-left: 4px solid var(--accent);
+            border-radius: 12px; padding: 18px 22px;
+        }
+        .encadre p:last-child { margin-bottom: 0; }
+
+        .final { text-align: center; }
+        footer { text-align: center; font-size: 0.9rem; opacity: 0.85; margin: 50px 0 20px; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.7rem; }
+            .accroche { font-size: 1.05rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Basculer le thème clair/sombre">🌓</button>
+
+    <div class="container">
+        <a class="retour" href="/">← Aero Hub</a>
+
+        <header class="hero">
+            <img src="/images/phraseologie.webp" alt="" width="150" height="150">
+            <h1>Phraséologie aéronautique</h1>
+            <p class="accroche">Un simulateur pour s'entraîner aux communications radio entre pilote et contrôleur, en VFR comme en IFR, en français comme en anglais&nbsp;: lire, écouter, puis répondre à la voix.</p>
+            <div class="actions">
+                <a class="btn" href="https://phraseo.aeronautique.xyz/">Ouvrir l'application</a>
+                <a class="btn btn-secondaire" href="https://discord.gg/aKJ8YVGzE" rel="noopener">Rejoindre le Discord</a>
+            </div>
+        </header>
+
+        <section aria-labelledby="pour-qui">
+            <h2 id="pour-qui">Pour qui&nbsp;?</h2>
+            <p>Pour les pilotes virtuels qui volent en ligne avec un contrôleur (IVAO, VATSIM…) et veulent employer une phraséologie correcte, pour ceux qui débutent à la radio et pour ceux qui veulent réviser. L'application est pensée pour la simulation de vol&nbsp;: elle ne remplace ni une formation ni le manuel officiel.</p>
+        </section>
+
+        <section aria-labelledby="fonctions">
+            <h2 id="fonctions">Ce que vous y trouvez</h2>
+            <ul class="grille">
+                <li>
+                    <span class="picto" aria-hidden="true">🛫</span>
+                    <h3>Tout le vol, phase par phase</h3>
+                    <p>Mise en route, roulage, départ, croisière, approche, atterrissage, avec vos propres paramètres&nbsp;: indicatif, aérodromes, fréquences, piste, transpondeur.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🌍</span>
+                    <h3>VFR et IFR, français et anglais</h3>
+                    <p>Deux règles de vol et deux langues, avec les spécificités de chacune (altitude et point de sortie en VFR, niveau, SID et STAR en IFR).</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">📶</span>
+                    <h3>Trois niveaux</h3>
+                    <p>Débutant pour un vol standard, intermédiaire pour les situations courantes (trafic, CTOT, remise de gaz…), avancé pour les cas rares et la coordination.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🌦️</span>
+                    <h3>Météo réelle</h3>
+                    <p>Le METAR de l'aérodrome est récupéré en temps réel&nbsp;: QNH, vent et visibilité apparaissent directement dans les échanges.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🎯</span>
+                    <h3>Quiz noté</h3>
+                    <p>La réplique du pilote est masquée&nbsp;: à vous de la dire. Une réponse est validée si les éléments critiques sont justes (indicatif, piste, QNH, fréquences, niveaux…) et si le score atteint 75&nbsp;%, avec un débriefing des erreurs de phraséologie.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">✈️</span>
+                    <h3>Vol complet guidé</h3>
+                    <p>Un vol de bout en bout, de la mise en route au parking&nbsp;: consignes à chaque étape, imprévus, deux essais par réplique, relance de l'ATC et bilan par phase.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🎧</span>
+                    <h3>L'ATC vous parle</h3>
+                    <p>Chaque réplique s'écoute avec un effet radio. Les nombres sont dits comme sur la fréquence&nbsp;: «&nbsp;cap deux sept zéro&nbsp;», «&nbsp;unité&nbsp;», et en anglais «&nbsp;tree&nbsp;», «&nbsp;fife&nbsp;», «&nbsp;niner&nbsp;».</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🎙️</span>
+                    <h3>Répondez à la voix</h3>
+                    <p>Maintenez la barre Espace comme un alternat (ou le bouton sur mobile), collationnez, relâchez&nbsp;: votre message est transcrit et noté aussitôt.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🗺️</span>
+                    <h3>Carte du circuit</h3>
+                    <p>En VFR débutant, une carte interactive du tour de piste mène à la bonne phraséologie à chaque point du circuit.</p>
+                </li>
+            </ul>
+        </section>
+
+        <section aria-labelledby="comment">
+            <h2 id="comment">Comment ça marche</h2>
+            <ol class="etapes">
+                <li><strong>Renseignez votre vol</strong> dans les paramètres&nbsp;: indicatif, aérodromes, fréquences, piste, code OACI pour la météo.</li>
+                <li><strong>Choisissez une phase</strong> du vol puis une situation&nbsp;: les échanges s'affichent avec vos données.</li>
+                <li><strong>Entraînez-vous</strong>&nbsp;: lisez et écoutez, puis passez en quiz ou lancez un vol complet et répondez à la voix.</li>
+            </ol>
+        </section>
+
+        <section aria-labelledby="reference">
+            <h2 id="reference">Une phraséologie de référence</h2>
+            <p>Les textes suivent le <a href="https://www.ecologie.gouv.fr/sites/default/files/documents/Manuel_Phras%C3%A9ologie.pdf" rel="noopener">manuel de phraséologie de la DGAC</a> (10<sup>e</sup>&nbsp;édition, 15&nbsp;avril 2023, PDF de 2,6&nbsp;Mo) et ses nouveautés&nbsp;: «&nbsp;plus haut / plus bas&nbsp;», R_N_P, cap sur trois chiffres… Le pilote n'y répète jamais les expressions réservées au contrôleur&nbsp;: il dit «&nbsp;je décolle&nbsp;», pas «&nbsp;autorisé décollage&nbsp;».</p>
+            <p>L'ensemble des textes forme un référentiel ouvert, publié en <a href="https://github.com/pierrezNet/site_phraseo/tree/main/src/data" rel="noopener">fichiers JSON sur GitHub</a>, tout comme les <a href="https://github.com/pierrezNet/site_phraseo/blob/main/docs/prononciation.md" rel="noopener">règles de prononciation</a> de la voix.</p>
+        </section>
+
+        <section aria-labelledby="gratuit">
+            <h2 id="gratuit">Gratuit et sans compte</h2>
+            <div class="encadre">
+                <p>L'application est gratuite, sans publicité ni compte à créer, et ses textes sont sous licence libre (CC BY 4.0). La voix a un coût réel&nbsp;: chaque réplique prononcée et chaque réponse transcrite passent par un service d'intelligence artificielle facturé à l'usage. Pour qu'elle reste gratuite, chaque utilisateur dispose d'un quota quotidien (environ 200 réponses à la voix ou 500 répliques écoutées), renouvelé chaque nuit, dans la limite d'un plafond commun. Les textes, le quiz écrit et le vol complet restent toujours disponibles.</p>
+            </div>
+        </section>
+
+        <section aria-labelledby="donnees">
+            <h2 id="donnees">Vos données</h2>
+            <p>Vos paramètres de vol restent sur votre appareil. Sans utiliser la voix, seul le code OACI de la météo quitte votre navigateur. Le texte des répliques écoutées et vos enregistrements vocaux sont traités le temps de la synthèse ou de la transcription&nbsp;; les enregistrements ne sont pas conservés. Le détail figure dans «&nbsp;À propos&nbsp;» de l'application.</p>
+        </section>
+
+        <section class="final" aria-labelledby="a-vous">
+            <h2 id="a-vous">À vous la fréquence</h2>
+            <p>Une remarque de phraséologie, une idée, un bug&nbsp;? Le bouton «&nbsp;J'ai un retour&nbsp;» de l'application et le Discord sont là pour ça.</p>
+            <div class="actions">
+                <a class="btn" href="https://phraseo.aeronautique.xyz/">Ouvrir l'application</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>Une application d'<a href="https://pierrez.net" rel="noopener">Emmanuel Pierrez</a>, publiée sur <a href="/">aeronautique.xyz</a> sous licence <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">Creative Commons Attribution 4.0</a>.</p>
+        </footer>
+    </div>
+
+    <!-- Cloudflare Web Analytics (sans cookie, sans traçage d'IP exploitable) -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+</body>
+</html>

@@ -8,6 +8,7 @@ Suite d'outils aéronautiques interactifs, site statique pur (HTML/CSS/JS vanill
 
 ```
 index.html          # Landing page (hub) avec grille de cartes vers les 3 apps
+phraseologie/index.html # Présentation détaillée de la Phraséologie ; boutons vers l'application (phraseo.aeronautique.xyz)
 theme.css           # Commun : polices locales (@font-face), variables de couleur, bouton de thème
 theme.js            # Commun : thème clair/sombre (clé localStorage 'theme', data-theme sur <html>)
 fonts/              # Polices woff2 auto-hébergées (Orbitron, Roboto, Inter) + licences OFL
@@ -25,7 +26,7 @@ sitemap.xml         # Mettre à jour <lastmod> quand une page change
 CNAME               # Domaine custom GitHub Pages : aeronautique.xyz
 ```
 
-La **Phraséologie** (phraseo.aeronautique.xyz) est hébergée dans un repo séparé.
+L'application **Phraséologie** (phraseo.aeronautique.xyz) est hébergée dans un repo séparé ; sa page de présentation est `phraseologie/` ici (à garder alignée avec les fonctionnalités de l'application).
 
 ## Stack et conventions
 

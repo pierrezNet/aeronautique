@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Plan du site. La Phraséologie (phraseo.aeronautique.xyz) a son propre sitemap : un sitemap ne peut pas référencer un autre sous-domaine. -->
+<!-- Plan du site. L'application de Phraséologie (phraseo.aeronautique.xyz) a son propre sitemap : un sitemap ne peut pas référencer un autre sous-domaine. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://aeronautique.xyz/</loc>
         <lastmod>2026-10-17</lastmod>
+    </url>
+    <url>
+        <loc>https://aeronautique.xyz/phraseologie/</loc>
+        <lastmod>2026-10-19</lastmod>
     </url>
     <url>
         <loc>https://aeronautique.xyz/watch/</loc>
