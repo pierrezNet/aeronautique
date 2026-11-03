@@ -10,6 +10,9 @@
     <title>Générateur SELCAL - Simulateur d'appel sélectif | aeronautique.xyz</title>
     <meta name="description" content="Simulateur réaliste du système d'appel sélectif SELCAL. Génère les bitonalités audio exactes, vérifie les contraintes de codage et permet de tester n'importe quel code SELCAL.">
     <link rel="canonical" href="https://aeronautique.xyz/selcal/">
+    <link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/selcal/">
+    <link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/selcal/">
+    <link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/selcal/">
 
     <!-- Dublin Core -->
     <link rel="schema.dc" href="http://purl.org/dc/terms/">
@@ -21,6 +24,7 @@
 
     <!-- Open Graph -->
     <meta property="og:locale" content="fr_FR">
+    <meta property="og:locale:alternate" content="en_GB">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Générateur SELCAL - Simulateur d'appel sélectif">
     <meta property="og:description" content="Simulateur réaliste du système SELCAL. Génère les bitonalités audio exactes et vérifie les contraintes de codage en temps réel.">
@@ -73,6 +77,9 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
     <link rel="stylesheet" href="/theme.css">
+    <link rel="stylesheet" href="/retour.css">
+    <!-- Langue : après les liens hreflang, dont il se sert pour rediriger -->
+    <script src="/lang.js"></script>
     <script src="/theme.js"></script>
     <style>
         :root { --error: #ef4444; }
@@ -161,6 +168,7 @@
 </head>
 <body>
 
+    <a class="lang-toggle" id="langToggle" href="/en/selcal/" hreflang="en" lang="en" aria-label="English version">EN</a>
     <button type="button" class="theme-toggle" id="themeToggle" aria-label="Basculer le thème clair/sombre">🌓</button>
 
     <div class="container">
@@ -212,12 +220,17 @@
             <h2>Intégrer le SELCAL sur votre site</h2>
             <p>Un petit lecteur autonome, à fond transparent, affiche le code et le joue au clic. Pour l'ajouter à votre page, copiez cette ligne (elle reprend le code affiché ci-dessus) :</p>
             <pre><code id="codeIntegration">&lt;iframe src="https://aeronautique.xyz/selcal/embed.html?code=AB-CD" width="320" height="140" title="SELCAL AB-CD" style="border:0"&gt;&lt;/iframe&gt;</code></pre>
-            <p>Ajoutez <code>&amp;theme=dark</code> à l'adresse pour forcer le thème sombre, ou <code>&amp;theme=light</code> pour le thème clair ; sans précision, le lecteur suit le réglage de l'appareil. Seule condition : citer l'auteur avec un lien vers aeronautique.xyz.</p>
+            <p>Ajoutez <code>&amp;theme=dark</code> à l'adresse pour forcer le thème sombre, ou <code>&amp;theme=light</code> pour le thème clair ; sans précision, le lecteur suit le réglage de l'appareil. De même, <code>&amp;lang=fr</code> ou <code>&amp;lang=en</code> fixe la langue du lecteur, qui suit sinon celle du navigateur. Seule condition : citer l'auteur avec un lien vers aeronautique.xyz.</p>
+
+            <h2>Un retour ?</h2>
+            <p>Une idée, un bug, une question ? Écrivez sur le <a href="https://avrobb.org/forum/9-selcal" rel="noopener">forum du SELCAL</a> (lecture libre, inscription pour écrire), ou envoyez-nous un message sans compte :</p>
+            <button type="button" class="btn-retour" id="boutonRetour" data-app="selcal">💬 J'ai un retour</button>
         </div>
     </div>
 
     <script src="selcal-commun.js"></script>
     <script src="selcal.js"></script>
+    <script src="/retour.js"></script>
     <!-- Cloudflare Web Analytics (sans cookie, sans traçage d'IP exploitable) -->
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
     <!-- End Cloudflare Web Analytics -->

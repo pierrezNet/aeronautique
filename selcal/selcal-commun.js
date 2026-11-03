@@ -5,6 +5,41 @@
 const car = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'P', 'Q', 'R', 'S'];
 const frq = [312.6, 346.7, 384.6, 426.6, 473.2, 524.8, 582.1, 645.7, 716.1, 794.3, 881.0, 977.2, 1083.9, 1202.3, 1333.5, 1479.1];
 
+// Textes affichés par les scripts, selon la langue de la page (attribut lang de <html> :
+// fixé dans le HTML pour /selcal/ et /en/selcal/, posé par embed-theme.js pour le widget)
+const langue = document.documentElement.lang === 'en' ? 'en' : 'fr';
+const TEXTES = {
+    fr: {
+        lettreInconnue: v => `La lettre « ${v} » n'est pas une tonalité SELCAL (A à S, sans I, N ni O).`,
+        quatreLettres: 'Le code doit comporter 4 lettres.',
+        lettresDifferentes: 'Les 4 lettres doivent être différentes.',
+        ordrePaire1: 'Dans la 1re paire, la lettre 1 doit précéder la lettre 2 (ordre alphabétique).',
+        ordrePaire2: 'Dans la 2e paire, la lettre 3 doit précéder la lettre 4 (ordre alphabétique).',
+        codeInvalide: 'Code SELCAL invalide.',
+        lienCopie: lien => `Lien copié : ${lien}`,
+        copiezLien: lien => `Copiez ce lien : ${lien}`,
+        ecouter: '▶ Écouter',
+        ecouterCode: code => `Écouter le code SELCAL ${code}`,
+        lecture: '♪ Lecture…',
+        codeAbsent: 'Code SELCAL absent ou invalide (exemple : ?code=AB-CD).'
+    },
+    en: {
+        lettreInconnue: v => `The letter “${v}” is not a SELCAL tone (A to S, without I, N or O).`,
+        quatreLettres: 'The code must have 4 letters.',
+        lettresDifferentes: 'All 4 letters must be different.',
+        ordrePaire1: 'In the 1st pair, letter 1 must come before letter 2 (alphabetical order).',
+        ordrePaire2: 'In the 2nd pair, letter 3 must come before letter 4 (alphabetical order).',
+        codeInvalide: 'Invalid SELCAL code.',
+        lienCopie: lien => `Link copied: ${lien}`,
+        copiezLien: lien => `Copy this link: ${lien}`,
+        ecouter: '▶ Play',
+        ecouterCode: code => `Play SELCAL code ${code}`,
+        lecture: '♪ Playing…',
+        codeAbsent: 'Missing or invalid SELCAL code (example: ?code=AB-CD).'
+    }
+};
+const txt = TEXTES[langue];
+
 // AudioContext unique partagé (les navigateurs limitent le nombre de contextes simultanés)
 let _audioCtx = null;
 function getAudioContext() {
@@ -32,10 +67,10 @@ function analyserLettres(lettres) {
             champsInvalides[i] = true;
         } else if (indices[i] === -1) {
             champsInvalides[i] = true;
-            raisons.push(`La lettre « ${v} » n'est pas une tonalité SELCAL (A à S, sans I, N ni O).`);
+            raisons.push(txt.lettreInconnue(v));
         }
     });
-    if (valeurs.some(v => v === '')) raisons.unshift('Le code doit comporter 4 lettres.');
+    if (valeurs.some(v => v === '')) raisons.unshift(txt.quatreLettres);
 
     // Les contrôles d'ordre/doublons n'ont de sens que sur des lettres valides.
     if (indices.every(idx => idx !== -1)) {
@@ -44,16 +79,16 @@ function analyserLettres(lettres) {
             indices.forEach((idx, i) => {
                 if (indices.some((a, j) => j !== i && a === idx)) champsInvalides[i] = true;
             });
-            raisons.push('Les 4 lettres doivent être différentes.');
+            raisons.push(txt.lettresDifferentes);
         }
         // 3. Ordre alphabétique strict dans chaque paire
         if (indices[0] >= indices[1]) {
             champsInvalides[0] = champsInvalides[1] = true;
-            raisons.push("Dans la 1re paire, la lettre 1 doit précéder la lettre 2 (ordre alphabétique).");
+            raisons.push(txt.ordrePaire1);
         }
         if (indices[2] >= indices[3]) {
             champsInvalides[2] = champsInvalides[3] = true;
-            raisons.push("Dans la 2e paire, la lettre 3 doit précéder la lettre 4 (ordre alphabétique).");
+            raisons.push(txt.ordrePaire2);
         }
     }
 

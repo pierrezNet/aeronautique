@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" prefix="dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : blocs <style> propres à chaque page. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4f7f6" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#2c3e50" media="(prefers-color-scheme: dark)">
+    <title>Aero Hub - Interactive aviation tools | aeronautique.xyz</title>
+    <meta name="description" content="A suite of interactive aviation tools: VFR and IFR radio phraseology with quizzes and voice, a UTC clock with an artificial horizon and a SELCAL generator. For real pilots, virtual pilots and aviation enthusiasts.">
+    <link rel="canonical" href="https://aeronautique.xyz/en/">
+    <link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/">
+    <link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/">
+    <link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/">
+
+    <!-- Dublin Core -->
+    <link rel="schema.dc" href="http://purl.org/dc/terms/">
+    <meta name="dc.title" content="Aero Hub - Interactive aviation tools">
+    <meta name="dc.creator" content="Emmanuel Pierrez">
+    <meta name="dc.description" content="A suite of interactive aviation tools for pilots and aviation enthusiasts.">
+    <meta name="dc.language" content="en">
+    <meta name="dc.source" content="https://aeronautique.xyz/en/">
+
+    <!-- Open Graph -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:locale:alternate" content="fr_FR">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Aero Hub - Interactive aviation tools">
+    <meta property="og:description" content="VFR and IFR radio phraseology with quizzes and voice, a UTC clock with an artificial horizon and a SELCAL generator. For real pilots, virtual pilots and aviation enthusiasts.">
+    <meta property="og:url" content="https://aeronautique.xyz/en/">
+    <meta property="og:image" content="https://aeronautique.xyz/images/og-accueil.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Icons of the three Aero Hub tools: phraseology, UTC watch and SELCAL">
+    <meta property="og:site_name" content="Aero Hub">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Données structurées Schema.org (bloc de données, non exécuté : compatible CSP) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Aero Hub",
+        "alternateName": "aeronautique.xyz",
+        "url": "https://aeronautique.xyz/en/",
+        "inLanguage": "en",
+        "description": "A suite of interactive aviation tools: VFR and IFR radio phraseology with quizzes and voice, a UTC clock with an artificial horizon and a SELCAL generator.",
+        "author": {
+            "@type": "Person",
+            "name": "Emmanuel Pierrez",
+            "url": "https://pierrez.net"
+        },
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "hasPart": [
+            {
+                "@type": "WebPage",
+                "name": "Aviation phraseology",
+                "url": "https://aeronautique.xyz/en/phraseologie/",
+                "description": "VFR and IFR radio communication training, in French and English: quizzes, full flight, ATC voice and spoken replies."
+            },
+            {
+                "@type": "WebPage",
+                "name": "UTC watch",
+                "url": "https://aeronautique.xyz/en/watch/"
+            },
+            {
+                "@type": "WebPage",
+                "name": "SELCAL generator",
+                "url": "https://aeronautique.xyz/en/selcal/"
+            }
+        ]
+    }
+    </script>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/theme.css">
+    <!-- Langue : après les liens hreflang, dont il se sert pour rediriger -->
+    <script src="/lang.js"></script>
+    <script src="/theme.js"></script>
+    <style>
+        /* Palette propre à la page d'accueil (surcharge de theme.css) */
+        :root {
+            --bg: #f4f7f6;
+            --text: #2c3e50;
+            --card-bg: #ffffff;
+            --border: #e0e0e0;
+            --primary: #3498db;
+            --primary-hover: #2980b9;
+            --cta-text: #ffffff;
+            --titre-carte: #e67e22;
+            --ombre-carte: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme='dark'] {
+            --bg: #2c3e50;
+            --text: #ecf0f1;
+            --card-bg: #34495e;
+            --border: #44607a;
+            --primary: #9adbf6;
+            --primary-hover: #6fa0bc;
+            --cta-text: #2c3e50;
+            --titre-carte: #f39c12;
+            --ombre-carte: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        header {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            color: #1abc9c;
+            margin-bottom: 10px;
+        }
+
+        .app-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px var(--ombre-carte);
+            transition: transform 0.3s ease-in-out, background-color 0.3s, border-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .app-card:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 4px;
+            transform: translateY(-5px);
+        }
+
+        .app-card img {
+            max-width: 150px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .app-card:first-child img {
+            border-radius: 50%;
+            box-shadow: 0 0 20px 5px rgba(52, 152, 219, 0.5);
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+        }
+
+        .app-card h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--titre-carte);
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+
+        .app-card p {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .app-card .card-cta {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--cta-text);
+            padding: 12px 25px;
+            border-radius: 7px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .app-card:hover .card-cta {
+            background-color: var(--primary-hover);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            /* Dégage le titre des boutons de langue et de thème (position fixe en haut à droite) */
+            header {
+                padding-top: 45px;
+            }
+            h1 {
+            font-size: 2.5em;
+            }
+        }
+
+        @media (max-width: 384px) {
+            h1 {
+            font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Aviation applications</h1>
+    </header>
+
+    <div class="container">
+        <a class="app-card" href="/en/phraseologie/">
+            <h2>Phraseology</h2>
+            <img id="phraseo-image" src="/images/phraseologie.webp" alt="Phraseology icon" width="150" height="150">
+            <p>Practise VFR and IFR radio communications, in French and English: three levels, scored quiz, guided full flight, an ATC that talks to you and spoken replies. Texts follow the French DGAC phraseology manual.</p>
+            <span class="card-cta">Learn more</span>
+        </a>
+
+        <a class="app-card" href="/en/watch/">
+            <h2>UTC watch</h2>
+            <img id="utc-watch-image" src="/images/utc_watch.webp" alt="UTC watch icon" width="150" height="150">
+            <p>A clock set to UTC that you can embed in your website. It uses motion and light sensors to give you a playful experience.</p>
+            <span class="card-cta">Open the app</span>
+        </a>
+
+        <a class="app-card" href="/en/selcal/">
+            <h2>SELCAL</h2>
+            <img id="selcal-image" src="/images/selcal.webp" alt="SELCAL icon" width="150" height="150">
+            <p>SELCAL is a selective calling system that lets a ground operator alert an aircraft crew that they wish to talk to them. Each aircraft is assigned a 4-letter code made of two audio dual tones.</p>
+            <span class="card-cta">Open the app</span>
+        </a>
+    </div>
+
+    <a class="lang-toggle" id="langToggle" href="/" hreflang="fr" lang="fr" aria-label="Version française">FR</a>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">🌓</button>
+
+    <!-- Cloudflare Web Analytics (sans cookie, sans traçage d'IP exploitable) -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+</body>
+</html>

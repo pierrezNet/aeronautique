@@ -31,7 +31,11 @@
         const bouton = document.getElementById('themeToggle');
         if (!bouton) return;
         bouton.textContent = theme === 'dark' ? '☀️' : '🌓';
-        bouton.setAttribute('aria-label', theme === 'dark' ? 'Passer en thème clair' : 'Passer en thème sombre');
+        const anglais = racine.lang === 'en';
+        const libelle = theme === 'dark'
+            ? (anglais ? 'Switch to light theme' : 'Passer en thème clair')
+            : (anglais ? 'Switch to dark theme' : 'Passer en thème sombre');
+        bouton.setAttribute('aria-label', libelle);
     }
 
     // Applique un thème ; « memoriser » = choix explicite de l'utilisateur

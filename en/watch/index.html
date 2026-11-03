@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en" prefix="dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : blocs <style> propres à chaque page. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'self'; base-uri 'self'; form-action 'none'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <title>UTC clock with an artificial horizon | aeronautique.xyz</title>
+    <meta name="description" content="High-precision clock set to Coordinated Universal Time (UTC) with an interactive artificial horizon. Uses your device's motion and light sensors.">
+    <link rel="canonical" href="https://aeronautique.xyz/en/watch/">
+    <link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/watch/">
+    <link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/watch/">
+    <link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/watch/">
+
+    <!-- Dublin Core -->
+    <link rel="schema.dc" href="http://purl.org/dc/terms/">
+    <meta name="dc.title" content="UTC clock with an artificial horizon">
+    <meta name="dc.creator" content="Emmanuel Pierrez">
+    <meta name="dc.description" content="High-precision UTC clock with an interactive artificial horizon driven by motion and light sensors.">
+    <meta name="dc.language" content="en">
+    <meta name="dc.source" content="https://aeronautique.xyz/en/watch/">
+
+    <!-- Open Graph -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:locale:alternate" content="fr_FR">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="UTC clock with an artificial horizon">
+    <meta property="og:description" content="High-precision UTC clock with an interactive artificial horizon. Motion and light sensors for an immersive experience.">
+    <meta property="og:url" content="https://aeronautique.xyz/en/watch/">
+    <meta property="og:image" content="https://aeronautique.xyz/images/og-utc_watch.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Futuristic watch face showing 12:00:00 UTC">
+    <meta property="og:site_name" content="Aero Hub">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Données structurées Schema.org (bloc de données, non exécuté : compatible CSP) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "UTC watch",
+        "url": "https://aeronautique.xyz/en/watch/",
+        "description": "Clock set to Coordinated Universal Time (UTC) with an artificial horizon driven by motion sensors.",
+        "inLanguage": "en",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any web browser",
+        "browserRequirements": "Optional orientation sensors (DeviceOrientation)",
+        "isAccessibleForFree": true,
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+        },
+        "image": "https://aeronautique.xyz/images/og-utc_watch.jpg",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "author": {
+            "@type": "Person",
+            "name": "Emmanuel Pierrez",
+            "url": "https://pierrez.net"
+        },
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Aero Hub",
+            "url": "https://aeronautique.xyz/en/"
+        }
+    }
+    </script>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/theme.css">
+    <link rel="stylesheet" href="/retour.css">
+    <!-- Langue : après les liens hreflang, dont il se sert pour rediriger -->
+    <script src="/lang.js"></script>
+    <script src="/theme.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .content-wrapper {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .watch-container {
+            filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.2));
+        }
+
+        /* Le SVG intégré n'a pas de color-scheme : si l'<object> héritait de « dark »,
+           le navigateur peindrait un fond opaque (blanc) derrière le cadran. */
+        #utc-clock {
+            color-scheme: normal;
+        }
+
+        /* Bloc d'informations sous la montre (même présentation que la page SELCAL) */
+        .info-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 16px;
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .info-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin: 25px 0 10px;
+        }
+
+        .info-section h2:first-child { margin-top: 0; }
+
+        .info-section p { margin: 0 0 15px; line-height: 1.7; }
+
+        .info-section pre {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 15px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            font-size: 0.85rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <a class="lang-toggle" id="langToggle" href="/watch/" hreflang="fr" lang="fr" aria-label="Version française">FR</a>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">🌓</button>
+
+    <div class="content-wrapper">
+        <h1>UTC clock</h1>
+
+        <div class="watch-container" id="watch">
+            <object id="utc-clock" type="image/svg+xml" data="/watch/watch.svg">UTC watch</object>
+        </div>
+
+        <div class="info-section">
+            <p>This clock is set to UTC (Coordinated Universal Time). It uses your device's motion and light sensors for an immersive experience.</p>
+            <p id="aide-ios" hidden>Tap the watch to allow access to the motion sensors and turn on the artificial horizon.</p>
+        
+            <h2>Why UTC?</h2>
+            <p>In aviation, everyone sets their watch to the same time: <strong>Coordinated Universal Time (UTC)</strong>, also known as “Zulu” time. Flight plans, METARs, TAFs, NOTAMs, take-off and landing times: everything is given in UTC followed by the letter <strong>Z</strong> (for example <code>1430Z</code>). A crew crossing several time zones and a controller on the ground thus share the same reference, with no room for confusion.</p>
+            <p>In the United Kingdom, local time is UTC in winter and UTC&nbsp;+&nbsp;1 in summer; in mainland France, it is UTC&nbsp;+&nbsp;1 in winter and UTC&nbsp;+&nbsp;2 in summer. When it is 14:30 in Paris in July, it is therefore 12:30&nbsp;UTC.</p>
+
+            <h2>A dial inspired by the instrument panel</h2>
+            <p>The watch background is an <strong>artificial horizon</strong>, the instrument that shows the pilot the aircraft's attitude. On a phone or tablet, tilt the device: sky and ground bank just like on a real instrument. On iPhone and iPad, first tap the watch to allow access to the motion sensors.</p>
+            <p>Between 21:00 and 06:00&nbsp;UTC, the dial switches to <strong>night mode</strong>: dimmed brightness and green hands, like cockpit lighting at night. On compatible browsers, the page theme also adapts to the ambient light.</p>
+
+            <h2>Embed the watch on your website</h2>
+            <p>The watch is a single SVG file, free to reuse under the Creative Commons BY&nbsp;4.0 licence. One line is all it takes to show it on your page:</p>
+            <pre><code>&lt;object type="image/svg+xml" data="https://aeronautique.xyz/watch/watch.svg" width="200" height="200"&gt;UTC watch&lt;/object&gt;</code></pre>
+            <p>The only condition: credit the author with a link to aeronautique.xyz.</p>
+
+            <h2>Feedback?</h2>
+            <p>An idea, a bug, a question? Post on the <a href="https://avrobb.org/en/forum/8-utc-clock" rel="noopener">UTC clock forum</a> (free to read, sign up to post), or send us a message without an account:</p>
+            <button type="button" class="btn-retour" id="boutonRetour" data-app="horlogeUtc">💬 Send feedback</button>
+        </div>
+    </div>
+
+    <script src="/watch/watch.js"></script>
+    <script src="/retour.js"></script>
+    <!-- Cloudflare Web Analytics (sans cookie, sans traçage d'IP exploitable) -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+</body>
+</html>

@@ -1,0 +1,22 @@
+// Relais « J'ai un retour » d'aeronautique.xyz : Worker sans build ni dépendance (worker.js).
+// Déploiement : `cd relais && npx wrangler deploy` (compte Cloudflare du forum AvroBB, qui doit
+// être déployé avant avec sa migration 0012 et ses points d'entrée HorlogeUtcFeedback et SelcalFeedback).
+{
+	"name": "aeronautique-relais",
+	"main": "worker.js",
+	"compatibility_date": "2026-11-01",
+	// Seule cette adresse passe par le Worker ; le reste du site reste servi par GitHub Pages
+	"routes": [{ "pattern": "aeronautique.xyz/api/retour", "zone_name": "aeronautique.xyz" }],
+	"vars": {
+		// Origines autorisées à poster (le site lui-même, et le serveur de test de wrangler dev)
+		"ALLOWED_ORIGINS": "https://aeronautique.xyz,http://localhost:8787"
+	},
+	// 5 retours par minute et par IP
+	"ratelimits": [{ "name": "RETOUR_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
+	// Forum AvroBB : points d'entrée internes (aucune adresse publique, aucun secret)
+	"services": [
+		{ "binding": "FORUM_HORLOGE", "service": "avrobb", "entrypoint": "HorlogeUtcFeedback" },
+		{ "binding": "FORUM_SELCAL", "service": "avrobb", "entrypoint": "SelcalFeedback" }
+	],
+	"observability": { "enabled": true }
+}

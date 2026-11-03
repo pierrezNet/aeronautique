@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" prefix="dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : blocs <style> propres à chaque page. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <title>Aviation phraseology: VFR and IFR simulator with voice | aeronautique.xyz</title>
+    <meta name="description" content="Practise VFR and IFR radio communications, in French and English: three levels, scored quiz, guided full flight, ATC voice and spoken replies. Free, based on the French DGAC phraseology manual.">
+    <link rel="canonical" href="https://aeronautique.xyz/en/phraseologie/">
+    <link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/phraseologie/">
+    <link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/phraseologie/">
+    <link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/phraseologie/">
+
+    <!-- Dublin Core -->
+    <link rel="schema.dc" href="http://purl.org/dc/terms/">
+    <meta name="dc.title" content="Aviation phraseology: VFR and IFR simulator with voice">
+    <meta name="dc.creator" content="Emmanuel Pierrez">
+    <meta name="dc.description" content="Overview of the VFR and IFR aviation phraseology simulator, based on the French DGAC manual.">
+    <meta name="dc.language" content="en">
+    <meta name="dc.source" content="https://aeronautique.xyz/en/phraseologie/">
+
+    <!-- Open Graph -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:locale:alternate" content="fr_FR">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Aviation phraseology: VFR and IFR simulator with voice">
+    <meta property="og:description" content="VFR and IFR radio communications, in French and English: scored quiz, guided full flight, ATC voice and spoken replies. Free.">
+    <meta property="og:url" content="https://aeronautique.xyz/en/phraseologie/">
+    <meta property="og:image" content="https://aeronautique.xyz/images/og-phraseologie.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Phraseology icon: ATC / pilot radio bubble around an aircraft">
+    <meta property="og:site_name" content="Aero Hub">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Données structurées Schema.org (bloc de données, non exécuté : compatible CSP) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Aviation phraseology: VFR and IFR simulator with voice",
+        "url": "https://aeronautique.xyz/en/phraseologie/",
+        "inLanguage": "en",
+        "description": "Overview of the aviation phraseology simulator: VFR and IFR, French and English, three levels, scored quiz, guided full flight, ATC voice and spoken replies.",
+        "image": "https://aeronautique.xyz/images/og-phraseologie.jpg",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Aero Hub",
+            "url": "https://aeronautique.xyz/en/"
+        },
+        "about": {
+            "@type": "WebApplication",
+            "name": "Aviation phraseology for virtual pilots",
+            "url": "https://phraseo.aeronautique.xyz/",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Any web browser",
+            "inLanguage": ["fr", "en"],
+            "isAccessibleForFree": true,
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR"
+            },
+            "license": "https://creativecommons.org/licenses/by/4.0/",
+            "author": {
+                "@type": "Person",
+                "name": "Emmanuel Pierrez",
+                "url": "https://pierrez.net"
+            }
+        }
+    }
+    </script>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/theme.css">
+    <!-- Langue : après les liens hreflang, dont il se sert pour rediriger -->
+    <script src="/lang.js"></script>
+    <script src="/theme.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text);
+            margin: 0; padding: 20px; line-height: 1.7; transition: background-color 0.3s, color 0.3s;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        a { color: var(--primary); }
+
+        .retour { display: inline-block; margin-bottom: 10px; font-size: 0.95rem; text-decoration: none; }
+        .retour:hover { text-decoration: underline; }
+
+        /* En-tête */
+        .hero { text-align: center; margin: 10px 0 40px; }
+        .hero img {
+            width: 150px; height: 150px; border-radius: 50%;
+            box-shadow: 0 0 20px 5px rgba(52, 152, 219, 0.45);
+        }
+        h1 { font-family: 'Orbitron', sans-serif; color: var(--primary); font-size: 2.2rem; margin: 20px 0 10px; line-height: 1.25; }
+        .accroche { font-size: 1.15rem; max-width: 700px; margin: 0 auto 25px; }
+
+        .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+        .btn {
+            display: inline-block; background: var(--primary); color: #fff; text-decoration: none;
+            padding: 13px 26px; border-radius: 8px; font-weight: 600; transition: transform 0.1s, filter 0.2s;
+        }
+        [data-theme='dark'] .btn { color: #0f172a; }
+        .btn:hover { filter: brightness(1.08); }
+        .btn:active { transform: scale(0.97); }
+        .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+        .btn-secondaire { background: var(--card-bg); color: var(--primary); border: 1px solid var(--border); }
+        [data-theme='dark'] .btn-secondaire { color: var(--primary); }
+
+        /* Sections */
+        section { margin: 45px 0; }
+        h2 { font-family: 'Orbitron', sans-serif; color: var(--primary); font-size: 1.35rem; margin: 0 0 15px; }
+
+        .grille {
+            display: grid; gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            list-style: none; padding: 0; margin: 0;
+        }
+        .grille li {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px;
+        }
+        .grille h3 { margin: 0 0 6px; font-size: 1.05rem; }
+        .grille p { margin: 0; font-size: 0.95rem; }
+        .picto { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+
+        .etapes { counter-reset: etape; list-style: none; padding: 0; margin: 0; }
+        .etapes li {
+            counter-increment: etape; position: relative; padding: 0 0 14px 48px;
+        }
+        .etapes li::before {
+            content: counter(etape); position: absolute; left: 0; top: 0;
+            width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+            background: var(--primary); color: var(--bg); font-weight: 700;
+        }
+
+        .encadre {
+            background: var(--card-bg); border: 1px solid var(--border); border-left: 4px solid var(--accent);
+            border-radius: 12px; padding: 18px 22px;
+        }
+        .encadre p:last-child { margin-bottom: 0; }
+
+        .final { text-align: center; }
+        footer { text-align: center; font-size: 0.9rem; opacity: 0.85; margin: 50px 0 20px; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.7rem; }
+            .accroche { font-size: 1.05rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <a class="lang-toggle" id="langToggle" href="/phraseologie/" hreflang="fr" lang="fr" aria-label="Version française">FR</a>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">🌓</button>
+
+    <div class="container">
+        <a class="retour" href="/en/">← Aero Hub</a>
+
+        <header class="hero">
+            <img src="/images/phraseologie.webp" alt="" width="150" height="150">
+            <h1>Aviation phraseology</h1>
+            <p class="accroche">A simulator to practise radio communications between pilot and controller, in VFR and IFR, in French and English: read, listen, then reply out loud.</p>
+            <div class="actions">
+                <a class="btn" href="https://phraseo.aeronautique.xyz/">Open the app</a>
+                <a class="btn btn-secondaire" href="https://avrobb.org/en/forum/4-phraseologie-aeronautique" rel="noopener">Forum</a>
+            </div>
+        </header>
+
+        <section aria-labelledby="pour-qui">
+            <h2 id="pour-qui">Who is it for?</h2>
+            <p>For virtual pilots who fly online with a controller (IVAO, VATSIM…) and want to use correct phraseology, for those new to the radio and for those who want to brush up. The app is designed for flight simulation: it replaces neither training nor the official manual.</p>
+        </section>
+
+        <section aria-labelledby="fonctions">
+            <h2 id="fonctions">What you will find</h2>
+            <ul class="grille">
+                <li>
+                    <span class="picto" aria-hidden="true">🛫</span>
+                    <h3>The whole flight, phase by phase</h3>
+                    <p>Start-up, taxi, departure, cruise, approach, landing, with your own settings: call sign, aerodromes, frequencies, runway, transponder.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🌍</span>
+                    <h3>VFR and IFR, French and English</h3>
+                    <p>Two sets of flight rules and two languages, each with its specifics (altitude and exit point in VFR, flight level, SID and STAR in IFR).</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">📶</span>
+                    <h3>Three levels</h3>
+                    <p>Beginner for a standard flight, intermediate for common situations (traffic, CTOT, go-around…), advanced for rare cases and coordination.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🌦️</span>
+                    <h3>Real weather</h3>
+                    <p>The aerodrome's METAR is fetched in real time: QNH, wind and visibility appear directly in the exchanges.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🎯</span>
+                    <h3>Scored quiz</h3>
+                    <p>The pilot's line is hidden: it is up to you to say it. An answer is accepted if the critical items are right (call sign, runway, QNH, frequencies, levels…) and the score reaches 75%, with a debrief of phraseology mistakes.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">✈️</span>
+                    <h3>Guided full flight</h3>
+                    <p>A flight from start to finish, from start-up to parking: instructions at each step, unexpected events, two attempts per line, ATC follow-ups and a review for each phase.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🎧</span>
+                    <h3>ATC talks to you</h3>
+                    <p>Every line can be played with a radio effect. Numbers are spoken as on the frequency: “heading two seven zero”, “tree”, “fife”, “niner”, and in French “unité”.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🎙️</span>
+                    <h3>Reply out loud</h3>
+                    <p>Hold the space bar like a push-to-talk switch (or the button on mobile), read back, release: your message is transcribed and scored straight away.</p>
+                </li>
+                <li>
+                    <span class="picto" aria-hidden="true">🗺️</span>
+                    <h3>Traffic circuit map</h3>
+                    <p>In beginner VFR, an interactive map of the traffic circuit leads to the right phraseology at each point of the circuit.</p>
+                </li>
+            </ul>
+        </section>
+
+        <section aria-labelledby="comment">
+            <h2 id="comment">How it works</h2>
+            <ol class="etapes">
+                <li><strong>Enter your flight</strong> in the settings: call sign, aerodromes, frequencies, runway, ICAO code for the weather.</li>
+                <li><strong>Choose a phase</strong> of the flight, then a situation: the exchanges are shown with your data.</li>
+                <li><strong>Practise</strong>: read and listen, then switch to the quiz or start a full flight and reply out loud.</li>
+            </ol>
+        </section>
+
+        <section aria-labelledby="reference">
+            <h2 id="reference">Reference phraseology</h2>
+            <p>The texts follow the <a href="https://www.ecologie.gouv.fr/sites/default/files/documents/Manuel_Phras%C3%A9ologie.pdf" rel="noopener" hreflang="fr">phraseology manual of the French civil aviation authority (DGAC)</a> (10th edition, 15&nbsp;April 2023, 2.6&nbsp;MB PDF, in French) and its latest changes: “plus haut / plus bas”, R_N_P, three-digit headings… In French, the pilot never repeats expressions reserved for the controller: they say “je décolle”, not “autorisé décollage”.</p>
+            <p>All the texts form an open reference set, published as <a href="https://github.com/pierrezNet/site_phraseo/tree/main/src/data" rel="noopener">JSON files on GitHub</a>, as are the <a href="https://github.com/pierrezNet/site_phraseo/blob/main/docs/prononciation.md" rel="noopener" hreflang="fr">pronunciation rules</a> of the voice.</p>
+        </section>
+
+        <section aria-labelledby="gratuit">
+            <h2 id="gratuit">Free, no account needed</h2>
+            <div class="encadre">
+                <p>The app is free, with no ads and no account to create, and its texts are under an open licence (CC BY 4.0). The voice has a real cost: every spoken line and every transcribed reply goes through a pay-per-use artificial intelligence service. To keep it free, each user has a daily quota (about 200 spoken replies or 500 lines played), renewed every night, within a shared overall cap. The texts, the written quiz and the full flight are always available.</p>
+            </div>
+        </section>
+
+        <section aria-labelledby="donnees">
+            <h2 id="donnees">Your data</h2>
+            <p>Your flight settings stay on your device. Without the voice, only the ICAO code for the weather leaves your browser. The text of the lines played and your voice recordings are processed only for the time needed for speech synthesis or transcription; recordings are not kept. Details are in the app's “About” section.</p>
+        </section>
+
+        <section class="final" aria-labelledby="a-vous">
+            <h2 id="a-vous">The frequency is yours</h2>
+            <p>A remark on phraseology, an idea, a bug? The <a href="https://avrobb.org/en/forum/4-phraseologie-aeronautique" rel="noopener">phraseology forum</a> (free to read, sign up to post) and the app's feedback button, no account needed, are there for that.</p>
+            <div class="actions">
+                <a class="btn" href="https://phraseo.aeronautique.xyz/">Open the app</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>An app by <a href="https://pierrez.net" rel="noopener">Emmanuel Pierrez</a>, published on <a href="/en/">aeronautique.xyz</a> under the <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">Creative Commons Attribution 4.0</a> licence.</p>
+        </footer>
+    </div>
+
+    <!-- Cloudflare Web Analytics (sans cookie, sans traçage d'IP exploitable) -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+</body>
+</html>

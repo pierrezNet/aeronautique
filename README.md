@@ -18,6 +18,8 @@ Simulateur de système d'appel sélectif (SELCAL).
 * **Intelligent :** Vérifie en temps réel les contraintes de codage (ordre alphabétique, unicité des lettres).
 * **Interactif :** Feedback sonore et visuel lors de la modification des codes.
 
+Le site est disponible en français et en anglais (`/en/`) : la langue du navigateur est détectée à l'arrivée, et le bouton FR/EN permet d'en changer.
+
 ---
 
 ## 🛠️ Stack Technique

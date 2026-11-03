@@ -1,20 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Plan du site. L'application de Phraséologie (phraseo.aeronautique.xyz) a son propre sitemap : un sitemap ne peut pas référencer un autre sous-domaine. -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<!-- Plan du site. L'application de Phraséologie (phraseo.aeronautique.xyz) a son propre sitemap : un sitemap ne peut pas référencer un autre sous-domaine.
+     Chaque page existe en français (/…) et en anglais (/en/…) : les liens xhtml:link déclarent les deux versions. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
         <loc>https://aeronautique.xyz/</loc>
-        <lastmod>2026-10-17</lastmod>
+        <lastmod>2026-11-03</lastmod>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/"/>
+    </url>
+    <url>
+        <loc>https://aeronautique.xyz/en/</loc>
+        <lastmod>2026-11-03</lastmod>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/"/>
     </url>
     <url>
         <loc>https://aeronautique.xyz/phraseologie/</loc>
-        <lastmod>2026-10-19</lastmod>
+        <lastmod>2026-11-03</lastmod>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/phraseologie/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/phraseologie/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/phraseologie/"/>
+    </url>
+    <url>
+        <loc>https://aeronautique.xyz/en/phraseologie/</loc>
+        <lastmod>2026-11-03</lastmod>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/phraseologie/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/phraseologie/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/phraseologie/"/>
     </url>
     <url>
         <loc>https://aeronautique.xyz/watch/</loc>
-        <lastmod>2026-09-26</lastmod>
+        <lastmod>2026-11-03</lastmod>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/watch/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/watch/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/watch/"/>
+    </url>
+    <url>
+        <loc>https://aeronautique.xyz/en/watch/</loc>
+        <lastmod>2026-11-03</lastmod>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/watch/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/watch/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/watch/"/>
     </url>
     <url>
         <loc>https://aeronautique.xyz/selcal/</loc>
-        <lastmod>2026-09-26</lastmod>
+        <lastmod>2026-11-03</lastmod>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/selcal/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/selcal/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/selcal/"/>
+    </url>
+    <url>
+        <loc>https://aeronautique.xyz/en/selcal/</loc>
+        <lastmod>2026-11-03</lastmod>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://aeronautique.xyz/selcal/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://aeronautique.xyz/en/selcal/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aeronautique.xyz/en/selcal/"/>
     </url>
 </urlset>

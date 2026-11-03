@@ -153,7 +153,7 @@ document.getElementById('play').onclick = () => {
             input.classList.add('shake');
         });
         playUISound('unique');
-        afficherErreurs(raisons.length ? raisons : ['Code SELCAL invalide.']);
+        afficherErreurs(raisons.length ? raisons : [txt.codeInvalide]);
         return;
     }
 
@@ -171,22 +171,28 @@ document.getElementById('partager').addEventListener('click', async () => {
     testValide();
     if (!valide) {
         playUISound('unique');
-        afficherErreurs(raisons.length ? raisons : ['Code SELCAL invalide.']);
+        afficherErreurs(raisons.length ? raisons : [txt.codeInvalide]);
         return;
     }
     const lien = lienPartage(indices);
     const statut = document.getElementById('statutPartage');
     try {
         await navigator.clipboard.writeText(lien);
-        statut.textContent = `Lien copié : ${lien}`;
+        statut.textContent = txt.lienCopie(lien);
     } catch (e) {
         // Presse-papiers indisponible (contexte non sécurisé, refus) : on affiche le lien à copier
-        statut.textContent = `Copiez ce lien : ${lien}`;
+        statut.textContent = txt.copiezLien(lien);
     }
     playUISound('click');
 });
 
 inputs.forEach(i => i.addEventListener('input', () => { testValide(); majCodeIntegration(); }));
+
+// Contexte joint au formulaire « J'ai un retour » (retour.js) : code affiché, s'il est valide
+window.contexteRetour = function contexteRetour() {
+    const { valide, indices } = analyserCode();
+    return { code: valide ? formaterCode(indices) : '' };
+};
 
 // Code transmis dans l'URL (?code=AB-CD) : on l'affiche, sinon on en génère un
 const codeUrl = lireCodeUrl();
