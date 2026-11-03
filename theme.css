@@ -102,3 +102,22 @@
     outline: 3px solid var(--primary);
     outline-offset: 3px;
 }
+
+/* Lien « ← Aero Hub » en haut des pages d'application (à gauche, même dans un bloc centré) */
+.lien-accueil {
+    display: block;
+    width: fit-content;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.lien-accueil:hover {
+    text-decoration: underline;
+}
+
+.lien-accueil:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
