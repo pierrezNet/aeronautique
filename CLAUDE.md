@@ -7,7 +7,7 @@ Suite d'outils aéronautiques interactifs, site statique pur (HTML/CSS/JS vanill
 ## Structure
 
 ```
-index.html          # Accueil (hub) : cartes Phraséologie, Montre UTC, SELCAL, Atelier réglages, Forum AvroBB, Appel à projets (lien provisoire vers avrobb.org en attendant sa section)
+index.html          # Accueil (hub) : cartes Phraséologie, Montre UTC, SELCAL, Atelier réglages, Forum AvroBB, Appel à projets (forum n° 12 d'AvroBB)
 phraseologie/index.html # Présentation détaillée de la Phraséologie ; boutons vers l'application (phraseo.aeronautique.xyz)
 theme.css           # Commun : polices locales (@font-face), variables de couleur, bouton de thème
 theme.js            # Commun : thème clair/sombre (clé localStorage 'theme', data-theme sur <html>)
