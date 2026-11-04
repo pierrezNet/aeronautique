@@ -6,25 +6,11 @@ import { familleGpu } from './moteur/materiel.js';
 import { parametresDuSimulateur } from './moteur/recommandations.js';
 import { T, langue, nombre, tr } from './textes.js';
 import * as stockage from './stockage.js';
+import { el } from './dom.js';
+import { monterJournal } from './interfaceJournal.js';
 
 const racine = document.getElementById('atelier');
 const DONNEES = '/reglages/donnees/';
-
-// ── Petit utilitaire de construction du DOM ─────────────────────────────────────────────
-// el('p', { class: 'aide' }, 'texte', autreElement) : crée un élément, ses attributs et ses enfants.
-// Les textes passent par createTextNode : aucun risque d'injection HTML.
-function el(balise, attributs = {}, ...enfants) {
-    const noeud = document.createElement(balise);
-    for (const [nom, valeur] of Object.entries(attributs)) {
-        if (valeur === false || valeur === null || valeur === undefined) continue;
-        noeud.setAttribute(nom, valeur === true ? '' : String(valeur));
-    }
-    for (const enfant of enfants.flat()) {
-        if (enfant === null || enfant === undefined || enfant === false) continue;
-        noeud.append(enfant instanceof Node ? enfant : document.createTextNode(String(enfant)));
-    }
-    return noeud;
-}
 
 // ── Chargement de la base de connaissances ──────────────────────────────────────────────
 async function chargerBase() {
@@ -404,7 +390,14 @@ async function demarrer() {
 
     const formulaire = construireFormulaire(base);
     const resultats = el('section', { id: 'resultats', class: 'resultats', 'aria-labelledby': 'titre-resultats', hidden: true });
-    racine.replaceChildren(el('p', { class: 'intro' }, T.intro), formulaire, resultats);
+    const journal = el('section', { id: 'journal', class: 'journal-section' });
+    racine.replaceChildren(el('p', { class: 'intro' }, T.intro), formulaire, resultats, journal);
+
+    // Journal des essais : il reprend le simulateur et l'avion du formulaire principal
+    const majJournal = monterJournal(journal, base, () => {
+        const v = valeursBrutes(formulaire);
+        return { simulateur: v.simulateur ?? null, avion: v.avion ?? '' };
+    });
 
     // Champs qui dépendent d'autres réponses (DirectX en 2020, carte non reconnue, réalité virtuelle,
     // liste des réglages de l'étape 4 selon le simulateur)
@@ -425,6 +418,7 @@ async function demarrer() {
         // Les choix déjà mémorisés pour l'autre simulateur sont conservés
         stockage.ecrire({ ...(stockage.lire() ?? {}), ...valeursBrutes(formulaire) });
         majDependances();
+        majJournal();
     });
 
     formulaire.addEventListener('submit', function lancerAnalyse(e) {
@@ -446,6 +440,7 @@ async function demarrer() {
         formulaire.reset();
         resultats.hidden = true;
         majDependances();
+        majJournal();
     });
 
     // Réponses déjà complètes : résultats affichés d'emblée, sans voler le focus

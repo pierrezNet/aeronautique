@@ -325,6 +325,49 @@ a:focus-visible {
     font-variant-numeric: tabular-nums;
 }
 
+/* Journal des essais */
+.journal-section { margin-top: 50px; }
+
+.choix-libre { border: none; padding: 0; margin: 0; }
+.choix-libre > legend {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.05rem;
+    color: var(--primary);
+}
+
+.ressentis { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+
+textarea {
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 4px;
+    padding: 8px 11px;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    resize: vertical;
+}
+
+.statut { min-height: 1.5em; color: var(--succes); }
+
+.remarques { margin: 0; padding-left: 18px; }
+
+.journal { margin-bottom: 20px; }
+
+/* Bouton d'apparence lien (suppression d'un essai), cible de 44 px */
+.btn-lien {
+    min-height: 44px;
+    padding: 0 6px;
+    font: inherit;
+    color: var(--alerte);
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 footer {
     margin: 50px 0 20px;
     font-size: 0.85rem;

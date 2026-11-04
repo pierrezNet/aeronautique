@@ -24,3 +24,26 @@ export function effacer() {
         localStorage.removeItem(CLE);
     } catch (e) {}
 }
+
+// Journal des essais (étape 6) : clé séparée, il peut grossir pendant des semaines
+const CLE_JOURNAL = 'atelier-reglages-journal';
+
+export function lireJournal() {
+    try {
+        const brut = localStorage.getItem(CLE_JOURNAL);
+        const entrees = brut ? JSON.parse(brut) : [];
+        return Array.isArray(entrees) ? entrees : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+/** Renvoie false si l'écriture a échoué (stockage plein ou bloqué) */
+export function ecrireJournal(entrees) {
+    try {
+        localStorage.setItem(CLE_JOURNAL, JSON.stringify(entrees));
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
