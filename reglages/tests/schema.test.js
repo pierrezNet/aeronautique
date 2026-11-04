@@ -4,7 +4,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { verifierIdentifiants, verifierParametre, verifierRegle, verifierSymptome } from '../outils/schema.js';
+import { verifierChallenge, verifierIdentifiants, verifierParametre, verifierRegle, verifierSymptome } from '../outils/schema.js';
 
 const lire = nom => JSON.parse(readFileSync(new URL(`../donnees/${nom}`, import.meta.url), 'utf8'));
 
@@ -61,5 +61,15 @@ test('symptomes.json : textes, pistes vers des goulots et des paramètres exista
     const ids = new Set(lire('parametres.json').parametres.map(p => p.id));
     const { symptomes } = lire('symptomes.json');
     const erreurs = symptomes.flatMap((s, i) => verifierSymptome(s, `symptomes[${i}] ${s.id}`, ids));
+    assert.deepEqual(erreurs, []);
+});
+
+test('challenges.json : rattachement à des paramètres existants, au moins une bonne réponse', () => {
+    const ids = new Set(lire('parametres.json').parametres.map(p => p.id));
+    const { challenges } = lire('challenges.json');
+    const erreurs = [
+        ...challenges.flatMap((c, i) => verifierChallenge(c, `challenges[${i}] ${c.id}`, ids)),
+        ...verifierIdentifiants(challenges, 'challenges.json')
+    ];
     assert.deepEqual(erreurs, []);
 });

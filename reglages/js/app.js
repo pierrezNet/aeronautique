@@ -3,6 +3,7 @@
 
 import { analyser } from './moteur/analyser.js';
 import { familleGpu } from './moteur/materiel.js';
+import { parametresDuSimulateur } from './moteur/recommandations.js';
 import { T, langue, nombre, tr } from './textes.js';
 import * as stockage from './stockage.js';
 
@@ -32,10 +33,13 @@ async function chargerBase() {
         if (!reponse.ok) throw new Error(`${nom} : ${reponse.status}`);
         return reponse.json();
     };
-    const [parametres, regles, materiel, symptomes] = await Promise.all(
-        ['parametres.json', 'regles.json', 'materiel.json', 'symptomes.json'].map(lire)
+    const [parametres, regles, materiel, symptomes, challenges] = await Promise.all(
+        ['parametres.json', 'regles.json', 'materiel.json', 'symptomes.json', 'challenges.json'].map(lire)
     );
-    return { parametres: parametres.parametres, regles: regles.regles, materiel, symptomes: symptomes.symptomes };
+    return {
+        parametres: parametres.parametres, regles: regles.regles, materiel,
+        symptomes: symptomes.symptomes, challenges: challenges.challenges
+    };
 }
 
 // ── Champs du formulaire ────────────────────────────────────────────────────────────────
@@ -131,14 +135,44 @@ function construireFormulaire(base) {
         ))
     );
 
+    // Étape 4 : la liste des réglages dépend du simulateur, elle est remplie par majChangements()
+    const changements = el('fieldset', { class: 'etape' },
+        el('legend', {}, T.changements),
+        el('p', {}, T.changementsIntro),
+        el('div', { class: 'grille', id: 'liste-changements' })
+    );
+
     return el('form', { id: 'formulaire', novalidate: true },
-        configuration, mesures, symptomes,
+        configuration, mesures, symptomes, changements,
         el('p', { class: 'erreur', id: 'erreur-formulaire', role: 'alert', hidden: true }),
         el('div', { class: 'actions' },
             el('button', { type: 'submit', class: 'btn' }, T.analyser),
             el('button', { type: 'button', class: 'btn btn-secondaire', id: 'effacer' }, T.effacer)
         )
     );
+}
+
+// Un menu par réglage du simulateur choisi : pas touché, baissé, augmenté.
+// Les menus portent le nom « changement:<id du paramètre> ».
+function majChangements(base, simulateur) {
+    const liste = document.getElementById('liste-changements');
+    if (liste.dataset.simulateur === (simulateur ?? '')) return false;
+    liste.dataset.simulateur = simulateur ?? '';
+    if (!simulateur) {
+        liste.replaceChildren(el('p', { class: 'aide' }, T.changementsChoisirSimulateur));
+        return true;
+    }
+    liste.replaceChildren(...parametresDuSimulateur(base.parametres, simulateur).map(p => {
+        const id = `changement-${p.id}`;
+        return el('div', { class: 'champ' },
+            el('label', { for: id }, tr(p.libelle)),
+            el('select', { id, name: `changement:${p.id}` },
+                el('option', { value: '' }, T.sensAucun),
+                el('option', { value: 'baisse' }, T.sensBaisse),
+                el('option', { value: 'hausse' }, T.sensHausse))
+        );
+    }));
+    return true;
 }
 
 // ── Lecture, mémorisation et restauration des réponses ─────────────────────────────────
@@ -177,7 +211,8 @@ const nb = v => {
 };
 
 // Valeurs brutes → saisie attendue par le moteur (analyser.js)
-function versSaisie(v) {
+function versSaisie(v, base) {
+    const idsDuSimulateur = new Set(parametresDuSimulateur(base.parametres, v.simulateur).map(p => p.id));
     return {
         profil: {
             simulateur: v.simulateur ?? null,
@@ -203,7 +238,11 @@ function versSaisie(v) {
             verrouFps: nb(v.verrouFps)
         },
         symptomes: v.symptomes ?? [],
-        changements: []
+        // Seulement les changements du simulateur choisi (les menus d'un autre restent mémorisés)
+        changements: Object.entries(v)
+            .filter(([nom, sens]) => nom.startsWith('changement:') && sens)
+            .map(([nom, sens]) => ({ id: nom.slice('changement:'.length), sens }))
+            .filter(c => idsDuSimulateur.has(c.id))
     };
 }
 
@@ -300,12 +339,49 @@ function blocTableau(r) {
     );
 }
 
-function afficherResultats(zone, r, profil, donnerFocus = true) {
+// Une question du challenge : choix radio, puis explication du choix fait (et de la réponse attendue)
+function questionChallenge({ challenge, changement }, index, base) {
+    const parametre = base.parametres.find(p => p.id === changement.id);
+    const nom = `challenge-${index}`;
+    const retour = el('div', { class: 'retour-challenge', 'aria-live': 'polite' });
+    const choisir = choix => {
+        const attendu = challenge.choix.find(c => c.correct);
+        retour.replaceChildren(
+            el('p', { class: choix.correct ? 'conseil' : 'alerte' }, choix.correct ? T.bonneReponse : T.mauvaiseReponse),
+            el('p', {}, tr(choix.explication)),
+            !choix.correct && el('p', {}, el('strong', {}, T.reponseAttendue), ' ', tr(attendu.texte), ' — ', tr(attendu.explication))
+        );
+    };
+    return el('fieldset', { class: 'question' },
+        el('legend', {}, tr(challenge.question), ' ', badgeStatut(challenge.statut)),
+        el('p', { class: 'aide' }, T.challengeVotreChangement(tr(parametre?.libelle) || changement.id,
+            (changement.sens === 'baisse' ? T.sensBaisse : T.sensHausse).toLowerCase())),
+        challenge.choix.map(choix => {
+            const radio = el('input', { type: 'radio', name: nom });
+            radio.addEventListener('change', () => choisir(choix));
+            return el('label', { class: 'option' }, radio, ' ', tr(choix.texte));
+        }),
+        retour,
+        listeSources(challenge.sources)
+    );
+}
+
+function blocChallenge(r, saisie, base) {
+    let contenu;
+    if (saisie.changements.length === 0) contenu = el('p', {}, T.challengeAucunChangement);
+    else if (r.challenge.length === 0) contenu = el('p', {}, T.challengeAucuneQuestion);
+    else contenu = r.challenge.map((q, i) => questionChallenge(q, i, base));
+    return el('section', { 'aria-labelledby': 'titre-challenge' }, el('h3', { id: 'titre-challenge' }, T.challenge), contenu);
+}
+
+function afficherResultats(zone, r, saisie, base, donnerFocus = true) {
+    const profil = saisie.profil;
     const titre = el('h2', { id: 'titre-resultats', tabindex: '-1' }, T.resultats);
     zone.replaceChildren(
         titre,
         el('div', { class: 'cartes' }, blocDiagnostic(r), blocCadence(r, profil), blocGeneration(r)),
         blocMessages(r),
+        blocChallenge(r, saisie, base),
         blocTableau(r)
     );
     zone.hidden = false;
@@ -330,9 +406,12 @@ async function demarrer() {
     const resultats = el('section', { id: 'resultats', class: 'resultats', 'aria-labelledby': 'titre-resultats', hidden: true });
     racine.replaceChildren(el('p', { class: 'intro' }, T.intro), formulaire, resultats);
 
-    // Champs qui dépendent d'autres réponses (DirectX en 2020, carte non reconnue, réalité virtuelle)
+    // Champs qui dépendent d'autres réponses (DirectX en 2020, carte non reconnue, réalité virtuelle,
+    // liste des réglages de l'étape 4 selon le simulateur)
     const majDependances = () => {
         const v = valeursBrutes(formulaire);
+        // Liste reconstruite pour un autre simulateur : on y remet les choix mémorisés
+        if (majChangements(base, v.simulateur)) restaurer(formulaire, stockage.lire() ?? {});
         document.getElementById('bloc-directx').hidden = v.simulateur !== '2020';
         document.getElementById('gpu-inconnu').hidden = !v.gpu || familleGpu(v.gpu, base.materiel) !== null;
         document.getElementById('vr-avertissement').hidden = v.affichage !== 'vr';
@@ -343,13 +422,14 @@ async function demarrer() {
     majDependances();
 
     formulaire.addEventListener('input', function memoriser() {
+        // Les choix déjà mémorisés pour l'autre simulateur sont conservés
+        stockage.ecrire({ ...(stockage.lire() ?? {}), ...valeursBrutes(formulaire) });
         majDependances();
-        stockage.ecrire(valeursBrutes(formulaire));
     });
 
     formulaire.addEventListener('submit', function lancerAnalyse(e) {
         e.preventDefault();
-        const saisie = versSaisie(valeursBrutes(formulaire));
+        const saisie = versSaisie(valeursBrutes(formulaire), base);
         const erreur = document.getElementById('erreur-formulaire');
         if (!saisie.profil.simulateur || !saisie.profil.frequenceHz) {
             erreur.textContent = T.champsManquants;
@@ -357,7 +437,7 @@ async function demarrer() {
             return;
         }
         erreur.hidden = true;
-        afficherResultats(resultats, analyser(saisie, base), saisie.profil);
+        afficherResultats(resultats, analyser(saisie, base), saisie, base);
     });
 
     document.getElementById('effacer').addEventListener('click', function toutEffacer() {
@@ -370,8 +450,8 @@ async function demarrer() {
 
     // Réponses déjà complètes : résultats affichés d'emblée, sans voler le focus
     if (memorise?.simulateur && nb(memorise.frequenceHz)) {
-        const saisie = versSaisie(memorise);
-        afficherResultats(resultats, analyser(saisie, base), saisie.profil, false);
+        const saisie = versSaisie(memorise, base);
+        afficherResultats(resultats, analyser(saisie, base), saisie, base, false);
     }
 }
 

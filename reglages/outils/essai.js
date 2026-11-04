@@ -15,7 +15,8 @@ const base = {
     parametres: lire('parametres.json').parametres,
     regles: lire('regles.json').regles,
     materiel: lire('materiel.json'),
-    symptomes: lire('symptomes.json').symptomes
+    symptomes: lire('symptomes.json').symptomes,
+    challenges: lire('challenges.json').challenges
 };
 
 const CAS_DE_DEPART = {
@@ -41,6 +42,8 @@ console.log(`Génération d'images : ${r.generation.avis}${r.generation.multiDis
 
 console.log('\nMessages :');
 for (const m of r.messages) console.log(`- [${m.gravite}] ${m.id}${statut(m.statut)}\n  ${m.message.fr}`);
+
+for (const { challenge } of r.challenge) console.log(`\nChallenge${statut(challenge.statut)} : ${challenge.question.fr}\n${challenge.choix.map(c => `  ${c.correct ? '✓' : '·'} ${c.texte.fr}`).join('\n')}`);
 
 console.log('\nRéglages, du plus au moins utile pour ce goulot :');
 for (const l of r.tableau) console.log(`- ${l.libelle.fr}${statut(l.statut)} (CPU ${l.impact.cpu}, GPU ${l.impact.gpu}, VRAM ${l.impact.vram})\n  → ${l.depart.fr}`);

@@ -4,9 +4,7 @@
 //
 // Chaque fonction reçoit le contexte calculé par analyser() :
 //   { profil, mesures, symptomes, changements, famille, diagnostic, cadence, generation }
-
-// Le réglage changé porte-t-il sur la définition de l'image (échelle de rendu, résolution de l'écran) ?
-const surLaDefinition = c => c.id.startsWith('echelle-rendu') || c.id === 'resolution-ecran';
+// Les questions sur les réglages changés (mode challenge) sont dans challenge.js.
 
 export const CONDITIONS = {
     // Diagnostic
@@ -27,11 +25,7 @@ export const CONDITIONS = {
     'generation-seuil-base': ctx => ['deconseillee', 'mesure-requise'].includes(ctx.generation.avis),
     'generation-juste-sous-seuil': ctx => ctx.generation.avis === 'juste-sous-seuil',
     // Information utile à qui a la génération d'images sans la multi-génération (RTX 40)
-    'generation-mfg-rtx50': ctx => ctx.profil.simulateur === '2024' && ctx.generation.disponible === true && !ctx.generation.multiDisponible,
-
-    // Challenge
-    'challenge-resolution-main-thread': ctx => ctx.diagnostic.goulot === 'cpu'
-        && ctx.changements.some(c => surLaDefinition(c) && c.sens === 'baisse')
+    'generation-mfg-rtx50': ctx => ctx.profil.simulateur === '2024' && ctx.generation.disponible === true && !ctx.generation.multiDisponible
 };
 
 /**

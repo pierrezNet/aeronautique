@@ -1,0 +1,541 @@
+{
+  "description": "Questions du mode challenge. Une question s'affiche quand l'utilisateur a changé un des « reglages » (début d'id de parametres.json) dans le « sens » indiqué, et que le goulot diagnostiqué est dans « goulots » (liste vide : tout goulot) ; « avisGeneration », facultatif, restreint aux avis de génération d'images listés. Une réponse au moins est correcte ; chaque choix porte son explication.",
+  "challenges": [
+    {
+      "id": "echelle-baissee-goulot-cpu",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "reglages": [
+        "echelle-rendu"
+      ],
+      "sens": "baisse",
+      "goulots": [
+        "cpu"
+      ],
+      "question": {
+        "fr": "Vous avez baissé l'échelle de rendu alors que le processeur limite. Qu'espériez-vous gagner ?",
+        "en": "You lowered render scaling while the processor is the limit. What did you hope to gain?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Plus d'images par seconde.",
+            "en": "More frames per second."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Les mesures publiées ne montrent aucun effet de l'échelle de rendu sur le processeur : l'image est plus floue, et les FPS ne bougent pas tant que le processeur limite.",
+            "en": "Published measurements show no effect of render scaling on the processor: the image gets blurrier and FPS do not move while the processor is the limit."
+          }
+        },
+        {
+          "texte": {
+            "fr": "De la marge sur la carte graphique, pour monter un autre réglage (nuages, ombres).",
+            "en": "Headroom on the graphics card, to raise another setting (clouds, shadows)."
+          },
+          "correct": true,
+          "explication": {
+            "fr": "C'est le seul gain possible : la carte graphique a du temps libre. Mais tant que le processeur limite, autant garder l'échelle à 100 et dépenser cette marge en netteté.",
+            "en": "That is the only possible gain: the graphics card has spare time. But while the processor is the limit, you may as well keep scaling at 100 and spend that headroom on sharpness."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Je ne savais pas ce qui me limitait.",
+            "en": "I did not know what was limiting me."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "C'est la situation la plus courante. Avant de changer un réglage, relevez ce que l'affichage FPS du mode développeur indique comme limite : sinon, on change au hasard.",
+            "en": "That is the most common situation. Before changing a setting, note what the developer mode FPS display shows as the limit: otherwise you change things at random."
+          }
+        }
+      ]
+    },
+    {
+      "id": "dlss-active-goulot-cpu",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "NVIDIA, « DLSS 3 Available This Month In F1 22, Microsoft Flight Simulator… » (novembre 2022)",
+          "url": "https://www.nvidia.com/en-gb/geforce/news/november-2022-rtx-dlss-game-updates",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "NVIDIA, article DLSS 4 (Sim Update 3 de MSFS 2024, Multi Frame Generation, rendu natif limité par le processeur)",
+          "url": "https://www.nvidia.com/en-us/geforce/news/cronos-the-new-dawn-hell-is-us-dlss-4-multi-frame-gen/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "reglages": [
+        "anticrenelage"
+      ],
+      "sens": "hausse",
+      "goulots": [
+        "cpu"
+      ],
+      "question": {
+        "fr": "Vous êtes passé au DLSS (ou à un mode DLSS plus agressif) alors que le processeur limite. Qu'attendiez-vous ?",
+        "en": "You switched to DLSS (or a more aggressive DLSS mode) while the processor is the limit. What did you expect?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Plus d'images par seconde.",
+            "en": "More frames per second."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Le DLSS Super Resolution allège seulement la carte graphique. NVIDIA rappelle que MSFS peut être limité par le processeur même sur les plus rapides : DLSS et TAA donnent alors les mêmes FPS.",
+            "en": "DLSS Super Resolution only relieves the graphics card. NVIDIA notes MSFS can be processor-limited even on the fastest ones: DLSS and TAA then give the same FPS."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Une image plus stable (moins de scintillement) à FPS égal.",
+            "en": "A steadier image (less shimmering) at the same FPS."
+          },
+          "correct": true,
+          "explication": {
+            "fr": "C'est une raison valable : le choix entre TAA, DLSS et DLAA devient alors une affaire de goût visuel, pas de performance. Surveillez la netteté des écrans du cockpit.",
+            "en": "That is a valid reason: choosing between TAA, DLSS and DLAA then becomes a matter of visual taste, not performance. Keep an eye on cockpit screen sharpness."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Je ne savais pas ce qui me limitait.",
+            "en": "I did not know what was limiting me."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "C'est la situation la plus courante. Avant de changer un réglage, relevez ce que l'affichage FPS du mode développeur indique comme limite : sinon, on change au hasard.",
+            "en": "That is the most common situation. Before changing a setting, note what the developer mode FPS display shows as the limit: otherwise you change things at random."
+          }
+        }
+      ]
+    },
+    {
+      "id": "generation-activee-goulot-cpu",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "NVIDIA, « DLSS 3 Available This Month In F1 22, Microsoft Flight Simulator… » (novembre 2022)",
+          "url": "https://www.nvidia.com/en-gb/geforce/news/november-2022-rtx-dlss-game-updates",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "NVIDIA, article DLSS 4 (Sim Update 3 de MSFS 2024, Multi Frame Generation, rendu natif limité par le processeur)",
+          "url": "https://www.nvidia.com/en-us/geforce/news/cronos-the-new-dawn-hell-is-us-dlss-4-multi-frame-gen/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "reglages": [
+        "generation-images"
+      ],
+      "sens": "hausse",
+      "goulots": [
+        "cpu"
+      ],
+      "question": {
+        "fr": "Vous avez activé la génération d'images pour compenser un processeur qui limite. Qu'est-ce qui va réellement s'améliorer ?",
+        "en": "You turned on Frame Generation to make up for a processor that is the limit. What will really improve?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "La simulation tournera plus vite.",
+            "en": "The simulation will run faster."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Non : les images générées « ne passent jamais par le processeur ». La simulation, le trafic et la réactivité aux commandes restent au rythme des images réellement calculées.",
+            "en": "No: generated frames “never touch the CPU”. Simulation, traffic and control responsiveness stay at the pace of really rendered frames."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Les images affichées seront plus nombreuses, donc le mouvement paraîtra plus fluide.",
+            "en": "More frames will be displayed, so motion will look smoother."
+          },
+          "correct": true,
+          "explication": {
+            "fr": "Exactement : NVIDIA la présente comme un moyen de dépasser la limite du processeur pour l'affichage. Le compteur FPS monte, la simulation non ; et la latence augmente un peu.",
+            "en": "Exactly: NVIDIA presents it as a way past the processor limit for display. The FPS counter goes up, the simulation does not; and latency rises a little."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Les deux.",
+            "en": "Both."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Seul l'affichage profite de la génération d'images. Pour accélérer la simulation, il faut alléger le processeur : niveau de détail du terrain, des objets, trafic.",
+            "en": "Only the display benefits from Frame Generation. To speed up the simulation, lighten the processor's load: terrain and objects level of detail, traffic."
+          }
+        }
+      ]
+    },
+    {
+      "id": "generation-activee-base-faible",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [],
+      "dateVerification": "2026-11-04",
+      "reglages": [
+        "generation-images"
+      ],
+      "sens": "hausse",
+      "goulots": [],
+      "avisGeneration": [
+        "deconseillee",
+        "juste-sous-seuil"
+      ],
+      "question": {
+        "fr": "Vous avez activé la génération d'images avec moins d'environ 40 FPS réels. Que risquez-vous ?",
+        "en": "You turned on Frame Generation with fewer than about 40 real FPS. What do you risk?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Rien : elle double les FPS, c'est tout bénéfice.",
+            "en": "Nothing: it doubles FPS, all gain."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Les FPS affichés doublent, mais les images générées s'appuient sur une base irrégulière : latence, artefacts et saccades se voient davantage. Le seuil d'environ 40 n'est pas officiel (les guides citent 35 à 60).",
+            "en": "Displayed FPS double, but generated frames rely on an uneven base: latency, artefacts and stutters show more. The threshold of about 40 is not official (guides quote 35 to 60)."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Une latence et des artefacts plus visibles, sur une base qui reste saccadée.",
+            "en": "More visible latency and artefacts, on a base that stays choppy."
+          },
+          "correct": true,
+          "explication": {
+            "fr": "C'est le risque principal. Gagnez d'abord quelques FPS réels sur ce qui vous limite, puis réessayez.",
+            "en": "That is the main risk. First gain a few real FPS on what limits you, then try again."
+          }
+        }
+      ]
+    },
+    {
+      "id": "tlod-baisse-goulot-gpu",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "reglages": [
+        "tlod"
+      ],
+      "sens": "baisse",
+      "goulots": [
+        "gpu"
+      ],
+      "question": {
+        "fr": "Vous avez baissé le niveau de détail du terrain alors que la carte graphique limite. Est-ce le meilleur levier ?",
+        "en": "You lowered terrain level of detail while the graphics card is the limit. Is it the best lever?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Oui, c'est le réglage le plus lourd.",
+            "en": "Yes, it is the heaviest setting."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Il est le plus lourd pour le processeur. Quand la carte graphique limite, son effet est réel mais plus faible (mesure 2020 : de 100 à 400, −16 % côté carte graphique contre −46 % côté processeur).",
+            "en": "It is the heaviest for the processor. When the graphics card limits, its effect is real but smaller (2020 measurement: from 100 to 400, −16% on the graphics side versus −46% on the processor side)."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Non : l'échelle de rendu, les nuages ou les ombres du terrain soulagent davantage la carte graphique.",
+            "en": "No: render scaling, clouds or terrain shadows relieve the graphics card more."
+          },
+          "correct": true,
+          "explication": {
+            "fr": "Oui : ces réglages pèsent surtout sur la carte graphique, avec un coût visuel souvent moindre que le détail du terrain qui apparaît au dernier moment.",
+            "en": "Yes: these settings mainly weigh on the graphics card, often at a lower visual cost than terrain detail popping in at the last moment."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Je ne savais pas ce qui me limitait.",
+            "en": "I did not know what was limiting me."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "C'est la situation la plus courante. Avant de changer un réglage, relevez ce que l'affichage FPS du mode développeur indique comme limite : sinon, on change au hasard.",
+            "en": "That is the most common situation. Before changing a setting, note what the developer mode FPS display shows as the limit: otherwise you change things at random."
+          }
+        }
+      ]
+    },
+    {
+      "id": "textures-baissees-sans-vram",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "reglages": [
+        "resolution-textures"
+      ],
+      "sens": "baisse",
+      "goulots": [
+        "cpu",
+        "gpu"
+      ],
+      "question": {
+        "fr": "Vous avez baissé la résolution des textures alors que la mémoire vidéo n'est pas pleine. Qu'attendiez-vous ?",
+        "en": "You lowered texture resolution while video memory is not full. What did you expect?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Plus d'images par seconde.",
+            "en": "More frames per second."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Les mesures publiées ne montrent presque aucun effet sur les FPS (−1,3 % en 2020, aucun en 2024) : ce réglage agit sur la mémoire vidéo, qui n'est pas votre limite.",
+            "en": "Published measurements show almost no effect on FPS (−1.3% in 2020, none in 2024): this setting acts on video memory, which is not your limit."
+          }
+        },
+        {
+          "texte": {
+            "fr": "De la marge en mémoire vidéo, par précaution.",
+            "en": "Video memory headroom, as a precaution."
+          },
+          "correct": true,
+          "explication": {
+            "fr": "C'est cohérent si vous comptez monter le niveau de détail du terrain ou si la mémoire frôle le plein dans certaines zones. Sinon, gardez des textures nettes.",
+            "en": "That makes sense if you plan to raise terrain level of detail or if memory gets close to full in some areas. Otherwise, keep sharp textures."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Je ne savais pas ce qui me limitait.",
+            "en": "I did not know what was limiting me."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "C'est la situation la plus courante. Avant de changer un réglage, relevez ce que l'affichage FPS du mode développeur indique comme limite : sinon, on change au hasard.",
+            "en": "That is the most common situation. Before changing a setting, note what the developer mode FPS display shows as the limit: otherwise you change things at random."
+          }
+        }
+      ]
+    },
+    {
+      "id": "nuages-baisses-goulot-cpu",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "reglages": [
+        "nuages-volumetriques"
+      ],
+      "sens": "baisse",
+      "goulots": [
+        "cpu"
+      ],
+      "question": {
+        "fr": "Vous avez baissé les nuages volumétriques alors que le processeur limite. Pourquoi ?",
+        "en": "You lowered volumetric clouds while the processor is the limit. Why?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Pour gagner des FPS.",
+            "en": "To gain FPS."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Les mesures publiées ne montrent aucun effet des nuages sur le processeur : ils pèsent sur la carte graphique, qui n'est pas votre limite.",
+            "en": "Published measurements show no effect of clouds on the processor: they weigh on the graphics card, which is not your limit."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Parce que les FPS chutent quand il y a beaucoup de nuages.",
+            "en": "Because FPS drop when there are many clouds."
+          },
+          "correct": true,
+          "explication": {
+            "fr": "Dans ce cas, la carte graphique devient la limite par temps couvert : mesurez dans les nuages. Le goulot peut changer selon la situation de vol.",
+            "en": "Then the graphics card becomes the limit in overcast weather: measure inside the clouds. The bottleneck can change with the flight situation."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Je ne savais pas ce qui me limitait.",
+            "en": "I did not know what was limiting me."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "C'est la situation la plus courante. Avant de changer un réglage, relevez ce que l'affichage FPS du mode développeur indique comme limite : sinon, on change au hasard.",
+            "en": "That is the most common situation. Before changing a setting, note what the developer mode FPS display shows as the limit: otherwise you change things at random."
+          }
+        }
+      ]
+    },
+    {
+      "id": "echelle-montee-goulot-gpu",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "reglages": [
+        "echelle-rendu"
+      ],
+      "sens": "hausse",
+      "goulots": [
+        "gpu"
+      ],
+      "question": {
+        "fr": "Vous avez augmenté l'échelle de rendu alors que la carte graphique limite déjà. Saviez-vous ce que cela coûte ?",
+        "en": "You raised render scaling while the graphics card is already the limit. Did you know what it costs?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Un peu, pour une image plus nette.",
+            "en": "A little, for a sharper image."
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Beaucoup plus qu'un peu : en 2020, de 100 à 150, les FPS mesurés passent de 88,5 à 51,3 (−42 %). C'est le réglage le plus coûteux pour la carte graphique.",
+            "en": "Much more than a little: in 2020, from 100 to 150, measured FPS go from 88.5 to 51.3 (−42%). It is the most costly setting for the graphics card."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Beaucoup : c'est le réglage le plus coûteux pour la carte graphique.",
+            "en": "A lot: it is the most costly setting for the graphics card."
+          },
+          "correct": true,
+          "explication": {
+            "fr": "Exact. Si vous voulez plus de netteté, le DLAA (cartes RTX) ou le DLSS en mode Qualité sont souvent plus économes à résultat proche.",
+            "en": "Right. If you want more sharpness, DLAA (RTX cards) or DLSS Quality mode are often cheaper for a similar result."
+          }
+        }
+      ]
+    }
+  ]
+}

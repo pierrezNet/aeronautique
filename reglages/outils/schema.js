@@ -94,6 +94,30 @@ export function verifierIdentifiants(entrees, nomFichier) {
     return erreurs;
 }
 
+// Question du mode challenge : rattachement (réglages, sens, goulots), question et choix commentés
+export function verifierChallenge(c, chemin, idsParametres) {
+    const erreurs = [];
+    suivi(c, chemin, erreurs);
+    if (!Array.isArray(c.reglages) || c.reglages.length === 0) erreurs.push(`${chemin}.reglages : liste non vide attendue`);
+    for (const r of c.reglages ?? []) {
+        if (![...idsParametres].some(id => id === r || id.startsWith(r + '-'))) erreurs.push(`${chemin}.reglages : « ${r} » ne vise aucun paramètre`);
+    }
+    if (!['baisse', 'hausse'].includes(c.sens)) erreurs.push(`${chemin}.sens : baisse ou hausse`);
+    if (!Array.isArray(c.goulots) || c.goulots.some(g => !GOULOTS.includes(g))) erreurs.push(`${chemin}.goulots : liste de ${GOULOTS.join(', ')} (vide : tous)`);
+    texteBilingue(c.question, `${chemin}.question`, erreurs);
+    if (!Array.isArray(c.choix) || c.choix.length < 2) {
+        erreurs.push(`${chemin}.choix : au moins deux choix`);
+    } else {
+        c.choix.forEach((choix, i) => {
+            texteBilingue(choix.texte, `${chemin}.choix[${i}].texte`, erreurs);
+            texteBilingue(choix.explication, `${chemin}.choix[${i}].explication`, erreurs);
+            if (typeof choix.correct !== 'boolean') erreurs.push(`${chemin}.choix[${i}].correct : true ou false`);
+        });
+        if (!c.choix.some(choix => choix.correct === true)) erreurs.push(`${chemin}.choix : au moins une réponse correcte`);
+    }
+    return erreurs;
+}
+
 // Symptôme du questionnaire : texte, pistes (goulots et paramètres existants), statut et sources
 export function verifierSymptome(sy, chemin, idsParametres) {
     const erreurs = [];

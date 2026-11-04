@@ -7,5 +7,6 @@ export const base = {
     parametres: lire('parametres.json').parametres,
     regles: lire('regles.json').regles,
     materiel: lire('materiel.json'),
-    symptomes: lire('symptomes.json').symptomes
+    symptomes: lire('symptomes.json').symptomes,
+    challenges: lire('challenges.json').challenges
 };

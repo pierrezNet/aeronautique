@@ -7,7 +7,7 @@
 // Le code de sortie vaut 1 si le schéma est invalide (utilisable avant un commit).
 
 import { readFileSync } from 'node:fs';
-import { verifierIdentifiants, verifierParametre, verifierRegle } from './schema.js';
+import { verifierChallenge, verifierIdentifiants, verifierParametre, verifierRegle } from './schema.js';
 
 const DOSSIER = new URL('../donnees/', import.meta.url);
 const lire = nom => JSON.parse(readFileSync(new URL(nom, DOSSIER), 'utf8'));
@@ -31,9 +31,11 @@ const avant = argumentAvant();
 const limite = new Date();
 limite.setMonth(limite.getMonth() - MOIS_MAX);
 
+const idsParametres = new Set(lire('parametres.json').parametres.map(p => p.id));
 const fichiers = [
     { nom: 'parametres.json', entrees: lire('parametres.json').parametres, verifier: verifierParametre },
-    { nom: 'regles.json', entrees: lire('regles.json').regles, verifier: verifierRegle }
+    { nom: 'regles.json', entrees: lire('regles.json').regles, verifier: verifierRegle },
+    { nom: 'challenges.json', entrees: lire('challenges.json').challenges, verifier: (c, chemin) => verifierChallenge(c, chemin, idsParametres) }
 ];
 
 let erreursSchema = 0;

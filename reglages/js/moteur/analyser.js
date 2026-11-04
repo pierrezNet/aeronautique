@@ -3,6 +3,7 @@
 // le tableau de réglages et les messages (règles) à afficher. Aucune lecture ni écriture de la page.
 
 import { analyserCadence } from './cadence.js';
+import { questionsChallenge } from './challenge.js';
 import { diagnostiquer } from './diagnostic.js';
 import { evaluerGeneration } from './generationImages.js';
 import { familleGpu } from './materiel.js';
@@ -15,7 +16,7 @@ import { reglesApplicables } from './regles.js';
  * @param {object} [saisie.mesures]    { limite, msPrincipal, msRendu, msGpu, vramUtiliseeGo, fpsReels, verrouFps }
  * @param {string[]} [saisie.symptomes]  ids de symptomes.json
  * @param {object[]} [saisie.changements] réglages modifiés par l'utilisateur : { id, sens: 'baisse'|'hausse' }
- * @param {object} base  { parametres, regles, materiel, symptomes } (contenu des fichiers de donnees/)
+ * @param {object} base  { parametres, regles, materiel, symptomes, challenges } (contenu des fichiers de donnees/)
  */
 export function analyser(saisie, base) {
     const profil = saisie.profil ?? {};
@@ -42,6 +43,9 @@ export function analyser(saisie, base) {
         cadence,
         generation,
         tableau: tableauReglages(base.parametres, profil.simulateur, diagnostic.goulot),
-        messages: reglesApplicables(base.regles, ctx)
+        messages: reglesApplicables(base.regles, ctx),
+        challenge: questionsChallenge(base.challenges ?? [], {
+            simulateur: profil.simulateur, changements, goulot: diagnostic.goulot, avisGeneration: generation.avis
+        })
     };
 }

@@ -67,11 +67,12 @@ describe('cas imposés', () => {
     });
 
     test('résolution baissée alors que le main thread limite : question de challenge', () => {
+        const questions = r => r.challenge.map(q => q.challenge.id);
         const r = casDeDepart({ limite: 'main-thread' }, { changements: [{ id: 'echelle-rendu-2024', sens: 'baisse' }] });
-        assert.ok(ids(r).includes('challenge-resolution-main-thread'));
+        assert.deepEqual(questions(r), ['echelle-baissee-goulot-cpu']);
         // Même changement avec un goulot carte graphique : pas de challenge, c'est le bon levier
         const gpu = casDeDepart({ limite: 'gpu' }, { changements: [{ id: 'echelle-rendu-2024', sens: 'baisse' }] });
-        assert.ok(!ids(gpu).includes('challenge-resolution-main-thread'));
+        assert.deepEqual(questions(gpu), []);
     });
 
     test('sans aucune mesure : on demande de mesurer d\'abord', () => {

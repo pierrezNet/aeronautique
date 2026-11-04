@@ -58,6 +58,12 @@ const TEXTES = {
         // 3. Symptômes
         symptomes: '3. Ce que vous constatez',
 
+        // 4. Changements (mode challenge)
+        changements: '4. Réglages que vous avez déjà changés (facultatif)',
+        changementsIntro: 'Indiquez ce que vous avez modifié par rapport aux valeurs d\'origine : le mode challenge vous demandera pourquoi, à la lumière de votre diagnostic.',
+        changementsChoisirSimulateur: 'Choisissez d\'abord le simulateur (étape 1).',
+        sensAucun: 'Pas touché', sensBaisse: 'Baissé ou désactivé', sensHausse: 'Augmenté ou activé',
+
         analyser: 'Analyser',
         effacer: 'Tout effacer',
         effacerConfirmer: 'Effacer toutes vos réponses enregistrées sur cet appareil ?',
@@ -110,6 +116,14 @@ const TEXTES = {
         sources: 'Sources',
         rang: r => ['', 'officielle', 'NVIDIA', 'mesure publiée', 'forum ou guide'][r],
         gravites: { important: 'Important', attention: 'Attention', info: 'Info' },
+
+        challenge: 'Mode challenge',
+        challengeAucunChangement: 'Indiquez à l\'étape 4 les réglages que vous avez changés : l\'outil vous demandera ce que vous en attendiez.',
+        challengeAucuneQuestion: 'Pas de question pour ces changements : ils ne contredisent pas votre diagnostic.',
+        challengeVotreChangement: (reglage, sens) => `Votre changement : ${reglage}, ${sens}.`,
+        bonneReponse: 'Bonne réponse.',
+        mauvaiseReponse: 'Pas tout à fait.',
+        reponseAttendue: 'La réponse attendue :',
 
         tableau: 'Réglages, du plus utile au moins utile pour votre cas',
         tableauIntro: 'Changez un seul réglage à la fois, puis refaites le même test : c\'est la seule façon de savoir ce qui a agi.',
@@ -174,6 +188,11 @@ const TEXTES = {
 
         symptomes: '3. What you notice',
 
+        changements: '4. Settings you have already changed (optional)',
+        changementsIntro: 'Tell what you changed from the default values: challenge mode will ask you why, in light of your diagnosis.',
+        changementsChoisirSimulateur: 'First choose the simulator (step 1).',
+        sensAucun: 'Unchanged', sensBaisse: 'Lowered or turned off', sensHausse: 'Raised or turned on',
+
         analyser: 'Analyse',
         effacer: 'Clear everything',
         effacerConfirmer: 'Clear all your answers saved on this device?',
@@ -225,6 +244,14 @@ const TEXTES = {
         sources: 'Sources',
         rang: r => ['', 'official', 'NVIDIA', 'published measurement', 'forum or guide'][r],
         gravites: { important: 'Important', attention: 'Caution', info: 'Info' },
+
+        challenge: 'Challenge mode',
+        challengeAucunChangement: 'Tell at step 4 which settings you changed: the tool will ask what you expected from them.',
+        challengeAucuneQuestion: 'No question for these changes: they do not contradict your diagnosis.',
+        challengeVotreChangement: (reglage, sens) => `Your change: ${reglage}, ${sens}.`,
+        bonneReponse: 'Correct.',
+        mauvaiseReponse: 'Not quite.',
+        reponseAttendue: 'The expected answer:',
 
         tableau: 'Settings, from most to least useful for your case',
         tableauIntro: 'Change one setting at a time, then run the same test again: that is the only way to know what made the difference.',

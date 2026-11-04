@@ -277,6 +277,23 @@ a:focus-visible {
 .sources summary { cursor: pointer; color: var(--texte-doux); }
 .sources ul { margin: 6px 0 0; padding-left: 20px; }
 
+/* Mode challenge : une question par changement, explication sous les choix */
+.question {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--accent);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 0 0 14px;
+}
+
+.question > legend {
+    font-weight: 700;
+    padding: 0 6px;
+}
+
+.retour-challenge p { margin: 8px 0 0; }
+
 /* Tableau des réglages */
 .tableau {
     width: 100%;

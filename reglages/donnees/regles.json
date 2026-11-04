@@ -352,37 +352,6 @@
         "fr": "Écrans du cockpit flous avec DLSS ou FSR : défaut connu, ces techniques masquent mal les écrans des instruments. Essayez le DLAA ou le TAA si la lisibilité des instruments compte plus que les FPS.",
         "en": "Blurry cockpit screens with DLSS or FSR: known issue, these techniques mask instrument displays poorly. Try DLAA or TAA if instrument readability matters more than FPS."
       }
-    },
-    {
-      "id": "challenge-resolution-main-thread",
-      "simulateur": "les-deux",
-      "miseAJourMin": {
-        "2020": "SU12",
-        "2024": "Lancement"
-      },
-      "statut": "verifie",
-      "remplacePar": null,
-      "sources": [
-        {
-          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
-          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
-          "consulte": "2026-11-04",
-          "rang": 3
-        },
-        {
-          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
-          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
-          "consulte": "2026-11-04",
-          "rang": 3
-        }
-      ],
-      "dateVerification": "2026-11-04",
-      "type": "challenge",
-      "gravite": "attention",
-      "message": {
-        "fr": "Vous avez baissé la résolution (ou l'échelle de rendu) alors que le thread principal limite. Les mesures publiées ne montrent aucun effet de ce réglage sur le processeur : qu'espériez-vous gagner ?",
-        "en": "You lowered resolution (or render scaling) while the main thread is the limit. Published measurements show no effect of this setting on the processor: what did you expect to gain?"
-      }
     }
   ]
 }
