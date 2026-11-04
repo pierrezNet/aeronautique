@@ -1,4 +1,4 @@
-// Formulaire « J'ai un retour » (horloge UTC, SELCAL), sans compte.
+// Formulaire « J'ai un retour » (horloge UTC, SELCAL, Atelier réglages), sans compte.
 // Le bouton #boutonRetour porte l'application dans data-app ; la boîte de dialogue est construite ici,
 // dans la langue de la page. Envoi à /api/retour (relais/worker.js), qui transmet au forum AvroBB :
 // sujet privé « à trier », contact envoyé aux administrateurs seulement.
@@ -12,7 +12,8 @@
 
     const FORUMS = {
         horlogeUtc: anglais ? 'https://avrobb.org/en/forum/8-utc-clock' : 'https://avrobb.org/forum/8-horloge-utc',
-        selcal: anglais ? 'https://avrobb.org/en/forum/9-selcal' : 'https://avrobb.org/forum/9-selcal'
+        selcal: anglais ? 'https://avrobb.org/en/forum/9-selcal' : 'https://avrobb.org/forum/9-selcal',
+        reglages: anglais ? 'https://avrobb.org/en/forum/13-msfs-settings-workshop' : 'https://avrobb.org/forum/13-atelier-reglages-msfs'
     };
     const forum = FORUMS[application];
 

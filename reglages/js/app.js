@@ -592,6 +592,12 @@ async function demarrer() {
         majJournal();
     });
 
+    // Contexte joint au formulaire « J'ai un retour » (retour.js) : simulateur et étape courante,
+    // pour trier les messages sur le forum. Rien d'autre (ni mesures, ni configuration).
+    window.contexteRetour = function contexteRetour() {
+        return { simulateur: valeursBrutes(formulaire).simulateur ?? '', etape: parcours.courante ?? '' };
+    };
+
     parcours.demarrer();
 }
 

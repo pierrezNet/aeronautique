@@ -494,6 +494,19 @@ textarea {
     overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 
+.retour-pied {
+    text-align: left;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.retour-pied h2 { font-size: 1.1rem; margin: 0 0 8px; }
+
 footer {
     margin: 50px 0 20px;
     font-size: 0.85rem;

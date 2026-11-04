@@ -77,6 +77,7 @@
 
     <link rel="stylesheet" href="/theme.css">
     <link rel="stylesheet" href="/reglages/reglages.css">
+    <link rel="stylesheet" href="/retour.css">
     <!-- Langue : après les liens hreflang, dont il se sert pour rediriger -->
     <script src="/lang.js"></script>
     <script src="/theme.js"></script>
@@ -99,11 +100,17 @@
         </main>
 
         <footer>
+            <section class="retour-pied" aria-labelledby="titre-retour">
+                <h2 id="titre-retour">Feedback?</h2>
+                <p>A mistake, an idea, a source to add? Post on the <a href="https://avrobb.org/en/forum/13-msfs-settings-workshop" rel="noopener">Settings Workshop forum</a> (free to read, sign up to post), or send us a message without an account:</p>
+                <button type="button" class="btn-retour" id="boutonRetour" data-app="reglages">💬 Send feedback</button>
+            </section>
             <p>Independent tool, not affiliated with Microsoft or Asobo Studio. Code under the MIT licence, knowledge base under the <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC BY 4.0</a> licence. Audience measurement by Cloudflare Web Analytics: no cookies, aggregate statistics only.</p>
         </footer>
     </div>
 
     <script type="module" src="/reglages/js/app.js"></script>
+    <script src="/retour.js"></script>
     <!-- Cloudflare Web Analytics (sans cookie, sans traçage d'IP exploitable) -->
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eb7f159999e84819a7433bf825038538"}'></script>
     <!-- End Cloudflare Web Analytics -->

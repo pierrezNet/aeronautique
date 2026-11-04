@@ -46,10 +46,10 @@ L'application **Phraséologie** (phraseo.aeronautique.xyz) est hébergée dans u
 
 ## Retours « J'ai un retour »
 
-- Bouton `#boutonRetour` (`data-app="horlogeUtc"` ou `"selcal"`) en fin de bloc d'informations des pages montre et SELCAL (FR et EN) ; `retour.js` construit la boîte de dialogue dans la langue de la page. Une page peut joindre du contexte via `window.contexteRetour()` (SELCAL : code affiché).
-- `relais/worker.js` : origine vérifiée (`ALLOWED_ORIGINS`), 5 envois/min/IP, validation, puis liaison de service vers AvroBB (`HorlogeUtcFeedback`, `SelcalFeedback`). Les clés de type (`bug`, `suggestion`, `question`, `autre`) sont traduites en libellés qui doivent rester identiques à `FEEDBACK_SOURCES` d'AvroBB (`services/appFeedback.ts`).
-- Côté forum : sujets dans les forums privés « Retours Horloge UTC / SELCAL (à trier) » (migration 0012), bouton « Accepter » vers les forums publics n° 8 et n° 9.
-- Déploiement : AvroBB d'abord (migration 0012 + points d'entrée), puis `cd relais && npx wrangler deploy`. Sans relais (serveur local), le formulaire affiche l'erreur avec le lien du forum.
+- Bouton `#boutonRetour` (`data-app="horlogeUtc"`, `"selcal"` ou `"reglages"`) en fin de bloc d'informations des pages montre et SELCAL, et dans le pied de l'Atelier réglages (FR et EN) ; `retour.js` construit la boîte de dialogue dans la langue de la page. Une page peut joindre du contexte via `window.contexteRetour()` (SELCAL : code affiché ; atelier : simulateur et étape).
+- `relais/worker.js` : origine vérifiée (`ALLOWED_ORIGINS`), 5 envois/min/IP, validation, puis liaison de service vers AvroBB (`HorlogeUtcFeedback`, `SelcalFeedback`, `ReglagesFeedback`). Tests : `node --test relais/worker.test.js`. Les clés de type (`bug`, `suggestion`, `question`, `autre`) sont traduites en libellés qui doivent rester identiques à `FEEDBACK_SOURCES` d'AvroBB (`services/appFeedback.ts`).
+- Côté forum : sujets dans les forums privés « Retours Horloge UTC / SELCAL / Atelier réglages (à trier) » (migrations 0012 et 0015), bouton « Accepter » vers les forums publics n° 8, 9 et 13.
+- Déploiement : AvroBB d'abord (migrations 0012 et 0015 + points d'entrée), puis `cd relais && npx wrangler deploy`. Sans relais (serveur local), le formulaire affiche l'erreur avec le lien du forum.
 
 ## Deploiement
 

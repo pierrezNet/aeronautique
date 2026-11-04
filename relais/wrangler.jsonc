@@ -1,6 +1,7 @@
 // Relais « J'ai un retour » d'aeronautique.xyz : Worker sans build ni dépendance (worker.js).
 // Déploiement : `cd relais && npx wrangler deploy` (compte Cloudflare du forum AvroBB, qui doit
-// être déployé avant avec sa migration 0012 et ses points d'entrée HorlogeUtcFeedback et SelcalFeedback).
+// être déployé avant avec ses migrations 0012 et 0015 et ses points d'entrée HorlogeUtcFeedback,
+// SelcalFeedback et ReglagesFeedback).
 {
 	"name": "aeronautique-relais",
 	"main": "worker.js",
@@ -16,7 +17,8 @@
 	// Forum AvroBB : points d'entrée internes (aucune adresse publique, aucun secret)
 	"services": [
 		{ "binding": "FORUM_HORLOGE", "service": "avrobb", "entrypoint": "HorlogeUtcFeedback" },
-		{ "binding": "FORUM_SELCAL", "service": "avrobb", "entrypoint": "SelcalFeedback" }
+		{ "binding": "FORUM_SELCAL", "service": "avrobb", "entrypoint": "SelcalFeedback" },
+		{ "binding": "FORUM_REGLAGES", "service": "avrobb", "entrypoint": "ReglagesFeedback" }
 	],
 	"observability": { "enabled": true }
 }

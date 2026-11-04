@@ -1,7 +1,8 @@
 // Relais « J'ai un retour » d'aeronautique.xyz (Cloudflare Worker, JS sans build).
 // Le site est statique (GitHub Pages derrière le proxy Cloudflare) : ce Worker prend la seule
 // route aeronautique.xyz/api/retour et transmet le retour au forum AvroBB par liaison de service
-// (FORUM_HORLOGE → HorlogeUtcFeedback, FORUM_SELCAL → SelcalFeedback). Aucune adresse publique
+// (FORUM_HORLOGE → HorlogeUtcFeedback, FORUM_SELCAL → SelcalFeedback, FORUM_REGLAGES →
+// ReglagesFeedback). Aucune adresse publique
 // côté forum ni secret partagé. Sur le modèle du relais de Phraséo (worker/src/index.ts) :
 // origine vérifiée, 5 envois par minute et par IP, validation avant transmission.
 
@@ -16,8 +17,12 @@ export const TYPES = {
 // Application → nom de la liaison de service vers le forum
 export const APPLICATIONS = {
     horlogeUtc: 'FORUM_HORLOGE',
-    selcal: 'FORUM_SELCAL'
+    selcal: 'FORUM_SELCAL',
+    reglages: 'FORUM_REGLAGES'
 };
+
+// Atelier réglages : étapes du parcours (reglages/js/app.js), même liste qu'AvroBB
+const ETAPES_REGLAGES = ['configuration', 'mesures', 'constats', 'diagnostic', 'reglages', 'challenge', 'journal', 'ia', ''];
 
 const MAX_CORPS = 8192;
 const MAX_MESSAGE = 1800;
@@ -48,6 +53,14 @@ export function lireRetour(corps) {
         const code = texte(corps.code).toUpperCase();
         if (code !== '' && !/^[A-S]{2}-[A-S]{2}$/.test(code)) return null;
         retour.code = code;
+    }
+    if (application === 'reglages') {
+        // Simulateur choisi et étape d'où le retour est envoyé : aident au tri, facultatifs
+        const simulateur = texte(corps.simulateur);
+        const etape = texte(corps.etape);
+        if (!['2020', '2024', ''].includes(simulateur) || !ETAPES_REGLAGES.includes(etape)) return null;
+        retour.simulateur = simulateur;
+        retour.etape = etape;
     }
     return { application, retour };
 }
