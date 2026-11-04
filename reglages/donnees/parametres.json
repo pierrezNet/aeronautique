@@ -1,0 +1,1276 @@
+{
+  "description": "Réglages graphiques de MSFS 2020 et 2024. Une entrée par réglage et par simulateur quand ils diffèrent. Impact de 0 (nul) à 3 (fort). Voir CONTRIBUTING.md pour les champs et la hiérarchie des sources.",
+  "parametres": [
+    {
+      "id": "echelle-rendu-2020",
+      "simulateur": "2020",
+      "miseAJourMin": "SU12",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "rendu",
+      "libelle": {
+        "fr": "Échelle de rendu (Render Scaling)",
+        "en": "Render Scaling"
+      },
+      "valeurs": [
+        50,
+        100,
+        150,
+        200
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 3,
+        "vram": 2
+      },
+      "explication": {
+        "fr": "Définition interne de l'image, en pourcentage de la définition de l'écran. Au-dessus de 100, l'image est calculée plus grande puis réduite (plus net, beaucoup plus coûteux) ; en dessous, plus petite puis agrandie (plus flou). Mesure publiée (RTX 3080, 1440p) : 88,5 FPS à 100, 51,3 à 150, 32,8 à 200, sans effet mesurable sur le processeur. L'effet sur la mémoire vidéo découle de la taille de l'image mais n'a pas été mesuré.",
+        "en": "Internal image resolution, as a percentage of the display resolution. Above 100 the image is rendered larger then reduced (sharper, much more costly); below 100, smaller then enlarged (blurrier). Published measurement (RTX 3080, 1440p): 88.5 FPS at 100, 51.3 at 150, 32.8 at 200, with no measurable effect on the processor. The effect on video memory follows from the image size but has not been measured."
+      },
+      "coutVisuel": {
+        "fr": "En dessous de 100 : image plus floue, surtout les instruments et le lointain.",
+        "en": "Below 100: blurrier image, especially instruments and distant scenery."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Inutile : ce réglage ne soulage pas le processeur. Laissez 100.",
+          "en": "Useless: this setting does not relieve the processor. Leave it at 100."
+        },
+        "gpu": {
+          "fr": "Premier levier : revenir à 100, ou passer par le DLSS (voir anticrénelage).",
+          "en": "First lever: go back to 100, or use DLSS instead (see anti-aliasing)."
+        },
+        "vram": {
+          "fr": "Revenir à 100 si vous étiez au-dessus.",
+          "en": "Go back to 100 if you were above it."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Même vol, même vue : comparez le temps GPU et les FPS. Si l'affichage indique une limite du thread principal, aucun gain n'est attendu.",
+        "en": "Same flight, same view: compare GPU time and FPS. If the display shows a main thread limit, expect no gain."
+      }
+    },
+    {
+      "id": "echelle-rendu-2024",
+      "simulateur": "2024",
+      "miseAJourMin": "Lancement",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "rendu",
+      "libelle": {
+        "fr": "Échelle de rendu (Render Scaling)",
+        "en": "Render Scaling"
+      },
+      "valeurs": [
+        50,
+        75,
+        100,
+        125,
+        150
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 3,
+        "vram": 2
+      },
+      "explication": {
+        "fr": "Définition interne de l'image, en pourcentage de la définition de l'écran. Au-dessus de 100, l'image est calculée plus grande puis réduite (plus net, beaucoup plus coûteux) ; en dessous, plus petite puis agrandie (plus flou). Mesure publiée (RTX 3080, 1440p) : l'échelle est le réglage qui pèse le plus sur la carte graphique. L'effet sur la mémoire vidéo découle de la taille de l'image mais n'a pas été mesuré.",
+        "en": "Internal image resolution, as a percentage of the display resolution. Above 100 the image is rendered larger then reduced (sharper, much more costly); below 100, smaller then enlarged (blurrier). Published measurement (RTX 3080, 1440p): scaling is the setting with the largest effect on the graphics card. The effect on video memory follows from the image size but has not been measured."
+      },
+      "coutVisuel": {
+        "fr": "En dessous de 100 : image plus floue, surtout les instruments et le lointain.",
+        "en": "Below 100: blurrier image, especially instruments and distant scenery."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Inutile : ce réglage ne soulage pas le processeur. Laissez 100.",
+          "en": "Useless: this setting does not relieve the processor. Leave it at 100."
+        },
+        "gpu": {
+          "fr": "Premier levier : revenir à 100, ou passer par le DLSS (voir anticrénelage).",
+          "en": "First lever: go back to 100, or use DLSS instead (see anti-aliasing)."
+        },
+        "vram": {
+          "fr": "Revenir à 100 si vous étiez au-dessus.",
+          "en": "Go back to 100 if you were above it."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Même vol, même vue : comparez le temps GPU et les FPS. Si l'affichage indique une limite du thread principal, aucun gain n'est attendu.",
+        "en": "Same flight, same view: compare GPU time and FPS. If the display shows a main thread limit, expect no gain."
+      }
+    },
+    {
+      "id": "anticrenelage-2020",
+      "simulateur": "2020",
+      "miseAJourMin": "SU12",
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "NVIDIA, « DLSS 3 Available This Month In F1 22, Microsoft Flight Simulator… » (novembre 2022)",
+          "url": "https://www.nvidia.com/en-gb/geforce/news/november-2022-rtx-dlss-game-updates",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "anticrenelage",
+      "libelle": {
+        "fr": "Anticrénelage (TAA, DLSS, DLAA, FSR)",
+        "en": "Anti-aliasing (TAA, DLSS, DLAA, FSR)"
+      },
+      "valeurs": [
+        "TAA",
+        "DLSS Super Resolution",
+        "DLAA",
+        "FSR 2"
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 2,
+        "vram": 1
+      },
+      "explication": {
+        "fr": "Le TAA lisse les bords à la définition choisie. Le DLSS Super Resolution (cartes RTX) calcule une image plus petite puis la reconstruit : il soulage la carte graphique. Le DLAA garde la pleine définition et ne sert qu'à la qualité. Liste exacte des modes 2020 à vérifier.",
+        "en": "TAA smooths edges at the chosen resolution. DLSS Super Resolution (RTX cards) renders a smaller image then reconstructs it: it relieves the graphics card. DLAA keeps full resolution and only improves quality. Exact list of 2020 modes to be checked."
+      },
+      "coutVisuel": {
+        "fr": "DLSS en mode Performance : image plus douce, écrans du cockpit parfois flous.",
+        "en": "DLSS Performance mode: softer image, cockpit screens sometimes blurred."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Le DLSS ne changera rien : c'est le processeur qui limite. Choisissez TAA ou DLAA pour la qualité d'image.",
+          "en": "DLSS will change nothing: the processor is the limit. Pick TAA or DLAA for image quality."
+        },
+        "gpu": {
+          "fr": "DLSS Super Resolution en mode Qualité, puis Équilibré si besoin.",
+          "en": "DLSS Super Resolution in Quality mode, then Balanced if needed."
+        },
+        "vram": {
+          "fr": "Le DLSS réduit la définition interne : il peut aider, effet sur la mémoire vidéo non mesuré.",
+          "en": "DLSS lowers the internal resolution: it may help, effect on video memory not measured."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Comparez TAA et DLSS Qualité au même endroit. Aucune différence de FPS : vous n'êtes pas limité par la carte graphique.",
+        "en": "Compare TAA and DLSS Quality at the same spot. No FPS difference: you are not limited by the graphics card."
+      }
+    },
+    {
+      "id": "anticrenelage-2024",
+      "simulateur": "2024",
+      "miseAJourMin": "SU6",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "NVIDIA, article DLSS 4 (Sim Update 3 de MSFS 2024, Multi Frame Generation, rendu natif limité par le processeur)",
+          "url": "https://www.nvidia.com/en-us/geforce/news/cronos-the-new-dawn-hell-is-us-dlss-4-multi-frame-gen/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "Notes de version MSFS 2024 Sim Update 6 (1.8.14.0)",
+          "url": "https://forums.flightsimulator.com/t/release-notes-microsoft-flight-simulator-2024-sim-update-6-1-8-14-0/773330",
+          "consulte": "2026-11-04",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "anticrenelage",
+      "libelle": {
+        "fr": "Anticrénelage (TAA, DLSS, DLAA, FSR)",
+        "en": "Anti-aliasing (TAA, DLSS, DLAA, FSR)"
+      },
+      "valeurs": [
+        "TAA",
+        "DLSS (Ultra Performance → Qualité)",
+        "DLAA",
+        "FSR"
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 2,
+        "vram": 1
+      },
+      "explication": {
+        "fr": "Le DLSS Super Resolution calcule une image plus petite puis la reconstruit : il soulage seulement la carte graphique. NVIDIA indique que sur ses cartes les plus rapides, MSFS 2024 en définition native est limité par le processeur : le DLSS n'y apporte alors rien en FPS. Défaut connu (mesure publiée) : le DLSS et le FSR masquent mal les écrans du cockpit, qui peuvent devenir flous. Depuis la SU6, le DLSS 4.5 sert de mise à l'échelle par défaut.",
+        "en": "DLSS Super Resolution renders a smaller image then reconstructs it: it only relieves the graphics card. NVIDIA states that on its fastest cards, MSFS 2024 at native resolution is limited by the processor: DLSS then brings no FPS gain. Known issue (published measurement): DLSS and FSR mask cockpit screens poorly, which can become blurry. Since SU6, DLSS 4.5 is the default upscaler."
+      },
+      "coutVisuel": {
+        "fr": "Modes Performance et Ultra Performance : image plus douce, écrans du cockpit flous.",
+        "en": "Performance and Ultra Performance modes: softer image, blurry cockpit screens."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Le DLSS ne changera rien : c'est le processeur qui limite. Choisissez TAA ou DLAA selon la netteté préférée.",
+          "en": "DLSS will change nothing: the processor is the limit. Pick TAA or DLAA for your preferred sharpness."
+        },
+        "gpu": {
+          "fr": "DLSS en mode Qualité, puis Équilibré si besoin.",
+          "en": "DLSS in Quality mode, then Balanced if needed."
+        },
+        "vram": {
+          "fr": "Le DLSS réduit la définition interne : il peut aider, effet sur la mémoire vidéo non mesuré.",
+          "en": "DLSS lowers the internal resolution: it may help, effect on video memory not measured."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Comparez TAA et DLSS Qualité au même endroit. Aucune différence de FPS : vous n'êtes pas limité par la carte graphique. Regardez aussi la netteté des écrans du cockpit.",
+        "en": "Compare TAA and DLSS Quality at the same spot. No FPS difference: you are not limited by the graphics card. Also check how sharp the cockpit screens are."
+      }
+    },
+    {
+      "id": "generation-images-2020",
+      "simulateur": "2020",
+      "miseAJourMin": "SU11",
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "NVIDIA, « DLSS 3 Available This Month In F1 22, Microsoft Flight Simulator… » (novembre 2022)",
+          "url": "https://www.nvidia.com/en-gb/geforce/news/november-2022-rtx-dlss-game-updates",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "hwcooling.net, « DLSS 3 and frame generation minitest in MS Flight Simulator »",
+          "url": "https://www.hwcooling.net/en/dlss-3-and-frame-generation-minitest-in-ms-flight-simulator/",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "Forum officiel, « DLSS3 frame generation greyed out » (prérequis rapportés par les utilisateurs)",
+          "url": "https://forums.flightsimulator.com/t/dlss3-frame-generation-greyed-out/550089",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "generation-images",
+      "libelle": {
+        "fr": "Génération d'images (DLSS Frame Generation)",
+        "en": "Frame Generation (DLSS Frame Generation)"
+      },
+      "valeurs": [
+        "Désactivée",
+        "Activée"
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 1,
+        "vram": 1
+      },
+      "explication": {
+        "fr": "Arrivée avec la SU11 (novembre 2022), réservée aux cartes RTX 40 et plus récentes. Elle intercale des images calculées par la carte graphique entre les images réellement rendues : les FPS affichés montent, la simulation et la réactivité aux commandes non. Prérequis rapportés par les utilisateurs, non confirmés par Asobo : DirectX 12, planification GPU à accélération matérielle (HAGS) et DLSS comme anticrénelage. Multi Frame Generation en 2020 : non confirmée.",
+        "en": "Added in SU11 (November 2022), for RTX 40 and newer cards only. It inserts frames generated by the graphics card between really rendered frames: displayed FPS go up, the simulation and control responsiveness do not. Prerequisites reported by users, not confirmed by Asobo: DirectX 12, hardware-accelerated GPU scheduling (HAGS) and DLSS as anti-aliasing. Multi Frame Generation in 2020: not confirmed."
+      },
+      "coutVisuel": {
+        "fr": "Artefacts possibles sur l'interface et les instruments, latence accrue.",
+        "en": "Possible artefacts on the interface and instruments, added latency."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Augmente les images affichées même quand le processeur limite, mais pas la fréquence de la simulation ni la réactivité. À réserver à une base déjà stable.",
+          "en": "Raises displayed frames even when the processor is the limit, but not the simulation rate nor responsiveness. Keep it for an already stable base."
+        },
+        "gpu": {
+          "fr": "Coûte un peu de travail à la carte graphique : d'abord stabiliser la base (échelle, nuages), ensuite l'activer.",
+          "en": "Costs the graphics card some work: first stabilise the base (scaling, clouds), then turn it on."
+        },
+        "vram": {
+          "fr": "Utilise de la mémoire vidéo supplémentaire (non mesuré) : à éviter si la mémoire vidéo est déjà pleine.",
+          "en": "Uses extra video memory (not measured): avoid it if video memory is already full."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Notez les FPS affichés et le temps du thread principal, avec et sans. Le temps du thread principal doit rester le même : seuls les FPS affichés changent.",
+        "en": "Note displayed FPS and main thread time, with and without. Main thread time should stay the same: only displayed FPS change."
+      }
+    },
+    {
+      "id": "generation-images-2024",
+      "simulateur": "2024",
+      "miseAJourMin": "SU6",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "NVIDIA, pilote Game Ready S.T.A.L.K.E.R. 2 / Microsoft Flight Simulator 2024 (DLSS 3, Frame Generation, Reflex au lancement)",
+          "url": "https://www.nvidia.com/en-us/geforce/news/stalker-2-heart-of-chornobyl-geforce-game-ready-driver/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "NVIDIA, article DLSS 4 (Sim Update 3 de MSFS 2024, Multi Frame Generation, rendu natif limité par le processeur)",
+          "url": "https://www.nvidia.com/en-us/geforce/news/cronos-the-new-dawn-hell-is-us-dlss-4-multi-frame-gen/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "NVIDIA, « DLSS 4.5 Dynamic Multi Frame Generation & 6X Available Now »",
+          "url": "https://www.nvidia.com/en-us/geforce/news/dlss-4-5-dynamic-multi-frame-generation-6x-mode-released/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "Notes de version MSFS 2024 Sim Update 6 (1.8.14.0)",
+          "url": "https://forums.flightsimulator.com/t/release-notes-microsoft-flight-simulator-2024-sim-update-6-1-8-14-0/773330",
+          "consulte": "2026-11-04",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "generation-images",
+      "libelle": {
+        "fr": "Génération d'images (Frame Generation, Multi Frame Generation)",
+        "en": "Frame Generation (Frame Generation, Multi Frame Generation)"
+      },
+      "valeurs": [
+        "Désactivée",
+        "2X",
+        "3X",
+        "4X",
+        "Dynamique (RTX 50)"
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 1,
+        "vram": 1
+      },
+      "explication": {
+        "fr": "Présente dès le lancement (RTX 40 et plus récentes). La Multi Frame Generation (jusqu'à 3 images générées par image rendue) est arrivée avec la SU3 et reste réservée aux RTX 50, comme le mode dynamique ajouté ensuite. Les FPS affichés sont multipliés, pas la simulation : NVIDIA annonce par exemple ×4,2 en 4K avec la Multi Frame Generation. Date d'arrivée du DLSS 4.5 : SU6 selon Asobo, SU7 selon NVIDIA.",
+        "en": "Available since launch (RTX 40 and newer). Multi Frame Generation (up to 3 generated frames per rendered frame) arrived with SU3 and remains RTX 50 only, as does the dynamic mode added later. Displayed FPS are multiplied, not the simulation: NVIDIA quotes for example ×4.2 at 4K with Multi Frame Generation. DLSS 4.5 arrival: SU6 according to Asobo, SU7 according to NVIDIA."
+      },
+      "coutVisuel": {
+        "fr": "Artefacts possibles sur l'interface et les instruments, latence accrue, d'autant plus que le facteur est élevé.",
+        "en": "Possible artefacts on the interface and instruments, added latency, more so with higher factors."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Augmente les images affichées même quand le processeur limite, mais pas la fréquence de la simulation ni la réactivité. À réserver à une base déjà stable.",
+          "en": "Raises displayed frames even when the processor is the limit, but not the simulation rate nor responsiveness. Keep it for an already stable base."
+        },
+        "gpu": {
+          "fr": "Coûte un peu de travail à la carte graphique : d'abord stabiliser la base (échelle, nuages), ensuite l'activer.",
+          "en": "Costs the graphics card some work: first stabilise the base (scaling, clouds), then turn it on."
+        },
+        "vram": {
+          "fr": "Utilise de la mémoire vidéo supplémentaire (non mesuré) : à éviter si la mémoire vidéo est déjà pleine.",
+          "en": "Uses extra video memory (not measured): avoid it if video memory is already full."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Notez les FPS affichés et le temps du thread principal, avec et sans. Le temps du thread principal doit rester le même : seuls les FPS affichés changent.",
+        "en": "Note displayed FPS and main thread time, with and without. Main thread time should stay the same: only displayed FPS change."
+      }
+    },
+    {
+      "id": "tlod-2020",
+      "simulateur": "2020",
+      "miseAJourMin": "SU12",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "msfsaddons, « Sim Update 6 is now available » (reprend la note officielle 1.20.6.0 : TLOD jusqu'à 400)",
+          "url": "https://msfsaddons.com/2021/10/19/sim-update-6-is-now-available-for-microsoft-flight-simulator/",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "detail",
+      "libelle": {
+        "fr": "Niveau de détail du terrain (Terrain LOD)",
+        "en": "Terrain Level of Detail (TLOD)"
+      },
+      "valeurs": [
+        10,
+        100,
+        200,
+        300,
+        400
+      ],
+      "impact": {
+        "cpu": 3,
+        "gpu": 2,
+        "vram": 3
+      },
+      "explication": {
+        "fr": "Distance jusqu'à laquelle le sol, la photogrammétrie et la végétation sont affichés en détail. Jusqu'à 400 depuis la SU6 (200 avant). Mesure publiée : de 100 à 400, 107,2 → 57,8 FPS quand le processeur limite, 62,5 → 52,6 quand la carte graphique limite.",
+        "en": "Distance up to which ground, photogrammetry and vegetation are shown in detail. Up to 400 since SU6 (200 before). Published measurement: from 100 to 400, 107.2 → 57.8 FPS when the processor limits, 62.5 → 52.6 when the graphics card limits."
+      },
+      "coutVisuel": {
+        "fr": "Détails qui apparaissent plus près de l'avion (effet de « popping »).",
+        "en": "Details pop in closer to the aircraft."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Premier levier : 100 (valeur de la mesure publiée), puis ajustez.",
+          "en": "First lever: 100 (value from the published measurement), then adjust."
+        },
+        "gpu": {
+          "fr": "Effet réel mais secondaire : touchez d'abord à l'échelle et aux nuages.",
+          "en": "Real but secondary effect: change scaling and clouds first."
+        },
+        "vram": {
+          "fr": "À baisser en priorité avec la résolution des textures.",
+          "en": "Lower it first, together with texture resolution."
+        },
+        "streaming": {
+          "fr": "Une valeur plus basse réduit les données à charger (non mesuré).",
+          "en": "A lower value reduces the data to load (not measured)."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Survol d'une ville en photogrammétrie, même trajectoire : comparez le temps du thread principal et la mémoire vidéo.",
+        "en": "Fly over a photogrammetry city along the same path: compare main thread time and video memory."
+      }
+    },
+    {
+      "id": "tlod-2024",
+      "simulateur": "2024",
+      "miseAJourMin": "Lancement",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "milesy1188, « MSFS 2024 Graphic Settings overview in 2026 » : mesures i7-14700KF / RTX 5070 Ti / 4K, SU4",
+          "url": "https://forums.flightsimulator.com/t/msfs-2024-graphic-settings-overview-in-2026/757241",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "detail",
+      "libelle": {
+        "fr": "Niveau de détail du terrain (Terrain LOD)",
+        "en": "Terrain Level of Detail (TLOD)"
+      },
+      "valeurs": [
+        10,
+        50,
+        100,
+        200,
+        300,
+        400
+      ],
+      "impact": {
+        "cpu": 3,
+        "gpu": 2,
+        "vram": 3
+      },
+      "explication": {
+        "fr": "Distance jusqu'à laquelle le sol, la photogrammétrie et la végétation sont affichés en détail. Mesure publiée (photogrammétrie) : de 10 à 400, 114,3 → 73,1 FPS (−36 %) quand le processeur limite, et environ 2,5 Go de mémoire vidéo en plus.",
+        "en": "Distance up to which ground, photogrammetry and vegetation are shown in detail. Published measurement (photogrammetry): from 10 to 400, 114.3 → 73.1 FPS (−36%) when the processor limits, and about 2.5 GB more video memory."
+      },
+      "coutVisuel": {
+        "fr": "Détails qui apparaissent plus près de l'avion (effet de « popping »).",
+        "en": "Details pop in closer to the aircraft."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Premier levier : 100 à 200 selon les mesures publiées, puis ajustez.",
+          "en": "First lever: 100 to 200 according to published measurements, then adjust."
+        },
+        "gpu": {
+          "fr": "Effet réel mais secondaire : touchez d'abord à l'échelle et aux nuages.",
+          "en": "Real but secondary effect: change scaling and clouds first."
+        },
+        "vram": {
+          "fr": "À baisser en priorité avec la résolution des textures.",
+          "en": "Lower it first, together with texture resolution."
+        },
+        "streaming": {
+          "fr": "Une valeur plus basse réduit les données à charger (non mesuré).",
+          "en": "A lower value reduces the data to load (not measured)."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Survol d'une ville en photogrammétrie, même trajectoire : comparez le temps du thread principal et la mémoire vidéo.",
+        "en": "Fly over a photogrammetry city along the same path: compare main thread time and video memory."
+      }
+    },
+    {
+      "id": "olod-2020",
+      "simulateur": "2020",
+      "miseAJourMin": "SU12",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "detail",
+      "libelle": {
+        "fr": "Niveau de détail des objets (Objects LOD)",
+        "en": "Objects Level of Detail (OLOD)"
+      },
+      "valeurs": [
+        10,
+        50,
+        100,
+        200
+      ],
+      "impact": {
+        "cpu": 1,
+        "gpu": 0,
+        "vram": 1
+      },
+      "explication": {
+        "fr": "Distance d'affichage détaillé des bâtiments et objets. Mesure publiée : effet modeste, −6 % au maximum quand le processeur limite, négligeable quand la carte graphique limite.",
+        "en": "Detailed display distance of buildings and objects. Published measurement: modest effect, −6% at most when the processor limits, negligible when the graphics card limits."
+      },
+      "coutVisuel": {
+        "fr": "Bâtiments et objets qui apparaissent plus tard.",
+        "en": "Buildings and objects appear later."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Levier secondaire : 100, après le niveau de détail du terrain.",
+          "en": "Secondary lever: 100, after terrain level of detail."
+        },
+        "gpu": {
+          "fr": "Sans effet mesurable : inutile d'y toucher.",
+          "en": "No measurable effect: no need to change it."
+        },
+        "vram": {
+          "fr": "Effet sur la mémoire vidéo non mesuré.",
+          "en": "Effect on video memory not measured."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Survol urbain, même trajectoire : comparez le temps du thread principal.",
+        "en": "Urban flyover, same path: compare main thread time."
+      }
+    },
+    {
+      "id": "olod-2024",
+      "simulateur": "2024",
+      "miseAJourMin": "SU3",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "Notes de version MSFS 2024 Sim Update 3 (1.5.27.0)",
+          "url": "https://forums.flightsimulator.com/t/release-notes-microsoft-flight-simulator-2024-sim-update-3-1-5-27-0-available-now/733934",
+          "consulte": "2026-11-04",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "detail",
+      "libelle": {
+        "fr": "Niveau de détail des objets (Objects LOD)",
+        "en": "Objects Level of Detail (OLOD)"
+      },
+      "valeurs": [
+        10,
+        50,
+        100,
+        150,
+        200
+      ],
+      "impact": {
+        "cpu": 2,
+        "gpu": 1,
+        "vram": 1
+      },
+      "explication": {
+        "fr": "Distance d'affichage détaillé des bâtiments et objets. Mesure publiée : de 10 à 200, 54,2 → 47,2 FPS (−12,9 %). La SU3 a modifié la courbe de détail au-delà de 100.",
+        "en": "Detailed display distance of buildings and objects. Published measurement: from 10 to 200, 54.2 → 47.2 FPS (−12.9%). SU3 changed the detail curve above 100."
+      },
+      "coutVisuel": {
+        "fr": "Bâtiments et objets qui apparaissent plus tard.",
+        "en": "Buildings and objects appear later."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Deuxième levier après le niveau de détail du terrain : 100.",
+          "en": "Second lever after terrain level of detail: 100."
+        },
+        "gpu": {
+          "fr": "Effet faible : à garder pour la fin.",
+          "en": "Small effect: keep it for last."
+        },
+        "vram": {
+          "fr": "Effet sur la mémoire vidéo non mesuré.",
+          "en": "Effect on video memory not measured."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Survol urbain, même trajectoire : comparez le temps du thread principal.",
+        "en": "Urban flyover, same path: compare main thread time."
+      }
+    },
+    {
+      "id": "nuages-volumetriques",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "milesy1188, « MSFS 2024 Graphic Settings overview in 2026 » : mesures i7-14700KF / RTX 5070 Ti / 4K, SU4",
+          "url": "https://forums.flightsimulator.com/t/msfs-2024-graphic-settings-overview-in-2026/757241",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "nuages",
+      "libelle": {
+        "fr": "Nuages volumétriques",
+        "en": "Volumetric Clouds"
+      },
+      "valeurs": [
+        "Bas",
+        "Moyen",
+        "Haut",
+        "Ultra"
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 3,
+        "vram": 0
+      },
+      "explication": {
+        "fr": "Qualité de calcul des nuages en volume. Mesures publiées : d'Ultra à Bas, +26 % de FPS en 2020 et +22 % en 2024 quand la carte graphique limite, sans effet mesurable sur le processeur ni sur la mémoire vidéo.",
+        "en": "Quality of volumetric cloud rendering. Published measurements: from Ultra to Low, +26% FPS in 2020 and +22% in 2024 when the graphics card limits, with no measurable effect on the processor or video memory."
+      },
+      "coutVisuel": {
+        "fr": "Sous « Haut », les nuages deviennent grossiers et pâteux.",
+        "en": "Below High, clouds become coarse and lumpy."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Sans effet : laissez la qualité que vous aimez.",
+          "en": "No effect: keep the quality you like."
+        },
+        "gpu": {
+          "fr": "Passer d'Ultra à Haut : gain net, perte visuelle modérée.",
+          "en": "Go from Ultra to High: clear gain, moderate visual loss."
+        },
+        "vram": {
+          "fr": "Sans effet mesurable sur la mémoire vidéo.",
+          "en": "No measurable effect on video memory."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Même météo fixe (préréglage nuageux), même vue : comparez le temps GPU.",
+        "en": "Same fixed weather (cloudy preset), same view: compare GPU time."
+      }
+    },
+    {
+      "id": "resolution-textures",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "milesy1188, « MSFS 2024 Graphic Settings overview in 2026 » : mesures i7-14700KF / RTX 5070 Ti / 4K, SU4",
+          "url": "https://forums.flightsimulator.com/t/msfs-2024-graphic-settings-overview-in-2026/757241",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "textures",
+      "libelle": {
+        "fr": "Résolution des textures",
+        "en": "Texture Resolution"
+      },
+      "valeurs": [
+        "Bas",
+        "Moyen",
+        "Haut",
+        "Ultra"
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 0,
+        "vram": 3
+      },
+      "explication": {
+        "fr": "Finesse des images plaquées sur les objets. Mesures publiées : presque aucun effet sur les FPS, mais de Bas à Ultra, +0,9 Go de mémoire vidéo en 2020 et +2,8 Go en 2024.",
+        "en": "Detail of the images applied to objects. Published measurements: almost no effect on FPS, but from Low to Ultra, +0.9 GB of video memory in 2020 and +2.8 GB in 2024."
+      },
+      "coutVisuel": {
+        "fr": "Textures plus floues de près.",
+        "en": "Blurrier textures up close."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Sans effet : gardez Ultra si la mémoire vidéo le permet.",
+          "en": "No effect: keep Ultra if video memory allows."
+        },
+        "gpu": {
+          "fr": "Sans effet mesurable sur les FPS : gardez Ultra si la mémoire vidéo le permet.",
+          "en": "No measurable effect on FPS: keep Ultra if video memory allows."
+        },
+        "vram": {
+          "fr": "Premier levier : Haut, puis Moyen.",
+          "en": "First lever: High, then Medium."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Relevez la mémoire vidéo utilisée au même endroit, après avoir relancé le vol.",
+        "en": "Note video memory used at the same spot, after restarting the flight."
+      }
+    },
+    {
+      "id": "ombres-terrain",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "ombres",
+      "libelle": {
+        "fr": "Ombres du terrain",
+        "en": "Terrain Shadows"
+      },
+      "valeurs": [
+        "Désactivées",
+        1024,
+        2048
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 2,
+        "vram": 0
+      },
+      "explication": {
+        "fr": "Ombres portées par le relief. Mesures publiées quand la carte graphique limite : −9,5 % à 2048 en 2020, −15 % en 2024. La taille des autres cartes d'ombres (Shadow Maps) n'a presque aucun effet mesuré.",
+        "en": "Shadows cast by terrain. Published measurements when the graphics card limits: −9.5% at 2048 in 2020, −15% in 2024. The size of the other shadow maps has almost no measured effect."
+      },
+      "coutVisuel": {
+        "fr": "Relief moins modelé, ombres du terrain absentes au loin.",
+        "en": "Flatter-looking terrain, no terrain shadows in the distance."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Effet sur le processeur non mesuré : à garder pour la fin.",
+          "en": "Effect on the processor not measured: keep it for last."
+        },
+        "gpu": {
+          "fr": "Levier utile : 1024 ou désactivé.",
+          "en": "Useful lever: 1024 or off."
+        },
+        "vram": {
+          "fr": "Effet sur la mémoire vidéo non mesuré.",
+          "en": "Effect on video memory not measured."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Même vue sur un relief marqué : comparez le temps GPU.",
+        "en": "Same view over rugged terrain: compare GPU time."
+      }
+    },
+    {
+      "id": "trafic-2024",
+      "simulateur": "2024",
+      "miseAJourMin": "SU4",
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "SDK MSFS 2024, « Ground Traffic »",
+          "url": "https://docs.flightsimulator.com/msfs2024/retail/content-configuration/environment/living-world/ground-traffic/index.md",
+          "consulte": "2026-11-04",
+          "rang": 1
+        },
+        {
+          "titre": "Notes de version MSFS 2024 Sim Update 3 (1.5.27.0)",
+          "url": "https://forums.flightsimulator.com/t/release-notes-microsoft-flight-simulator-2024-sim-update-3-1-5-27-0-available-now/733934",
+          "consulte": "2026-11-04",
+          "rang": 1
+        },
+        {
+          "titre": "Notes de la bêta SU7 1.9.10.0 de MSFS 2024",
+          "url": "https://forums.flightsimulator.com/t/release-notes-su7-beta-1-9-10-0-september-11-2026/775924",
+          "consulte": "2026-11-04",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "trafic",
+      "libelle": {
+        "fr": "Trafic (véhicules d'aéroport, routes, bateaux, avions)",
+        "en": "Traffic (airport vehicles, roads, boats, aircraft)"
+      },
+      "valeurs": [
+        "0 %",
+        "50 %",
+        "100 %"
+      ],
+      "impact": {
+        "cpu": 2,
+        "gpu": 1,
+        "vram": 1
+      },
+      "explication": {
+        "fr": "Densités de véhicules d'aéroport, de voitures, de bateaux de plaisance et d'avions. Chaque élément animé est calculé par le processeur. La SU4 annonce des optimisations du thread principal pour ce trafic. Aucune mesure publiée sérieuse trouvée : impact estimé, à vérifier.",
+        "en": "Densities of airport vehicles, road cars, leisure boats and aircraft. Each animated element is computed by the processor. SU4 announced main thread optimisations for this traffic. No serious published measurement found: impact estimated, to be checked."
+      },
+      "coutVisuel": {
+        "fr": "Aéroports et routes moins animés.",
+        "en": "Less lively airports and roads."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Levier probable mais non mesuré : baissez une densité à la fois et mesurez.",
+          "en": "Likely lever, not measured: lower one density at a time and measure."
+        },
+        "gpu": {
+          "fr": "Effet probablement faible : à garder pour la fin.",
+          "en": "Probably small effect: keep it for last."
+        },
+        "vram": {
+          "fr": "Effet non mesuré.",
+          "en": "Effect not measured."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Même aéroport chargé, au parking : densité 0 puis 100, comparez le temps du thread principal.",
+        "en": "Same busy airport, parked: density 0 then 100, compare main thread time."
+      }
+    },
+    {
+      "id": "ecrans-cockpit",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "milesy1188, « MSFS 2024 Graphic Settings overview in 2026 » : mesures i7-14700KF / RTX 5070 Ti / 4K, SU4",
+          "url": "https://forums.flightsimulator.com/t/msfs-2024-graphic-settings-overview-in-2026/757241",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "stormbirds.blog, propos d'Asobo sur le fil dédié aux écrans de cockpit (2021)",
+          "url": "https://stormbirds.blog/2021/07/02/asobo-reports-that-flight-simulator-will-get-a-big-performance-boost/",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "cockpit",
+      "libelle": {
+        "fr": "Fréquence des écrans du cockpit (Glass Cockpit Refresh Rate)",
+        "en": "Glass Cockpit Refresh Rate"
+      },
+      "valeurs": [
+        "Bas",
+        "Moyen",
+        "Haut"
+      ],
+      "impact": {
+        "cpu": 1,
+        "gpu": 0,
+        "vram": 0
+      },
+      "explication": {
+        "fr": "Fréquence de mise à jour des écrans des avions modernes. Asobo a indiqué en 2021 qu'ils ont leur propre fil de calcul. Les mesures publiées (avion simple) ne montrent aucun effet ; des éditeurs d'avions complexes rapportent le contraire. Sources contradictoires : à vérifier selon l'avion.",
+        "en": "Update rate of modern aircraft displays. Asobo said in 2021 that they run on their own thread. Published measurements (simple aircraft) show no effect; developers of complex aircraft report otherwise. Contradictory sources: to be checked per aircraft."
+      },
+      "coutVisuel": {
+        "fr": "Écrans du cockpit saccadés.",
+        "en": "Choppy cockpit displays."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "À tester avec un avion de ligne complexe : Moyen, puis comparez.",
+          "en": "Test with a complex airliner: Medium, then compare."
+        },
+        "gpu": {
+          "fr": "Sans effet mesuré : laissez Haut.",
+          "en": "No measured effect: leave it at High."
+        },
+        "vram": {
+          "fr": "Sans effet mesuré.",
+          "en": "No measured effect."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Avion de ligne au parking, écrans allumés : Bas puis Haut, comparez le temps du thread principal.",
+        "en": "Airliner parked, displays on: Low then High, compare main thread time."
+      }
+    },
+    {
+      "id": "vsync-2024",
+      "simulateur": "2024",
+      "miseAJourMin": "SU3",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Notes de version MSFS 2024 Sim Update 3 (1.5.27.0)",
+          "url": "https://forums.flightsimulator.com/t/release-notes-microsoft-flight-simulator-2024-sim-update-3-1-5-27-0-available-now/733934",
+          "consulte": "2026-11-04",
+          "rang": 1
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "cadence",
+      "libelle": {
+        "fr": "Synchronisation verticale (V-Sync Interval) et limite d'images",
+        "en": "Vertical sync (V-Sync Interval) and frame limit"
+      },
+      "valeurs": [
+        "Désactivée",
+        "1 (fréquence de l'écran)",
+        "2 (moitié)",
+        "Limite personnalisée"
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 0,
+        "vram": 0
+      },
+      "explication": {
+        "fr": "La SU3 a renommé « Frame Rate Limiter » en « V-Sync Interval » et ajouté un plafond d'images. Un intervalle de 2 cale l'image sur la moitié de la fréquence de l'écran. Mesure publiée : désactiver la synchronisation si l'on ne tient pas en permanence la fréquence visée, sinon la cadence devient irrégulière. Voir la partie « cible FPS » de l'outil.",
+        "en": "SU3 renamed “Frame Rate Limiter” to “V-Sync Interval” and added a frame cap. An interval of 2 locks frames to half the display refresh rate. Published measurement: turn sync off unless you can hold the target constantly, otherwise frame pacing becomes uneven. See the tool's “FPS target” section."
+      },
+      "coutVisuel": {
+        "fr": "Sans synchronisation ni VRR : déchirures horizontales de l'image.",
+        "en": "Without sync or VRR: horizontal tearing."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Visez un sous-multiple de la fréquence que vous tenez réellement (voir cible FPS).",
+          "en": "Aim for a divisor of the refresh rate that you actually hold (see FPS target)."
+        },
+        "gpu": {
+          "fr": "Visez un sous-multiple de la fréquence que vous tenez réellement (voir cible FPS).",
+          "en": "Aim for a divisor of the refresh rate that you actually hold (see FPS target)."
+        },
+        "vram": {
+          "fr": "Sans rapport : réglez d'abord la mémoire vidéo.",
+          "en": "Unrelated: fix video memory first."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Vol long et stable : la cadence est-elle régulière (pas de saccade périodique) ?",
+        "en": "Long, steady flight: is frame pacing even (no periodic stutter)?"
+      }
+    },
+    {
+      "id": "directx-2020",
+      "simulateur": "2020",
+      "miseAJourMin": "SU12",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "fsnews.eu, « Microsoft Flight Simulator Sim Update 7 released » (reprend la note officielle 1.21.13.0 : DX12 en option)",
+          "url": "https://fsnews.eu/microsoft-flight-simulator-sim-update-7-released/",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "categorie": "api-graphique",
+      "libelle": {
+        "fr": "Version de DirectX (DX11 / DX12)",
+        "en": "DirectX version (DX11 / DX12)"
+      },
+      "valeurs": [
+        "DX11",
+        "DX12"
+      ],
+      "impact": {
+        "cpu": 1,
+        "gpu": 2,
+        "vram": 1
+      },
+      "explication": {
+        "fr": "DX12 est proposé en option depuis la SU7 (redémarrage nécessaire). Mesure publiée : DX12 un peu plus lent (−3 % quand le processeur limite, −10,5 % quand la carte graphique limite). La génération d'images exigerait DX12 : rapporté par les utilisateurs, à vérifier. MSFS 2024 n'a pas ce choix.",
+        "en": "DX12 has been offered as an option since SU7 (restart required). Published measurement: DX12 slightly slower (−3% when the processor limits, −10.5% when the graphics card limits). Frame Generation reportedly requires DX12: user reports, to be checked. MSFS 2024 has no such choice."
+      },
+      "coutVisuel": {
+        "fr": "Aucun effet visuel direct.",
+        "en": "No direct visual effect."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "DX11, sauf si vous voulez la génération d'images.",
+          "en": "DX11, unless you want Frame Generation."
+        },
+        "gpu": {
+          "fr": "DX11, sauf si vous voulez la génération d'images ou le DLSS récent.",
+          "en": "DX11, unless you want Frame Generation or recent DLSS."
+        },
+        "vram": {
+          "fr": "DX12 bénéficie depuis la SU11 d'une gestion de la mémoire vidéo saturée (note de version) : à vérifier.",
+          "en": "Since SU11, DX12 has handling for maxed-out video memory (release notes): to be checked."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite (affichage FPS du mode développeur) avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you (developer mode FPS display) before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Même vol, mêmes réglages, une fois en DX11 et une fois en DX12 (redémarrage entre les deux).",
+        "en": "Same flight, same settings, once in DX11 and once in DX12 (restart in between)."
+      }
+    }
+  ]
+}

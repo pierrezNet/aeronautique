@@ -1,0 +1,388 @@
+{
+  "description": "Règles du diagnostic, de la cadence, de la génération d'images et du mode challenge. Ce fichier porte les textes et les sources ; la condition de chaque règle est une fonction JS du même id dans js/moteur/regles.js.",
+  "regles": [
+    {
+      "id": "diag-sans-mesure",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "SDK MSFS 2020, menu Debug du mode développeur (option « Display FPS »)",
+          "url": "https://docs.flightsimulator.com/html/Developer_Mode/Menus/Debug.htm",
+          "consulte": "2026-11-04",
+          "rang": 1
+        },
+        {
+          "titre": "SDK MSFS 2024, menu Debug du mode développeur (option « Display FPS »)",
+          "url": "https://docs.flightsimulator.com/msfs2024/retail/devmode/menus/debug/",
+          "consulte": "2026-11-04",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "diagnostic",
+      "gravite": "info",
+      "message": {
+        "fr": "Sans mesure, impossible de savoir ce qui limite vos FPS. Activez le mode développeur (options générales), puis Debug > Display FPS : l'affichage indique ce qui limite l'image et le temps de calcul de chaque partie.",
+        "en": "Without measurements, there is no way to know what limits your FPS. Turn on developer mode (general options), then Debug > Display FPS: the display shows what limits the frame and how long each part takes."
+      }
+    },
+    {
+      "id": "diag-limite-main-thread",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "SDK MSFS 2020, menu Debug du mode développeur (option « Display FPS »)",
+          "url": "https://docs.flightsimulator.com/html/Developer_Mode/Menus/Debug.htm",
+          "consulte": "2026-11-04",
+          "rang": 1
+        },
+        {
+          "titre": "SDK MSFS 2024, menu Debug du mode développeur (option « Display FPS »)",
+          "url": "https://docs.flightsimulator.com/msfs2024/retail/devmode/menus/debug/",
+          "consulte": "2026-11-04",
+          "rang": 1
+        },
+        {
+          "titre": "Forum officiel, « PSA: Use the in-game FPS counter to check for performance bottlenecks » (libellés Limited by MainThread / GPU)",
+          "url": "https://forums.flightsimulator.com/t/psa-use-the-in-game-fps-counter-to-check-for-performance-bottlenecks/136961",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "diagnostic",
+      "gravite": "important",
+      "message": {
+        "fr": "Le thread principal du processeur (« MainThread ») est le plus lent : la simulation, le trafic et la préparation du décor limitent l'image. Baisser la résolution ou activer le DLSS n'y changera rien ; agissez d'abord sur le niveau de détail du terrain et des objets, puis sur le trafic.",
+        "en": "The processor's main thread (“MainThread”) is the slowest: simulation, traffic and scenery preparation limit the frame. Lowering resolution or turning on DLSS will change nothing; act first on terrain and objects level of detail, then on traffic."
+      }
+    },
+    {
+      "id": "diag-limite-gpu",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "SDK MSFS 2020, menu Debug du mode développeur (option « Display FPS »)",
+          "url": "https://docs.flightsimulator.com/html/Developer_Mode/Menus/Debug.htm",
+          "consulte": "2026-11-04",
+          "rang": 1
+        },
+        {
+          "titre": "SDK MSFS 2024, menu Debug du mode développeur (option « Display FPS »)",
+          "url": "https://docs.flightsimulator.com/msfs2024/retail/devmode/menus/debug/",
+          "consulte": "2026-11-04",
+          "rang": 1
+        },
+        {
+          "titre": "Forum officiel, « PSA: Use the in-game FPS counter to check for performance bottlenecks » (libellés Limited by MainThread / GPU)",
+          "url": "https://forums.flightsimulator.com/t/psa-use-the-in-game-fps-counter-to-check-for-performance-bottlenecks/136961",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "diagnostic",
+      "gravite": "important",
+      "message": {
+        "fr": "La carte graphique est la plus lente : chaque image attend la fin de son calcul. Échelle de rendu, DLSS, nuages et ombres du terrain sont les leviers efficaces.",
+        "en": "The graphics card is the slowest: each frame waits for it to finish. Render scaling, DLSS, clouds and terrain shadows are the effective levers."
+      }
+    },
+    {
+      "id": "diag-limite-rendu",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Forum officiel, « Low FPS - Limited by RdrThread »",
+          "url": "https://forums.flightsimulator.com/t/low-fps-limited-by-rdrthread/370489",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "diagnostic",
+      "gravite": "attention",
+      "message": {
+        "fr": "Le thread de rendu du processeur (« RdrThread ») limite : il prépare les ordres de dessin pour la carte graphique. Les forums l'associent à la quantité d'objets à dessiner (niveau de détail des objets, trafic) ; aucune source officielle ne le confirme.",
+        "en": "The processor's render thread (“RdrThread”) is the limit: it prepares drawing commands for the graphics card. Forums link it to the number of objects to draw (objects level of detail, traffic); no official source confirms this."
+      }
+    },
+    {
+      "id": "diag-vram-saturee",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Forum officiel, « FPS performance - VRAM bug? » (2024)",
+          "url": "https://forums.flightsimulator.com/t/fps-performance-vram-bug/668753",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "diagnostic",
+      "gravite": "important",
+      "message": {
+        "fr": "La mémoire vidéo utilisée approche du total de la carte. Quand elle est pleine, les forums rapportent des chutes brutales de FPS, des saccades et des textures qui restent floues. Baissez d'abord la résolution des textures et le niveau de détail du terrain. Aucun seuil officiel : la marge retenue ici est à vérifier.",
+        "en": "Video memory in use is close to the card's total. When it is full, forums report sudden FPS drops, stutters and textures that stay blurry. Lower texture resolution and terrain level of detail first. No official threshold: the margin used here is to be checked."
+      }
+    },
+    {
+      "id": "cadence-sous-multiple",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "cadence",
+      "gravite": "important",
+      "message": {
+        "fr": "Sans écran à fréquence variable (G-Sync, FreeSync), une cible qui ne divise pas exactement la fréquence de l'écran fait afficher certaines images plus longtemps que d'autres : une saccade revient à intervalle régulier. Exemple : 165 Hz / 4 = 41,25 ; un verrou à 41 ne tombe pas juste. Raisonnement établi, mais aucune source de rang 1 à 3 trouvée pour MSFS.",
+        "en": "Without a variable refresh display (G-Sync, FreeSync), a target that does not divide the refresh rate exactly makes some frames stay on screen longer than others: a stutter comes back at regular intervals. Example: 165 Hz / 4 = 41.25; a 41 lock does not fit. Well-established reasoning, but no rank 1 to 3 source found for MSFS."
+      }
+    },
+    {
+      "id": "cadence-vrr",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [],
+      "dateVerification": "2026-11-04",
+      "type": "cadence",
+      "gravite": "info",
+      "message": {
+        "fr": "Avec un écran à fréquence variable (VRR) actif, l'écran suit la cadence du jeu : la cible n'a plus besoin d'être un sous-multiple, elle doit seulement rester dans la plage VRR de l'écran. Pratique courante, source à trouver.",
+        "en": "With an active variable refresh (VRR) display, the screen follows the game's pace: the target no longer needs to be a divisor, it only has to stay within the display's VRR range. Common practice, source to be found."
+      }
+    },
+    {
+      "id": "generation-pas-la-simulation",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "NVIDIA, « DLSS 3 Available This Month In F1 22, Microsoft Flight Simulator… » (novembre 2022)",
+          "url": "https://www.nvidia.com/en-gb/geforce/news/november-2022-rtx-dlss-game-updates",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "NVIDIA, article DLSS 4 (Sim Update 3 de MSFS 2024, Multi Frame Generation, rendu natif limité par le processeur)",
+          "url": "https://www.nvidia.com/en-us/geforce/news/cronos-the-new-dawn-hell-is-us-dlss-4-multi-frame-gen/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "generation",
+      "gravite": "important",
+      "message": {
+        "fr": "NVIDIA présente la génération d'images comme une façon de dépasser la limite du processeur dans MSFS : les images générées « ne passent jamais par le processeur ». Elle augmente donc les images affichées, même quand le processeur limite, mais pas le nombre d'images réellement simulées ni la réactivité aux commandes. Les FPS affichés peuvent doubler ou plus sans que la simulation soit plus fluide.",
+        "en": "NVIDIA presents Frame Generation as a way past the processor limit in MSFS: generated frames “never touch the CPU”. It therefore raises displayed frames, even when the processor is the limit, but not the number of really simulated frames nor control responsiveness. Displayed FPS can double or more without the simulation being any smoother."
+      }
+    },
+    {
+      "id": "generation-seuil-base",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [],
+      "dateVerification": "2026-11-04",
+      "type": "generation",
+      "gravite": "attention",
+      "message": {
+        "fr": "La génération d'images se justifie surtout quand les FPS réels (sans elle) sont déjà stables, vers 40. NVIDIA ne publie pas de minimum officiel ; les guides citent de 35-40 à 50-60 FPS. Seuil retenu ici : 40, à vérifier.",
+        "en": "Frame Generation mainly makes sense when real FPS (without it) are already stable, around 40. NVIDIA publishes no official minimum; guides quote from 35-40 to 50-60 FPS. Threshold used here: 40, to be checked."
+      }
+    },
+    {
+      "id": "generation-juste-sous-seuil",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [],
+      "dateVerification": "2026-11-04",
+      "type": "generation",
+      "gravite": "attention",
+      "message": {
+        "fr": "Vos FPS réels sont juste sous le seuil d'environ 40. La génération d'images affichera plus d'images, mais la base irrégulière se verra davantage (latence, artefacts). Gagnez d'abord quelques images réelles sur ce qui vous limite, puis réessayez.",
+        "en": "Your real FPS are just under the threshold of about 40. Frame Generation will show more frames, but the uneven base will be more visible (latency, artefacts). First gain a few real frames on what limits you, then try again."
+      }
+    },
+    {
+      "id": "generation-mfg-rtx50",
+      "simulateur": "2024",
+      "miseAJourMin": "SU3",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "NVIDIA, article DLSS 4 (Sim Update 3 de MSFS 2024, Multi Frame Generation, rendu natif limité par le processeur)",
+          "url": "https://www.nvidia.com/en-us/geforce/news/cronos-the-new-dawn-hell-is-us-dlss-4-multi-frame-gen/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "NVIDIA, « DLSS 4 Introduces Multi Frame Generation & Enhancements For All DLSS Technologies »",
+          "url": "https://www.nvidia.com/en-us/geforce/news/dlss4-multi-frame-generation-ai-innovations/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "NVIDIA, « DLSS 4.5 Dynamic Multi Frame Generation & 6X Available Now »",
+          "url": "https://www.nvidia.com/en-us/geforce/news/dlss-4-5-dynamic-multi-frame-generation-6x-mode-released/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "generation",
+      "gravite": "info",
+      "message": {
+        "fr": "La Multi Frame Generation (3X, 4X, dynamique) est réservée aux cartes GeForce RTX 50, depuis la SU3 de MSFS 2024. Sur une RTX 40, seule la génération 2X existe ; avant les RTX 40, pas de génération d'images DLSS.",
+        "en": "Multi Frame Generation (3X, 4X, dynamic) is reserved for GeForce RTX 50 cards, since SU3 of MSFS 2024. On an RTX 40 only 2X generation exists; before RTX 40, no DLSS Frame Generation."
+      }
+    },
+    {
+      "id": "dlss-inutile-goulot-cpu",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "NVIDIA, « DLSS 3 Available This Month In F1 22, Microsoft Flight Simulator… » (novembre 2022)",
+          "url": "https://www.nvidia.com/en-gb/geforce/news/november-2022-rtx-dlss-game-updates",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "NVIDIA, article DLSS 4 (Sim Update 3 de MSFS 2024, Multi Frame Generation, rendu natif limité par le processeur)",
+          "url": "https://www.nvidia.com/en-us/geforce/news/cronos-the-new-dawn-hell-is-us-dlss-4-multi-frame-gen/",
+          "consulte": "2026-11-04",
+          "rang": 2
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "diagnostic",
+      "gravite": "attention",
+      "message": {
+        "fr": "Le DLSS Super Resolution allège seulement la carte graphique. NVIDIA rappelle que MSFS peut être limité par le processeur même sur les processeurs les plus rapides : dans ce cas, DLSS et TAA donnent les mêmes FPS. C'est probablement pour cela que vous n'avez vu aucune différence.",
+        "en": "DLSS Super Resolution only relieves the graphics card. NVIDIA notes that MSFS can be limited by the processor even on the fastest processors: then DLSS and TAA give the same FPS. That is probably why you saw no difference."
+      }
+    },
+    {
+      "id": "dlss-ecrans-cockpit-flous",
+      "simulateur": "2024",
+      "miseAJourMin": "Lancement",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "diagnostic",
+      "gravite": "info",
+      "message": {
+        "fr": "Écrans du cockpit flous avec DLSS ou FSR : défaut connu, ces techniques masquent mal les écrans des instruments. Essayez le DLAA ou le TAA si la lisibilité des instruments compte plus que les FPS.",
+        "en": "Blurry cockpit screens with DLSS or FSR: known issue, these techniques mask instrument displays poorly. Try DLAA or TAA if instrument readability matters more than FPS."
+      }
+    },
+    {
+      "id": "challenge-resolution-main-thread",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "challenge",
+      "gravite": "attention",
+      "message": {
+        "fr": "Vous avez baissé la résolution (ou l'échelle de rendu) alors que le thread principal limite. Les mesures publiées ne montrent aucun effet de ce réglage sur le processeur : qu'espériez-vous gagner ?",
+        "en": "You lowered resolution (or render scaling) while the main thread is the limit. Published measurements show no effect of this setting on the processor: what did you expect to gain?"
+      }
+    }
+  ]
+}

@@ -1,0 +1,263 @@
+{
+  "description": "Symptômes proposés au questionnaire et pistes associées (goulots probables, paramètres concernés).",
+  "symptomes": [
+    {
+      "id": "saccade-reguliere",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "libelle": {
+        "fr": "Saccade qui revient à intervalle régulier, même en vol stable",
+        "en": "Stutter that returns at regular intervals, even in steady flight"
+      },
+      "pistes": {
+        "goulots": [],
+        "parametres": [
+          "vsync-2024"
+        ]
+      },
+      "explication": {
+        "fr": "Signe typique d'une cible FPS qui ne divise pas la fréquence de l'écran, sans fréquence variable. Voir la partie « cible FPS ».",
+        "en": "Typical sign of an FPS target that does not divide the display refresh rate, without variable refresh. See the “FPS target” section."
+      }
+    },
+    {
+      "id": "chute-villes",
+      "statut": "verifie",
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "libelle": {
+        "fr": "Chute de FPS au-dessus des grandes villes",
+        "en": "FPS drop over large cities"
+      },
+      "pistes": {
+        "goulots": [
+          "cpu",
+          "vram"
+        ],
+        "parametres": [
+          "tlod-2020",
+          "tlod-2024",
+          "olod-2024"
+        ]
+      },
+      "explication": {
+        "fr": "Photogrammétrie et bâtiments : le niveau de détail du terrain y pèse le plus, sur le processeur comme sur la mémoire vidéo (mesures publiées).",
+        "en": "Photogrammetry and buildings: terrain level of detail weighs most there, on both the processor and video memory (published measurements)."
+      }
+    },
+    {
+      "id": "saccades-approche-aeroport",
+      "statut": "a-verifier",
+      "sources": [],
+      "dateVerification": "2026-11-04",
+      "libelle": {
+        "fr": "Micro-saccades à l'approche des aéroports",
+        "en": "Micro-stutters when approaching airports"
+      },
+      "pistes": {
+        "goulots": [
+          "cpu",
+          "streaming"
+        ],
+        "parametres": [
+          "trafic-2024",
+          "olod-2024"
+        ]
+      },
+      "explication": {
+        "fr": "Pistes à vérifier : chargement du décor de l'aéroport, trafic au sol et véhicules. Aucune source sérieuse trouvée.",
+        "en": "Leads to be checked: airport scenery loading, ground traffic and vehicles. No serious source found."
+      }
+    },
+    {
+      "id": "ecrans-cockpit-flous",
+      "statut": "verifie",
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "libelle": {
+        "fr": "Écrans du cockpit flous ou illisibles",
+        "en": "Blurry or unreadable cockpit screens"
+      },
+      "pistes": {
+        "goulots": [],
+        "parametres": [
+          "anticrenelage-2024"
+        ]
+      },
+      "explication": {
+        "fr": "Défaut connu du DLSS et du FSR, qui masquent mal les écrans des instruments.",
+        "en": "Known issue with DLSS and FSR, which mask instrument displays poorly."
+      }
+    },
+    {
+      "id": "image-floue",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "libelle": {
+        "fr": "Image générale floue",
+        "en": "Generally blurry image"
+      },
+      "pistes": {
+        "goulots": [
+          "gpu"
+        ],
+        "parametres": [
+          "echelle-rendu-2020",
+          "echelle-rendu-2024",
+          "anticrenelage-2024"
+        ]
+      },
+      "explication": {
+        "fr": "Échelle de rendu sous 100 ou DLSS en mode Performance : la définition interne est réduite.",
+        "en": "Render scaling below 100 or DLSS Performance mode: internal resolution is reduced."
+      }
+    },
+    {
+      "id": "artefacts-interface",
+      "statut": "a-verifier",
+      "sources": [],
+      "dateVerification": "2026-11-04",
+      "libelle": {
+        "fr": "Artefacts ou dédoublements sur l'interface et les instruments",
+        "en": "Artefacts or ghosting on the interface and instruments"
+      },
+      "pistes": {
+        "goulots": [],
+        "parametres": [
+          "generation-images-2020",
+          "generation-images-2024"
+        ]
+      },
+      "explication": {
+        "fr": "Piste probable : la génération d'images, qui invente des images intermédiaires. À vérifier.",
+        "en": "Likely lead: Frame Generation, which creates in-between frames. To be checked."
+      }
+    },
+    {
+      "id": "chute-nuages",
+      "statut": "verifie",
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "libelle": {
+        "fr": "Chute de FPS dans les nuages ou par temps couvert",
+        "en": "FPS drop in clouds or overcast weather"
+      },
+      "pistes": {
+        "goulots": [
+          "gpu"
+        ],
+        "parametres": [
+          "nuages-volumetriques"
+        ]
+      },
+      "explication": {
+        "fr": "Les nuages volumétriques pèsent sur la carte graphique (−22 à −26 % d'Ultra à Bas, mesures publiées).",
+        "en": "Volumetric clouds weigh on the graphics card (−22 to −26% from Ultra to Low, published measurements)."
+      }
+    },
+    {
+      "id": "textures-tardives",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "Forum officiel, « FPS performance - VRAM bug? » (2024)",
+          "url": "https://forums.flightsimulator.com/t/fps-performance-vram-bug/668753",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "libelle": {
+        "fr": "Textures qui restent floues ou se chargent tard",
+        "en": "Textures that stay blurry or load late"
+      },
+      "pistes": {
+        "goulots": [
+          "vram",
+          "streaming"
+        ],
+        "parametres": [
+          "resolution-textures",
+          "tlod-2024"
+        ]
+      },
+      "explication": {
+        "fr": "Signe rapporté d'une mémoire vidéo saturée ou d'un chargement lent des données. À vérifier.",
+        "en": "Reported sign of full video memory or slow data loading. To be checked."
+      }
+    },
+    {
+      "id": "chute-nuit",
+      "statut": "a-verifier",
+      "sources": [],
+      "dateVerification": "2026-11-04",
+      "libelle": {
+        "fr": "Chute de FPS de nuit",
+        "en": "FPS drop at night"
+      },
+      "pistes": {
+        "goulots": [],
+        "parametres": []
+      },
+      "explication": {
+        "fr": "Aucune piste sourcée pour l'instant. Notez le scénario dans le journal : vos mesures aideront à documenter ce cas.",
+        "en": "No sourced lead yet. Record the scenario in the journal: your measurements will help document this case."
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+/* Atelier réglages MSFS : mise en page propre à l'outil, sur les variables de theme.css. */
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+a { color: var(--primary); }
+
+.atelier {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin: 10px 0 30px;
+}
+
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--primary);
+    font-size: 2rem;
+    line-height: 1.25;
+    margin: 20px 0 10px;
+}
+
+.accroche {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.en-construction {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 12px;
+    padding: 16px 20px;
+}
+
+footer {
+    margin: 50px 0 20px;
+    font-size: 0.85rem;
+    text-align: center;
+    opacity: 0.85;
+}
+
+@media (max-width: 600px) {
+    h1 { font-size: 1.6rem; }
+    /* Dégage le titre des boutons de langue et de thème (position fixe en haut à droite) */
+    header { padding-top: 20px; }
+}

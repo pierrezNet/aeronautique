@@ -15,6 +15,7 @@ lang.js             # Commun : langue FR/EN (clé localStorage 'lang', sinon lan
 en/                 # Version anglaise : même arborescence (en/index.html, en/watch/, en/selcal/, en/phraseologie/)
 retour.js / .css    # Formulaire « J'ai un retour » (horloge UTC, SELCAL) : <dialog> bilingue, POST /api/retour
 relais/             # Worker Cloudflare (JS sans build) sur la route aeronautique.xyz/api/retour → forum AvroBB
+reglages/           # Atelier réglages MSFS (en construction) : moteur JS pur (js/moteur/), base de connaissances JSON (donnees/), tests node:test ; voir reglages/CONTRIBUTING.md
 fonts/              # Polices woff2 auto-hébergées (Orbitron, Roboto, Inter) + licences OFL
 watch/index.html    # Horloge UTC avec effets gyroscope (SVG + DeviceOrientation API)
 watch/watch.js      # Aide iOS + capteur de lumière ambiante
@@ -35,6 +36,7 @@ L'application **Phraséologie** (phraseo.aeronautique.xyz) est hébergée dans u
 ## Stack et conventions
 
 - **Zéro dépendance** : pas de framework, pas de build, pas de package.json
+  - Exception limitée : `reglages/package.json` ne contient que des scripts (`npm test` = `node --test`, `npm run verifier`), sans aucune dépendance
 - CSS : variables custom, Flexbox/Grid, media queries, transitions/animations
 - JS : ES6+, Web Audio API (SELCAL), Generic Sensor API (gyroscope, lumière ambiante)
 - Polices : auto-hébergées dans `fonts/` (Orbitron pour les titres, Roboto/Inter pour le corps), pas de Google Fonts

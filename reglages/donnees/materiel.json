@@ -1,0 +1,78 @@
+{
+  "description": "Familles de cartes graphiques et leurs capacités de mise à l'échelle et de génération d'images. Le modèle saisi par l'utilisateur est rapproché d'une famille par l'expression régulière « motif » (insensible à la casse). La VRAM est toujours demandée à l'utilisateur : un même modèle existe parfois en plusieurs quantités (ex. RTX 5060 Ti 8 Go et 16 Go).",
+  "familles": [
+    {
+      "id": "rtx-50",
+      "nom": "GeForce RTX 50",
+      "motif": "rtx\\s*50\\d0",
+      "dlssSR": true,
+      "generationImages": true,
+      "multiGeneration": true,
+      "statut": "verifie",
+      "sources": [
+        { "titre": "NVIDIA DLSS 4 Introduces Multi Frame Generation & Enhancements For All DLSS Technologies", "url": "https://www.nvidia.com/en-us/geforce/news/dlss4-multi-frame-generation-ai-innovations/", "consulte": "2026-11-04", "rang": 2 }
+      ]
+    },
+    {
+      "id": "rtx-40",
+      "nom": "GeForce RTX 40",
+      "motif": "rtx\\s*40\\d0",
+      "dlssSR": true,
+      "generationImages": true,
+      "multiGeneration": false,
+      "statut": "verifie",
+      "sources": [
+        { "titre": "NVIDIA DLSS 4 Introduces Multi Frame Generation & Enhancements For All DLSS Technologies", "url": "https://www.nvidia.com/en-us/geforce/news/dlss4-multi-frame-generation-ai-innovations/", "consulte": "2026-11-04", "rang": 2 }
+      ]
+    },
+    {
+      "id": "rtx-30",
+      "nom": "GeForce RTX 30",
+      "motif": "rtx\\s*30\\d0",
+      "dlssSR": true,
+      "generationImages": false,
+      "multiGeneration": false,
+      "statut": "verifie",
+      "sources": [
+        { "titre": "NVIDIA DLSS 4 Introduces Multi Frame Generation & Enhancements For All DLSS Technologies", "url": "https://www.nvidia.com/en-us/geforce/news/dlss4-multi-frame-generation-ai-innovations/", "consulte": "2026-11-04", "rang": 2 }
+      ]
+    },
+    {
+      "id": "rtx-20",
+      "nom": "GeForce RTX 20",
+      "motif": "rtx\\s*20\\d0",
+      "dlssSR": true,
+      "generationImages": false,
+      "multiGeneration": false,
+      "statut": "verifie",
+      "sources": [
+        { "titre": "NVIDIA DLSS 4 Introduces Multi Frame Generation & Enhancements For All DLSS Technologies", "url": "https://www.nvidia.com/en-us/geforce/news/dlss4-multi-frame-generation-ai-innovations/", "consulte": "2026-11-04", "rang": 2 }
+      ]
+    },
+    {
+      "id": "gtx",
+      "nom": "GeForce GTX (sans DLSS)",
+      "motif": "gtx",
+      "dlssSR": false,
+      "generationImages": false,
+      "multiGeneration": false,
+      "statut": "verifie",
+      "sources": [
+        { "titre": "NVIDIA DLSS 4 Introduces Multi Frame Generation & Enhancements For All DLSS Technologies (DLSS réservé aux GeForce RTX)", "url": "https://www.nvidia.com/en-us/geforce/news/dlss4-multi-frame-generation-ai-innovations/", "consulte": "2026-11-04", "rang": 2 }
+      ]
+    },
+    {
+      "id": "amd-radeon",
+      "nom": "AMD Radeon",
+      "motif": "radeon|\\brx\\s*\\d{3,4}",
+      "dlssSR": false,
+      "generationImages": false,
+      "multiGeneration": false,
+      "remarque": "Pas de DLSS. La prise en charge de FSR (mise à l'échelle et génération d'images) dans chaque simulateur reste à vérifier.",
+      "statut": "a-verifier",
+      "sources": [
+        { "titre": "NVIDIA DLSS 4 Introduces Multi Frame Generation & Enhancements For All DLSS Technologies (DLSS réservé aux GeForce RTX)", "url": "https://www.nvidia.com/en-us/geforce/news/dlss4-multi-frame-generation-ai-innovations/", "consulte": "2026-11-04", "rang": 2 }
+      ]
+    }
+  ]
+}
