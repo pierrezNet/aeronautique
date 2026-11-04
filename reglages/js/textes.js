@@ -10,7 +10,7 @@ const TEXTES = {
         intro: 'Tout reste dans votre navigateur : rien n\'est envoyé. Vos réponses sont gardées sur cet appareil pour la prochaine visite.',
 
         // 1. Configuration
-        configuration: '1. Votre configuration',
+        configuration: 'Votre configuration',
         simulateur: 'Simulateur',
         directx: 'Version de DirectX (MSFS 2020)',
         gpu: 'Carte graphique',
@@ -41,7 +41,7 @@ const TEXTES = {
         libellesValeurs: { desactive: 'Désactivé', active: 'Activé', bas: 'Bas', moyen: 'Moyen', haut: 'Haut', ultra: 'Ultra', dx11: 'DirectX 11', dx12: 'DirectX 12' },
 
         // 2. Mesures
-        mesures: '2. Vos mesures (facultatives, mais décisives)',
+        mesures: 'Vos mesures (facultatives, mais décisives)',
         mesuresIntro: 'Sans mesure, l\'outil ne peut que deviner ce qui vous limite.',
         aideMesuresTitre: 'Comment lire l\'affichage FPS du simulateur ?',
         aideMesures: [
@@ -72,21 +72,27 @@ const TEXTES = {
         verrouAide: 'Panneau NVIDIA, application NVIDIA ou simulateur. Laissez vide s\'il n\'y en a pas.',
 
         // 3. Symptômes
-        symptomes: '3. Ce que vous constatez',
+        symptomes: 'Ce que vous constatez',
 
         // 4. Changements (mode challenge)
-        changements: '4. Réglages que vous avez déjà changés (facultatif)',
+        changements: 'Réglages que vous avez déjà changés (facultatif)',
         changementsIntro: 'Indiquez ce que vous avez modifié par rapport aux valeurs d\'origine : le mode challenge vous demandera pourquoi, à la lumière de votre diagnostic.',
-        changementsChoisirSimulateur: 'Choisissez d\'abord le simulateur (étape 1).',
+        changementsChoisirSimulateur: 'Choisissez d\'abord le simulateur (étape 1, Configuration).',
         sensAucun: 'Pas touché', sensBaisse: 'Baissé ou désactivé', sensHausse: 'Augmenté ou activé',
 
-        analyser: 'Analyser',
         effacer: 'Tout effacer',
         effacerConfirmer: 'Effacer toutes vos réponses enregistrées sur cet appareil ?',
-        champsManquants: 'Indiquez au moins le simulateur et la fréquence de l\'écran.',
+        // Parcours en étapes
+        parcoursNom: 'Étapes',
+        etapes: { configuration: 'Configuration', mesures: 'Mesures', constats: 'Constats', diagnostic: 'Diagnostic', reglages: 'Réglages', challenge: 'Challenge', journal: 'Journal', ia: 'IA' },
+        precedent: 'Précédent',
+        suivant: 'Suivant',
+        position: (n, total, titre) => `Étape ${n} sur ${total} : ${titre}`,
+        resultatsManquants: 'Pour cette étape, indiquez au moins le simulateur et la fréquence de l\'écran.',
+        allerConfiguration: 'Aller à l\'étape 1, Configuration',
+        challengeIntro: 'Pour chaque réglage que vous avez déjà changé (étape 3, Constats), une question vous demande ce que vous en attendiez, à la lumière de votre diagnostic. Pas de note : l\'explication compte plus que la réponse.',
 
         // Résultats
-        resultats: 'Résultats',
         diagnostic: 'Ce qui vous limite',
         goulots: {
             cpu: 'Le processeur',
@@ -135,7 +141,7 @@ const TEXTES = {
         gravites: { important: 'Important', attention: 'Attention', info: 'Info' },
 
         challenge: 'Mode challenge',
-        challengeAucunChangement: 'Indiquez à l\'étape 4 les réglages que vous avez changés : l\'outil vous demandera ce que vous en attendiez.',
+        challengeAucunChangement: 'Indiquez à l\'étape 3 (Constats) les réglages que vous avez changés : l\'outil vous demandera ce que vous en attendiez.',
         challengeAucuneQuestion: 'Pas de question pour ces changements : ils ne contredisent pas votre diagnostic.',
         challengeVotreChangement: (reglage, sens) => `Votre changement : ${reglage}, ${sens}.`,
         bonneReponse: 'Bonne réponse.',
@@ -166,8 +172,8 @@ const TEXTES = {
             'Le 1 % bas (les images les plus lentes) n\'apparaît probablement pas dans l\'affichage du simulateur : relevez-le avec un autre outil (overlay NVIDIA, CapFrameX, PresentMon) si vous en avez un.'
         ],
         nouvelEssai: 'Nouvel essai',
-        essaiSimulateur: 'Simulateur : celui choisi à l\'étape 1.',
-        essaiSansSimulateur: 'Choisissez d\'abord le simulateur à l\'étape 1.',
+        essaiSimulateur: 'Simulateur : celui choisi à l\'étape 1 (Configuration).',
+        essaiSansSimulateur: 'Choisissez d\'abord le simulateur à l\'étape 1 (Configuration).',
         aeroport: 'Aéroport ou lieu',
         avionEssai: 'Avion',
         meteo: 'Météo (préréglage)',
@@ -184,7 +190,7 @@ const TEXTES = {
         notes: 'Notes',
         ajouter: 'Ajouter au journal',
         erreursEssai: {
-            simulateur: 'Choisissez le simulateur à l\'étape 1.',
+            simulateur: 'Choisissez le simulateur à l\'étape 1 (Configuration).',
             fpsMoyen: 'Indiquez les FPS moyens.',
             unPourcentBas: 'Le 1 % bas doit être un nombre positif.',
             ressenti: 'Le ressenti va de 1 à 5.',
@@ -220,7 +226,6 @@ const TEXTES = {
         csvEntetes: ['Date', 'Simulateur', 'Aéroport', 'Avion', 'Météo', 'Heure', 'Durée', 'Réglage', 'Avant', 'Après', 'Génération d\'images', 'FPS moyens', '1 % bas', 'Ressenti', 'Écart FPS', 'Écart %', 'Remarques', 'Notes'],
         nomFichier: 'journal-reglages',
         // IA (étape 7)
-        ia: 'Aller plus loin avec une IA',
         iaIntro: 'L\'outil prépare un texte qui résume votre situation, à donner à l\'IA de votre choix. Elle peut expliquer autrement ou répondre à une question précise ; elle peut aussi se tromper : gardez le même protocole de test pour vérifier ce qu\'elle propose.',
         iaQuestion: 'Votre question (facultatif)',
         iaQuestionAide: 'Par exemple : pourquoi mes FPS chutent-ils à l\'approche de Paris ?',
@@ -256,7 +261,7 @@ const TEXTES = {
         erreurChargement: 'Unable to load the knowledge base. Please reload the page.',
         intro: 'Everything stays in your browser: nothing is sent. Your answers are kept on this device for your next visit.',
 
-        configuration: '1. Your setup',
+        configuration: 'Your setup',
         simulateur: 'Simulator',
         directx: 'DirectX version (MSFS 2020)',
         gpu: 'Graphics card',
@@ -286,7 +291,7 @@ const TEXTES = {
         colChezVous: 'Yours',
         libellesValeurs: { desactive: 'Off', active: 'On', bas: 'Low', moyen: 'Medium', haut: 'High', ultra: 'Ultra', dx11: 'DirectX 11', dx12: 'DirectX 12' },
 
-        mesures: '2. Your measurements (optional, but decisive)',
+        mesures: 'Your measurements (optional, but decisive)',
         mesuresIntro: 'Without measurements, the tool can only guess what limits you.',
         aideMesuresTitre: 'How to read the simulator\'s FPS display?',
         aideMesures: [
@@ -316,19 +321,24 @@ const TEXTES = {
         verrou: 'Current frame limit (FPS, if you have one)',
         verrouAide: 'NVIDIA control panel, NVIDIA app or simulator. Leave empty if there is none.',
 
-        symptomes: '3. What you notice',
+        symptomes: 'What you notice',
 
-        changements: '4. Settings you have already changed (optional)',
+        changements: 'Settings you have already changed (optional)',
         changementsIntro: 'Tell what you changed from the default values: challenge mode will ask you why, in light of your diagnosis.',
-        changementsChoisirSimulateur: 'First choose the simulator (step 1).',
+        changementsChoisirSimulateur: 'First choose the simulator (step 1, Setup).',
         sensAucun: 'Unchanged', sensBaisse: 'Lowered or turned off', sensHausse: 'Raised or turned on',
 
-        analyser: 'Analyse',
         effacer: 'Clear everything',
         effacerConfirmer: 'Clear all your answers saved on this device?',
-        champsManquants: 'Please give at least the simulator and the display refresh rate.',
+        parcoursNom: 'Steps',
+        etapes: { configuration: 'Setup', mesures: 'Measurements', constats: 'Observations', diagnostic: 'Diagnosis', reglages: 'Settings', challenge: 'Challenge', journal: 'Journal', ia: 'AI' },
+        precedent: 'Previous',
+        suivant: 'Next',
+        position: (n, total, titre) => `Step ${n} of ${total}: ${titre}`,
+        resultatsManquants: 'For this step, please give at least the simulator and the display refresh rate.',
+        allerConfiguration: 'Go to step 1, Setup',
+        challengeIntro: 'For each setting you have already changed (step 3, Observations), a question asks what you expected from it, in light of your diagnosis. No score: the explanation matters more than the answer.',
 
-        resultats: 'Results',
         diagnostic: 'What limits you',
         goulots: {
             cpu: 'The processor',
@@ -377,7 +387,7 @@ const TEXTES = {
         gravites: { important: 'Important', attention: 'Caution', info: 'Info' },
 
         challenge: 'Challenge mode',
-        challengeAucunChangement: 'Tell at step 4 which settings you changed: the tool will ask what you expected from them.',
+        challengeAucunChangement: 'Tell at step 3 (Observations) which settings you changed: the tool will ask what you expected from them.',
         challengeAucuneQuestion: 'No question for these changes: they do not contradict your diagnosis.',
         challengeVotreChangement: (reglage, sens) => `Your change: ${reglage}, ${sens}.`,
         bonneReponse: 'Correct.',
@@ -407,8 +417,8 @@ const TEXTES = {
             'The 1% low (the slowest frames) is probably not shown by the simulator: note it with another tool (NVIDIA overlay, CapFrameX, PresentMon) if you have one.'
         ],
         nouvelEssai: 'New test',
-        essaiSimulateur: 'Simulator: the one chosen at step 1.',
-        essaiSansSimulateur: 'First choose the simulator at step 1.',
+        essaiSimulateur: 'Simulator: the one chosen at step 1 (Setup).',
+        essaiSansSimulateur: 'First choose the simulator at step 1 (Setup).',
         aeroport: 'Airport or location',
         avionEssai: 'Aircraft',
         meteo: 'Weather (preset)',
@@ -425,7 +435,7 @@ const TEXTES = {
         notes: 'Notes',
         ajouter: 'Add to journal',
         erreursEssai: {
-            simulateur: 'Choose the simulator at step 1.',
+            simulateur: 'Choose the simulator at step 1 (Setup).',
             fpsMoyen: 'Enter the average FPS.',
             unPourcentBas: 'The 1% low must be a positive number.',
             ressenti: 'Feel ranges from 1 to 5.',
@@ -459,7 +469,6 @@ const TEXTES = {
         csvSeparateur: ',',
         csvEntetes: ['Date', 'Simulator', 'Airport', 'Aircraft', 'Weather', 'Time', 'Duration', 'Setting', 'Before', 'After', 'Frame Generation', 'Average FPS', '1% low', 'Feel', 'FPS change', 'Change %', 'Remarks', 'Notes'],
         nomFichier: 'settings-journal',
-        ia: 'Going further with an AI',
         iaIntro: 'The tool prepares a text summarising your situation, to give to the AI of your choice. It can explain things differently or answer a specific question; it can also be wrong: keep the same test protocol to check what it suggests.',
         iaQuestion: 'Your question (optional)',
         iaQuestionAide: 'For example: why do my FPS drop when approaching London?',

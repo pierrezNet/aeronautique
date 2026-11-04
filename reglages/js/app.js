@@ -11,6 +11,7 @@ import { lireCapture } from './moteur/presentmon.js';
 import { lireUserCfg } from './moteur/usercfg.js';
 import { monterJournal } from './interfaceJournal.js';
 import { blocIa } from './interfaceIa.js';
+import { creerParcours } from './parcours.js';
 
 const racine = document.getElementById('atelier');
 const DONNEES = '/reglages/donnees/';
@@ -163,7 +164,7 @@ function construireFormulaire(base) {
     const avertissementVr = el('p', { class: 'aide avertissement', id: 'vr-avertissement', hidden: true }, T.vrAvertissement);
 
     const configuration = el('fieldset', { class: 'etape' },
-        el('legend', {}, T.configuration),
+        el('legend', { class: 'sr-only' }, T.configuration),
         blocUserCfg(base),
         choix('simulateur', T.simulateur, [['2024', 'Microsoft Flight Simulator 2024'], ['2020', 'Microsoft Flight Simulator 2020']]),
         blocDirectx,
@@ -192,7 +193,7 @@ function construireFormulaire(base) {
     );
 
     const mesures = el('fieldset', { class: 'etape' },
-        el('legend', {}, T.mesures),
+        el('legend', { class: 'sr-only' }, T.mesures),
         el('p', {}, T.mesuresIntro),
         aide,
         blocCapture(),
@@ -222,14 +223,16 @@ function construireFormulaire(base) {
         el('div', { class: 'grille', id: 'liste-changements' })
     );
 
-    return el('form', { id: 'formulaire', novalidate: true },
-        configuration, mesures, symptomes, changements,
-        el('p', { class: 'erreur', id: 'erreur-formulaire', role: 'alert', hidden: true }),
-        el('div', { class: 'actions' },
-            el('button', { type: 'submit', class: 'btn' }, T.analyser),
-            el('button', { type: 'button', class: 'btn btn-secondaire', id: 'effacer' }, T.effacer)
-        )
-    );
+    // Les étapes 1 à 3 sont des panneaux du même formulaire : ses réponses sont mémorisées d'un bloc
+    const panneau = (id, titre, ...contenu) => el('div', { class: 'panneau', id: `panneau-${id}` }, el('h2', {}, titre), ...contenu);
+    const panneaux = {
+        configuration: panneau('configuration', T.etapes.configuration, el('p', { class: 'intro' }, T.intro), configuration,
+            el('div', { class: 'actions' }, el('button', { type: 'button', class: 'btn btn-secondaire', id: 'effacer' }, T.effacer))),
+        mesures: panneau('mesures', T.etapes.mesures, mesures),
+        constats: panneau('constats', T.etapes.constats, symptomes, changements)
+    };
+    const formulaire = el('form', { id: 'formulaire', novalidate: true }, Object.values(panneaux));
+    return { formulaire, panneaux };
 }
 
 // Un menu par réglage du simulateur choisi : pas touché, baissé, augmenté.
@@ -414,9 +417,8 @@ function blocTableau(r, usercfg) {
         el('li', {}, T.impact(T.impactGpu, l.impact.gpu)),
         el('li', {}, T.impact(T.impactVram, l.impact.vram))
     );
-    return el('section', { 'aria-labelledby': 'titre-tableau' },
-        el('h3', { id: 'titre-tableau' }, T.tableau),
-        el('p', {}, T.tableauIntro),
+    // Le titre et l'introduction sont ceux de l'étape « Réglages »
+    return el('div', {},
         el('table', { class: 'tableau' },
             el('thead', {}, el('tr', {},
                 [T.colReglage, avecUsercfg && T.colChezVous, T.colImpact, T.colDepart, T.colCout, T.colTest]
@@ -465,23 +467,27 @@ function blocChallenge(r, saisie, base) {
     if (saisie.changements.length === 0) contenu = el('p', {}, T.challengeAucunChangement);
     else if (r.challenge.length === 0) contenu = el('p', {}, T.challengeAucuneQuestion);
     else contenu = r.challenge.map((q, i) => questionChallenge(q, i, base));
-    return el('section', { 'aria-labelledby': 'titre-challenge' }, el('h3', { id: 'titre-challenge' }, T.challenge), contenu);
+    return el('div', {}, contenu);
 }
 
-function afficherResultats(zone, r, saisie, base, donnerFocus = true) {
+// Contenu des étapes de résultats (4 à 6, et 8), recalculé à chaque entrée dans l'une d'elles
+function afficherResultats(zones, saisie, base) {
     const profil = saisie.profil;
-    const titre = el('h2', { id: 'titre-resultats', tabindex: '-1' }, T.resultats);
-    zone.replaceChildren(
-        titre,
+    if (!profil.simulateur || !profil.frequenceHz) {
+        // Il manque l'essentiel : chaque étape renvoie vers l'étape 1
+        for (const zone of Object.values(zones)) {
+            zone.replaceChildren(el('p', { class: 'avertissement' }, T.resultatsManquants, ' ',
+                el('a', { href: '#configuration' }, T.allerConfiguration)));
+        }
+        return;
+    }
+    const r = analyser(saisie, base);
+    zones.diagnostic.replaceChildren(
         el('div', { class: 'cartes' }, blocDiagnostic(r), blocCadence(r, profil), blocGeneration(r)),
-        blocMessages(r),
-        blocChallenge(r, saisie, base),
-        blocTableau(r, saisie.usercfg && saisie.usercfg.simulateur === profil.simulateur ? saisie.usercfg : null),
-        blocIa(saisie, r, base)
-    );
-    zone.hidden = false;
-    // Après « Analyser », le focus passe au titre des résultats : lecteurs d'écran et clavier y arrivent directement
-    if (donnerFocus) titre.focus();
+        blocMessages(r));
+    zones.reglages.replaceChildren(blocTableau(r, saisie.usercfg && saisie.usercfg.simulateur === profil.simulateur ? saisie.usercfg : null));
+    zones.challenge.replaceChildren(blocChallenge(r, saisie, base));
+    zones.ia.replaceChildren(blocIa(saisie, r, base));
 }
 
 // ── Démarrage ───────────────────────────────────────────────────────────────────────────
@@ -497,10 +503,32 @@ async function demarrer() {
         return;
     }
 
-    const formulaire = construireFormulaire(base);
-    const resultats = el('section', { id: 'resultats', class: 'resultats', 'aria-labelledby': 'titre-resultats', hidden: true });
-    const journal = el('section', { id: 'journal', class: 'journal-section' });
-    racine.replaceChildren(el('p', { class: 'intro' }, T.intro), formulaire, resultats, journal);
+    const { formulaire, panneaux } = construireFormulaire(base);
+
+    // Étapes de résultats : un titre fixe et une zone remplie par afficherResultats()
+    const zones = {};
+    const panneauResultat = (id, intro) => {
+        zones[id] = el('div', { class: 'zone-resultat' });
+        return el('section', { class: 'panneau', id: `panneau-${id}` }, el('h2', {}, T.etapes[id]), intro && el('p', { class: 'intro' }, intro), zones[id]);
+    };
+    const diagnostic = panneauResultat('diagnostic');
+    const reglages = panneauResultat('reglages', T.tableauIntro);
+    const challenge = panneauResultat('challenge', T.challengeIntro);
+    const ia = panneauResultat('ia');
+    const journal = el('section', { class: 'panneau journal-section', id: 'panneau-journal' });
+
+    const rafraichir = () => afficherResultats(zones, versSaisie(valeursBrutes(formulaire), base), base);
+    const parcours = creerParcours({ etapes: [
+        { id: 'configuration', titre: T.etapes.configuration, panneau: panneaux.configuration },
+        { id: 'mesures', titre: T.etapes.mesures, panneau: panneaux.mesures },
+        { id: 'constats', titre: T.etapes.constats, panneau: panneaux.constats },
+        { id: 'diagnostic', titre: T.etapes.diagnostic, panneau: diagnostic, entree: rafraichir },
+        { id: 'reglages', titre: T.etapes.reglages, panneau: reglages, entree: rafraichir },
+        { id: 'challenge', titre: T.etapes.challenge, panneau: challenge, entree: rafraichir },
+        { id: 'journal', titre: T.etapes.journal, panneau: journal },
+        { id: 'ia', titre: T.etapes.ia, panneau: ia, entree: rafraichir }
+    ] });
+    racine.replaceChildren(parcours.nav, formulaire, diagnostic, reglages, challenge, journal, ia, parcours.barre);
 
     // Journal des essais : il reprend le simulateur et l'avion du formulaire principal
     const majJournal = monterJournal(journal, base, () => {
@@ -546,33 +574,25 @@ async function demarrer() {
         majJournal();
     });
 
-    formulaire.addEventListener('submit', function lancerAnalyse(e) {
+    // Entrée dans un champ texte ou nombre : étape suivante. Le formulaire n'a pas de bouton
+    // d'envoi, le navigateur ne le ferait donc pas de lui-même.
+    formulaire.addEventListener('submit', e => e.preventDefault());
+    formulaire.addEventListener('keydown', function etapeSuivante(e) {
+        if (e.key !== 'Enter' || !(e.target instanceof HTMLInputElement) || !['text', 'number', 'password'].includes(e.target.type)) return;
         e.preventDefault();
-        const saisie = versSaisie(valeursBrutes(formulaire), base);
-        const erreur = document.getElementById('erreur-formulaire');
-        if (!saisie.profil.simulateur || !saisie.profil.frequenceHz) {
-            erreur.textContent = T.champsManquants;
-            erreur.hidden = false;
-            return;
-        }
-        erreur.hidden = true;
-        afficherResultats(resultats, analyser(saisie, base), saisie, base);
+        const ordre = ['configuration', 'mesures', 'constats', 'diagnostic'];
+        location.hash = ordre[Math.min(ordre.indexOf(parcours.courante) + 1, ordre.length - 1)];
     });
 
     document.getElementById('effacer').addEventListener('click', function toutEffacer() {
         if (!window.confirm(T.effacerConfirmer)) return;
         stockage.effacer();
         formulaire.reset();
-        resultats.hidden = true;
         majDependances();
         majJournal();
     });
 
-    // Réponses déjà complètes : résultats affichés d'emblée, sans voler le focus
-    if (memorise?.simulateur && nb(memorise.frequenceHz)) {
-        const saisie = versSaisie(memorise, base);
-        afficherResultats(resultats, analyser(saisie, base), saisie, base, false);
-    }
+    parcours.demarrer();
 }
 
 demarrer();

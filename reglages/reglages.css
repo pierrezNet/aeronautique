@@ -68,7 +68,90 @@ h3 { font-size: 1.05rem; margin: 0 0 10px; }
 
 .intro { color: var(--texte-doux); }
 
+/* ── Parcours en étapes ─────────────────────────────────────────── */
+
+/* En changeant d'étape, la barre remonte en haut de l'écran : on la garde sous les boutons fixes
+   de langue et de thème (20 px + 45 px de haut) */
+.parcours { scroll-margin-top: 75px; }
+
+.parcours ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    counter-reset: none;
+}
+
+.etape-lien {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 4px 14px 4px 6px;
+    color: var(--text);
+    text-decoration: none;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+}
+
+.etape-lien:hover { border-color: var(--primary); }
+
+.etape-numero {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    background: var(--bg);
+    border: 1px solid var(--border);
+}
+
+/* Étape courante : couleur ET soulignement (pas seulement la couleur) */
+.etape-lien[aria-current='step'] {
+    border-color: var(--primary);
+    font-weight: 700;
+    box-shadow: inset 0 -3px 0 var(--primary);
+}
+
+.etape-lien[aria-current='step'] .etape-numero {
+    color: var(--bg);
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.panneau > h2 { margin-top: 0; }
+.panneau > h2:focus { outline: none; }
+
+.barre-parcours {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 30px 0 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+}
+
+.barre-parcours .btn { display: inline-flex; align-items: center; text-decoration: none; }
+.barre-parcours .btn[hidden] { display: none; }
+/* « Suivant » reste à droite même quand « Précédent » est masqué */
+.barre-parcours .btn:last-child { margin-left: auto; }
+.position { margin: 0; color: var(--texte-doux); font-size: 0.9rem; }
+
 /* ── Formulaire ─────────────────────────────────────────────────── */
+
+/* Un fieldset refuse par défaut d'être plus étroit que son contenu le plus long (min-width:
+   min-content) : un chemin de fichier sans espace élargirait alors toute la page sur mobile */
+fieldset { min-width: 0; }
+
+/* Mots très longs (chemins de fichiers, commandes, URL) : coupés plutôt que de déborder */
+.aide, .intro, .message p, .tableau td, .ia-texte, .sources li { overflow-wrap: anywhere; }
 
 .etape {
     background: var(--card-bg);
@@ -446,6 +529,12 @@ footer {
 
 @media (max-width: 600px) {
     h1 { font-size: 1.6rem; }
+    /* Sur mobile, seules les pastilles numérotées ; le titre de l'étape courante reste affiché */
+    .etape-lien { padding: 4px 6px; }
+    .etape-lien .etape-titre { display: none; }
+    .etape-lien[aria-current='step'] { padding-right: 14px; }
+    .etape-lien[aria-current='step'] .etape-titre { display: inline; }
+    .position { order: -1; flex-basis: 100%; }
     /* Dégage le titre des boutons de langue et de thème (position fixe en haut à droite) */
     header { padding-top: 20px; }
     .etape { padding: 14px 14px 18px; }

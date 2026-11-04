@@ -11,8 +11,9 @@ import { T, langue } from './textes.js';
 
 const CLE_PREFERENCES = 'atelier-reglages-ia';
 
-// Clé en mémoire : survit au réaffichage des résultats, pas à la fermeture de la page
+// Clé et question en mémoire : elles survivent au recalcul de l'étape, pas à la fermeture de la page
 let cleEnMemoire = '';
+let questionEnCours = '';
 
 function lirePreferences() {
     try {
@@ -44,11 +45,15 @@ export function blocIa(saisie, resultat, base) {
 
     // ── Le texte qui sera copié ou envoyé : toujours visible avant l'envoi
     const question = el('textarea', { id: 'ia-question', rows: 2, placeholder: T.iaQuestionAide });
+    question.value = questionEnCours;
     const apercu = el('textarea', { id: 'ia-prompt', rows: 12, readonly: true });
     const majApercu = () => {
         apercu.value = construirePrompt({ langue, saisie, resultat, base, journal: stockage.lireJournal(), question: question.value });
     };
-    question.addEventListener('input', majApercu);
+    question.addEventListener('input', () => {
+        questionEnCours = question.value;
+        majApercu();
+    });
     majApercu();
 
     const statutCopie = el('p', { class: 'statut', role: 'status' });
@@ -173,8 +178,7 @@ export function blocIa(saisie, resultat, base) {
     });
     majBouton();
 
-    return el('section', { class: 'carte ia', 'aria-labelledby': 'titre-ia' },
-        el('h3', { id: 'titre-ia' }, T.ia),
+    return el('div', { class: 'ia' },
         el('p', {}, T.iaIntro),
         el('div', { class: 'champ' }, el('label', { for: 'ia-question' }, T.iaQuestion), question),
         el('details', {},
