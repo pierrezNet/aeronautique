@@ -1,5 +1,26 @@
 /* Atelier réglages MSFS : mise en page propre à l'outil, sur les variables de theme.css. */
 
+/* Couleurs propres à l'outil, contrastées dans les deux thèmes (texte : au moins 4,5:1) */
+:root {
+    --alerte: #b91c1c;
+    --alerte-fond: rgba(185, 28, 28, 0.08);
+    --attention: #92400e;
+    --attention-fond: rgba(245, 158, 11, 0.12);
+    --succes: #047857;
+    --succes-fond: rgba(16, 185, 129, 0.12);
+    --texte-doux: #475569;
+}
+
+[data-theme='dark'] {
+    --alerte: #fca5a5;
+    --alerte-fond: rgba(252, 165, 165, 0.1);
+    --attention: #fcd34d;
+    --attention-fond: rgba(252, 211, 77, 0.1);
+    --succes: #6ee7b7;
+    --succes-fond: rgba(110, 231, 183, 0.1);
+    --texte-doux: #cbd5e1;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg);
@@ -13,7 +34,7 @@ body {
 a { color: var(--primary); }
 
 .atelier {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
 }
 
@@ -30,29 +51,299 @@ h1 {
     margin: 20px 0 10px;
 }
 
+h2, h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--primary);
+    line-height: 1.3;
+}
+
+h2 { font-size: 1.4rem; margin: 40px 0 15px; }
+h3 { font-size: 1.05rem; margin: 0 0 10px; }
+
 .accroche {
     font-size: 1.1rem;
     max-width: 700px;
     margin: 0 auto;
 }
 
-.en-construction {
+.intro { color: var(--texte-doux); }
+
+/* ── Formulaire ─────────────────────────────────────────────────── */
+
+.etape {
     background: var(--card-bg);
     border: 1px solid var(--border);
-    border-left: 4px solid var(--accent);
-    border-radius: 12px;
-    padding: 16px 20px;
+    border-radius: 14px;
+    padding: 18px 22px 22px;
+    margin: 0 0 24px;
+}
+
+.etape > legend {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.05rem;
+    color: var(--primary);
+    padding: 0 8px;
+}
+
+.grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 4px 20px;
+}
+
+.champ {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+label, legend { font-weight: 600; }
+
+input[type='text'],
+input[type='number'],
+select {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 4px;
+    padding: 8px 11px;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.choix {
+    border: none;
+    padding: 0;
+    margin: 14px 0;
+}
+
+.choix > legend { padding: 0; margin-bottom: 4px; }
+
+/* Cibles de clic d'au moins 44 px de haut */
+.option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.option input { width: 20px; height: 20px; margin: 0; accent-color: var(--primary); }
+
+.aide {
+    margin: 4px 0 0;
+    font-size: 0.88rem;
+    color: var(--texte-doux);
+}
+
+.avertissement { color: var(--attention); }
+
+[hidden] { display: none !important; }
+
+.aide-mesures {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin: 10px 0;
+}
+
+.aide-mesures summary { cursor: pointer; font-weight: 600; min-height: 32px; }
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.btn {
+    min-height: 48px;
+    padding: 12px 26px;
+    font: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: var(--primary);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+[data-theme='dark'] .btn { color: var(--bg); }
+
+.btn-secondaire,
+[data-theme='dark'] .btn-secondaire {
+    color: var(--text);
+    background: transparent;
+    border: 1px solid var(--border);
+}
+
+.erreur { color: var(--alerte); font-weight: 600; }
+
+/* ── Résultats ──────────────────────────────────────────────────── */
+
+.resultats h2:focus { outline: none; }
+
+.cartes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.carte {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+}
+
+.carte p { margin: 0 0 10px; }
+
+.goulot {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.cibles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+}
+
+.cible {
+    padding: 3px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+}
+
+.cible.conseillee {
+    border-color: var(--succes);
+    background: var(--succes-fond);
+    color: var(--succes);
+    font-weight: 700;
+}
+
+.alerte { color: var(--alerte); }
+.conseil { color: var(--succes); font-weight: 600; }
+
+.message {
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--primary);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 0 0 12px;
+    background: var(--card-bg);
+}
+
+.message p { margin: 0 0 8px; }
+.message-important { border-left-color: var(--alerte); }
+.message-attention { border-left-color: var(--attention); }
+
+.message-entete { font-weight: 700; }
+
+.badge {
+    display: inline-block;
+    padding: 1px 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: 999px;
+    vertical-align: middle;
+}
+
+.badge-verifier {
+    color: var(--attention);
+    background: var(--attention-fond);
+    border: 1px solid var(--attention);
+}
+
+.sources { font-size: 0.85rem; margin-top: 6px; }
+.sources summary { cursor: pointer; color: var(--texte-doux); }
+.sources ul { margin: 6px 0 0; padding-left: 20px; }
+
+/* Tableau des réglages */
+.tableau {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.tableau th,
+.tableau td {
+    text-align: left;
+    vertical-align: top;
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.tableau thead th {
+    font-size: 0.85rem;
+    color: var(--texte-doux);
+    border-bottom: 2px solid var(--border);
+}
+
+.tableau tbody th { font-weight: 700; min-width: 160px; }
+
+.impacts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
 }
 
 footer {
     margin: 50px 0 20px;
     font-size: 0.85rem;
     text-align: center;
-    opacity: 0.85;
+    color: var(--texte-doux);
+}
+
+/* Sur mobile, chaque ligne du tableau devient une fiche ; le nom de colonne précède chaque valeur */
+@media (max-width: 760px) {
+    .tableau thead { display: none; }
+    .tableau tr {
+        display: block;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 6px 14px;
+        margin-bottom: 14px;
+    }
+    .tableau th,
+    .tableau td {
+        display: block;
+        border-bottom: none;
+        padding: 6px 0;
+    }
+    .tableau td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--texte-doux);
+    }
 }
 
 @media (max-width: 600px) {
     h1 { font-size: 1.6rem; }
     /* Dégage le titre des boutons de langue et de thème (position fixe en haut à droite) */
     header { padding-top: 20px; }
+    .etape { padding: 14px 14px 18px; }
 }
