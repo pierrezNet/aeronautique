@@ -49,7 +49,7 @@ function suivi(entree, chemin, erreurs) {
         if (typeof source.titre !== 'string' || source.titre === '') erreurs.push(`${c}.titre manquant`);
         if (typeof source.url !== 'string' || !source.url.startsWith('https://')) erreurs.push(`${c}.url : adresse https:// attendue`);
         if (typeof source.consulte !== 'string' || !DATE.test(source.consulte)) erreurs.push(`${c}.consulte : date AAAA-MM-JJ attendue`);
-        if (![1, 2, 3, 4].includes(source.rang)) erreurs.push(`${c}.rang : 1 (Asobo/Microsoft) à 4 (forums, guides)`);
+        if (![1, 2, 3, 4].includes(source.rang)) erreurs.push(`${c}.rang : 1 (Asobo/Microsoft), 2 (constructeur : NVIDIA, Intel…), 3 (mesure publiée), 4 (forums, guides)`);
     });
     // « Vérifié » exige au moins une source de rang 1 à 3 (voir la hiérarchie dans CONTRIBUTING.md)
     if (entree.statut === 'verifie' && !entree.sources.some(s => s.rang <= 3)) {

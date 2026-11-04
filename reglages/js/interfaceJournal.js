@@ -2,7 +2,8 @@
 // exports JSON et CSV, import JSON. La logique est dans moteur/journal.js ; le stockage
 // dans stockage.js (clé séparée des réponses du formulaire principal).
 
-import { el } from './dom.js';
+import { choisirFichierTexte, el } from './dom.js';
+import { lireCapture } from './moteur/presentmon.js';
 import { avecComparaisons, champsInvalides, creerEntree, fusionner, lireJson, versCsv, versJson } from './moteur/journal.js';
 import { parametresDuSimulateur } from './moteur/recommandations.js';
 import * as stockage from './stockage.js';
@@ -41,6 +42,21 @@ export function monterJournal(conteneur, base, profilCourant) {
     const libelleReglage = id => tr(base.parametres.find(p => p.id === id)?.libelle) || id;
 
     const statut = el('p', { class: 'statut', role: 'status' });
+
+    // Mesures d'un essai remplies depuis une capture PresentMon (FPS moyens et 1 % bas)
+    const boutonCapture = el('button', { type: 'button', class: 'btn btn-secondaire' }, T.remplirDepuisCapture);
+    boutonCapture.addEventListener('click', async () => {
+        const contenu = await choisirFichierTexte('.csv,text/csv');
+        if (contenu === null) return;
+        const capture = lireCapture(contenu);
+        if (capture.erreur) {
+            statut.textContent = T.erreurCapture;
+            return;
+        }
+        formulaire.elements.fpsMoyen.value = capture.fpsMoyen;
+        formulaire.elements.unPourcentBas.value = capture.unPourcentBas;
+        statut.textContent = T.resumeCapture(capture);
+    });
     const erreur = el('p', { class: 'erreur', role: 'alert', hidden: true });
     const liste = el('div', { class: 'liste-journal' });
     const menuReglage = el('select', { id: 'essai-reglage', name: 'reglage' });
@@ -63,6 +79,7 @@ export function monterJournal(conteneur, base, profilCourant) {
                 champ('fpsMoyen', T.fpsMoyen, { type: 'number', min: 1 }),
                 champ('unPourcentBas', T.unPourcentBas, { type: 'number', min: 1 })
             ),
+            boutonCapture,
             el('fieldset', { class: 'choix' },
                 el('legend', {}, T.ressenti),
                 el('div', { class: 'ressentis' }, [1, 2, 3, 4, 5].map(n =>

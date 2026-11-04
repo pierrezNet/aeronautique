@@ -33,6 +33,68 @@
       }
     },
     {
+      "id": "diag-capture-presentmon",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Intel, PresentMon : documentation de l'application console (colonnes MsBetweenPresents, MsGPUBusy)",
+          "url": "https://github.com/GameTechDev/PresentMon/blob/main/README-ConsoleApplication.md",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "TechSpot, « Intel PresentMon » (durée d'image et temps d'occupation de la carte graphique)",
+          "url": "https://www.techspot.com/article/2723-intel-presentmon/",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "diagnostic",
+      "gravite": "info",
+      "message": {
+        "fr": "Diagnostic tiré de votre capture PresentMon : quand la carte graphique travaille presque toute la durée de chaque image, c'est elle qui limite ; quand elle attend souvent, c'est le processeur. Le principe est publié ; les seuils retenus ici (90 % et 75 %) sont à vérifier. La capture ne dit pas quel fil du processeur limite : l'affichage FPS du simulateur reste plus précis.",
+        "en": "Diagnosis from your PresentMon capture: when the graphics card works for almost the whole duration of each frame, it is the limit; when it often waits, the processor is. The principle is published; the thresholds used here (90% and 75%) are to be checked. The capture does not tell which processor thread limits: the simulator's FPS display remains more precise."
+      }
+    },
+    {
+      "id": "diag-capture-plafonnee",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Intel, PresentMon : documentation de l'application console (colonnes MsBetweenPresents, MsGPUBusy)",
+          "url": "https://github.com/GameTechDev/PresentMon/blob/main/README-ConsoleApplication.md",
+          "consulte": "2026-11-04",
+          "rang": 2
+        },
+        {
+          "titre": "TechSpot, « Intel PresentMon » (durée d'image et temps d'occupation de la carte graphique)",
+          "url": "https://www.techspot.com/article/2723-intel-presentmon/",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "type": "diagnostic",
+      "gravite": "attention",
+      "message": {
+        "fr": "Votre capture a été faite avec les images plafonnées (synchronisation verticale, ou FPS égaux à votre limite) : la carte graphique attend l'écran ou la limite, pas forcément le processeur. Elle ne permet donc pas de dire ce qui vous limite. Refaites une capture sans synchronisation ni limite, le temps de la mesure.",
+        "en": "Your capture was made with frames capped (vertical sync, or FPS equal to your limit): the graphics card waits for the display or the limit, not necessarily for the processor. It therefore cannot tell what limits you. Make another capture without sync or limit, just for the measurement."
+      }
+    },
+    {
       "id": "diag-limite-main-thread",
       "simulateur": "les-deux",
       "miseAJourMin": {

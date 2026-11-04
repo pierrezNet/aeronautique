@@ -13,3 +13,19 @@ export function el(balise, attributs = {}, ...enfants) {
     }
     return noeud;
 }
+
+// Ouvre le sélecteur de fichier du système et renvoie le texte du fichier choisi (null si annulé).
+// Le fichier est lu dans le navigateur : il n'est envoyé nulle part.
+export function choisirFichierTexte(accept) {
+    return new Promise(resolve => {
+        const champ = el('input', { type: 'file', accept, hidden: true });
+        champ.addEventListener('change', async () => {
+            const [fichier] = champ.files;
+            champ.remove();
+            resolve(fichier ? await fichier.text() : null);
+        });
+        champ.addEventListener('cancel', () => { champ.remove(); resolve(null); });
+        document.body.append(champ);
+        champ.click();
+    });
+}

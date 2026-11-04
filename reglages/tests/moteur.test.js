@@ -90,6 +90,15 @@ describe('diagnostic du goulot', () => {
         assert.equal(diagnostiquer({}, { msGpu: 19 }).goulot, 'indetermine');
     });
 
+    test('capture PresentMon : utilisée après l\'affichage du simulateur, avant les symptômes', () => {
+        assert.deepEqual(diagnostiquer({}, { capture: { goulotEstime: 'cpu' } }, ['chute-nuages'], base.symptomes),
+            { goulot: 'cpu', fil: null, confiance: 'capture', tauxVram: null });
+        // Le libellé du simulateur l'emporte sur la capture
+        assert.equal(diagnostiquer({}, { limite: 'gpu', capture: { goulotEstime: 'cpu' } }).goulot, 'gpu');
+        // Capture indéterminée : on passe aux symptômes
+        assert.equal(diagnostiquer({}, { capture: { goulotEstime: 'indetermine' } }, ['chute-nuages'], base.symptomes).confiance, 'symptomes');
+    });
+
     test('sans mesure : symptômes, et égalité = indéterminé', () => {
         const d = diagnostiquer({}, {}, ['chute-nuages'], base.symptomes);
         assert.deepEqual([d.goulot, d.confiance], ['gpu', 'symptomes']);

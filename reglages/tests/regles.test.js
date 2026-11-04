@@ -75,6 +75,24 @@ describe('cas imposés', () => {
         assert.deepEqual(questions(gpu), []);
     });
 
+    test('diagnostic par capture PresentMon : expliqué, sans réclamer de mesure', () => {
+        const r = casDeDepart({ verrouFps: null, capture: { goulotEstime: 'cpu' } });
+        assert.ok(ids(r).includes('diag-capture-presentmon'));
+        assert.ok(!ids(r).includes('diag-sans-mesure'));
+    });
+
+    test('capture plafonnée (synchro, ou FPS égaux au verrou) : pas de diagnostic processeur, explication', () => {
+        const synchro = casDeDepart({ verrouFps: null, capture: { goulotEstime: 'plafonne', fpsMoyen: 55 } });
+        assert.equal(synchro.diagnostic.goulot, 'indetermine');
+        assert.ok(ids(synchro).includes('diag-capture-plafonnee'));
+        // Capture « processeur » mais FPS collés au verrou de 41 : la carte attendait le verrou
+        const verrou = casDeDepart({ capture: { goulotEstime: 'cpu', fpsMoyen: 41 } });
+        assert.equal(verrou.diagnostic.goulot, 'indetermine');
+        assert.ok(ids(verrou).includes('diag-capture-plafonnee'));
+        // Nettement sous le verrou : le diagnostic processeur tient
+        assert.equal(casDeDepart({ capture: { goulotEstime: 'cpu', fpsMoyen: 33 } }).diagnostic.goulot, 'cpu');
+    });
+
     test('sans aucune mesure : on demande de mesurer d\'abord', () => {
         const r = casDeDepart({ verrouFps: null });
         assert.equal(r.diagnostic.goulot, 'indetermine');

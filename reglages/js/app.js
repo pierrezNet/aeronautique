@@ -6,7 +6,8 @@ import { familleGpu } from './moteur/materiel.js';
 import { parametresDuSimulateur } from './moteur/recommandations.js';
 import { T, langue, nombre, tr } from './textes.js';
 import * as stockage from './stockage.js';
-import { el } from './dom.js';
+import { choisirFichierTexte, el } from './dom.js';
+import { lireCapture } from './moteur/presentmon.js';
 import { monterJournal } from './interfaceJournal.js';
 
 const racine = document.getElementById('atelier');
@@ -58,6 +59,57 @@ function choix(nom, legende, options, aide = null) {
     );
 }
 
+// Import d'une capture PresentMon : le résumé est gardé dans un champ caché (mémorisé avec le reste)
+function blocCapture() {
+    const memoire = el('input', { type: 'hidden', name: 'capture', id: 'champ-capture' });
+    const resume = el('p', { class: 'aide', id: 'resume-capture', 'aria-live': 'polite' });
+    const importer = el('button', { type: 'button', class: 'btn btn-secondaire' }, T.importerCapture);
+    const oublier = el('button', { type: 'button', class: 'btn btn-secondaire', id: 'oublier-capture', hidden: true }, T.oublierCapture);
+
+    importer.addEventListener('click', async () => {
+        const contenu = await choisirFichierTexte('.csv,text/csv');
+        if (contenu === null) return;
+        const capture = lireCapture(contenu);
+        if (capture.erreur) {
+            resume.textContent = T.erreurCapture;
+            return;
+        }
+        // Les FPS de la capture sont des FPS réels (images générées exclues). On remplit le champ s'il
+        // est vide ou s'il contient la valeur d'une capture précédente ; une valeur tapée n'est jamais écrasée.
+        const fps = document.getElementById('champ-fpsReels');
+        if (!fps.value || vientDeLaCapture(fps.value, memoire.value)) fps.value = capture.fpsMoyen;
+        memoire.value = JSON.stringify(capture);
+        memoire.form.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    oublier.addEventListener('click', () => {
+        // Les FPS réels posés par cette capture partent avec elle
+        const fps = document.getElementById('champ-fpsReels');
+        if (vientDeLaCapture(fps.value, memoire.value)) fps.value = '';
+        memoire.value = '';
+        memoire.form.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    return el('div', { class: 'bloc-capture' },
+        el('p', { class: 'sous-titre' }, T.captureTitre),
+        el('p', { class: 'aide' }, T.captureAide),
+        el('div', { class: 'actions' }, importer, oublier),
+        resume, memoire);
+}
+
+// La valeur du champ « FPS réels » est-elle celle posée par la capture mémorisée ?
+function vientDeLaCapture(valeurChamp, captureMemorisee) {
+    const capture = lireCaptureMemorisee(captureMemorisee);
+    return capture !== null && nb(valeurChamp) === capture.fpsMoyen;
+}
+
+const lireCaptureMemorisee = valeur => {
+    try {
+        return valeur ? JSON.parse(valeur) : null;
+    } catch (e) {
+        return null;
+    }
+};
+
 function construireFormulaire(base) {
     const exemplesGpu = el('datalist', { id: 'exemples-gpu' },
         ['RTX 5090', 'RTX 5080', 'RTX 5070 Ti', 'RTX 5070', 'RTX 5060 Ti', 'RTX 5060', 'RTX 4090', 'RTX 4080', 'RTX 4070 Ti', 'RTX 4070', 'RTX 4060 Ti', 'RTX 4060', 'RTX 3080', 'RTX 3070', 'RTX 3060', 'RTX 2070', 'GTX 1080', 'Radeon RX 7900 XTX', 'Radeon RX 7800 XT']
@@ -102,6 +154,7 @@ function construireFormulaire(base) {
         el('legend', {}, T.mesures),
         el('p', {}, T.mesuresIntro),
         aide,
+        blocCapture(),
         choix('limite', T.limite, [['main-thread', T.limiteMain], ['rendu', T.limiteRendu], ['gpu', T.limiteGpu], ['', T.limiteNsp]]),
         el('div', { class: 'grille' },
             champ('msPrincipal', T.msPrincipal, { type: 'number', min: 0, step: 'any' }),
@@ -221,7 +274,8 @@ function versSaisie(v, base) {
             msGpu: nb(v.msGpu),
             vramUtiliseeGo: nb(v.vramUtiliseeGo),
             fpsReels: nb(v.fpsReels),
-            verrouFps: nb(v.verrouFps)
+            verrouFps: nb(v.verrouFps),
+            capture: lireCaptureMemorisee(v.capture)
         },
         symptomes: v.symptomes ?? [],
         // Seulement les changements du simulateur choisi (les menus d'un autre restent mémorisés)
@@ -408,6 +462,12 @@ async function demarrer() {
         document.getElementById('bloc-directx').hidden = v.simulateur !== '2020';
         document.getElementById('gpu-inconnu').hidden = !v.gpu || familleGpu(v.gpu, base.materiel) !== null;
         document.getElementById('vr-avertissement').hidden = v.affichage !== 'vr';
+        // Résumé de la capture importée, s'il y en a une
+        const capture = lireCaptureMemorisee(v.capture);
+        const resume = document.getElementById('resume-capture');
+        if (capture) resume.textContent = T.resumeCapture(capture);
+        else if (resume.textContent !== T.erreurCapture) resume.textContent = '';
+        document.getElementById('oublier-capture').hidden = !capture;
     };
 
     const memorise = stockage.lire();

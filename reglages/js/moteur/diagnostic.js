@@ -1,6 +1,6 @@
 // Diagnostic du goulot : qu'est-ce qui limite les images par seconde ?
-// Par ordre de confiance : les mesures de l'affichage FPS du mode développeur,
-// puis les symptômes décrits, sinon « indéterminé ».
+// Par ordre de confiance : les mesures de l'affichage FPS du mode développeur, puis une capture
+// PresentMon (moteur/presentmon.js), puis les symptômes décrits, sinon « indéterminé ».
 //
 // Goulots possibles : 'cpu' (processeur), 'gpu' (carte graphique), 'vram' (mémoire vidéo pleine),
 // 'streaming' (chargement des données), 'indetermine'.
@@ -18,12 +18,29 @@ const LIMITES = {
 
 const nombre = v => (typeof v === 'number' && Number.isFinite(v) && v > 0 ? v : null);
 
+// Écart en FPS sous lequel une capture est considérée comme bloquée par le verrou déclaré
+const MARGE_VERROU = 1;
+
+/**
+ * La capture a-t-elle été faite avec les images plafonnées (synchronisation verticale, ou FPS
+ * collés au verrou déclaré) ? La carte graphique attend alors l'écran ou le verrou, et sa faible
+ * occupation ne dit rien du processeur.
+ */
+export function capturePlafonnee(mesures = {}) {
+    const c = mesures.capture;
+    if (!c) return false;
+    if (c.goulotEstime === 'plafonne') return true;
+    const verrou = nombre(mesures.verrouFps);
+    return c.goulotEstime === 'cpu' && verrou !== null && Math.abs(c.fpsMoyen - verrou) <= MARGE_VERROU;
+}
+
 /**
  * @param {object} profil   { vramGo, … }
- * @param {object} mesures  { limite: 'main-thread'|'rendu'|'gpu'|null, msPrincipal, msRendu, msGpu, vramUtiliseeGo }
+ * @param {object} mesures  { limite: 'main-thread'|'rendu'|'gpu'|null, msPrincipal, msRendu, msGpu, vramUtiliseeGo,
+ *                            capture: résumé de lireCapture() ou null }
  * @param {string[]} idsSymptomes  symptômes cochés (ids de symptomes.json)
  * @param {object[]} symptomes     liste de symptomes.json
- * @returns {{ goulot: string, fil: string|null, confiance: 'mesure'|'symptomes'|'aucune', tauxVram: number|null }}
+ * @returns {{ goulot: string, fil: string|null, confiance: 'mesure'|'capture'|'symptomes'|'aucune', tauxVram: number|null }}
  */
 export function diagnostiquer(profil = {}, mesures = {}, idsSymptomes = [], symptomes = []) {
     // 1. Mémoire vidéo : une mémoire pleine dégrade tout le reste, on la traite en premier
@@ -50,7 +67,12 @@ export function diagnostiquer(profil = {}, mesures = {}, idsSymptomes = [], symp
         return { ...LIMITES[plusLent], confiance: 'mesure', tauxVram };
     }
 
-    // 4. Symptômes : le goulot cité par le plus de symptômes, s'il n'y a pas d'égalité
+    // 4. Capture PresentMon : part du temps où la carte graphique travaille
+    if (['cpu', 'gpu'].includes(mesures.capture?.goulotEstime) && !capturePlafonnee(mesures)) {
+        return { goulot: mesures.capture.goulotEstime, fil: null, confiance: 'capture', tauxVram };
+    }
+
+    // 5. Symptômes : le goulot cité par le plus de symptômes, s'il n'y a pas d'égalité
     const votes = {};
     for (const s of symptomes.filter(s => idsSymptomes.includes(s.id))) {
         for (const g of s.pistes.goulots) votes[g] = (votes[g] ?? 0) + 1;

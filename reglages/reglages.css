@@ -192,6 +192,16 @@ a:focus-visible {
 
 .erreur { color: var(--alerte); font-weight: 600; }
 
+/* Import d'une capture PresentMon, dans l'étape des mesures */
+.bloc-capture {
+    border-top: 1px dashed var(--border);
+    border-bottom: 1px dashed var(--border);
+    padding: 6px 0 12px;
+    margin: 14px 0;
+}
+
+.sous-titre { font-weight: 600; margin: 8px 0 0; }
+
 /* ── Résultats ──────────────────────────────────────────────────── */
 
 .resultats h2:focus { outline: none; }

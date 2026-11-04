@@ -1,0 +1,6 @@
+Captures PresentMon réelles reprises du dépôt d'Intel (Tests/Gold), pour tester la lecture des
+trois formats de colonnes (actuel, --v1_metrics, --v2_metrics) :
+https://github.com/GameTechDev/PresentMon/tree/main/Tests/Gold
+
+Copyright (C) 2017-2024 Intel Corporation, licence MIT :
+https://github.com/GameTechDev/PresentMon/blob/main/LICENSE.txt

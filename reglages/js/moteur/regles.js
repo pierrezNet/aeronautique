@@ -6,9 +6,13 @@
 //   { profil, mesures, symptomes, changements, famille, diagnostic, cadence, generation }
 // Les questions sur les réglages changés (mode challenge) sont dans challenge.js.
 
+import { capturePlafonnee } from './diagnostic.js';
+
 export const CONDITIONS = {
     // Diagnostic
-    'diag-sans-mesure': ctx => ctx.diagnostic.confiance !== 'mesure',
+    'diag-sans-mesure': ctx => !['mesure', 'capture'].includes(ctx.diagnostic.confiance),
+    'diag-capture-presentmon': ctx => ctx.diagnostic.confiance === 'capture',
+    'diag-capture-plafonnee': ctx => capturePlafonnee(ctx.mesures),
     'diag-limite-main-thread': ctx => ctx.diagnostic.goulot === 'cpu' && ctx.diagnostic.fil === 'principal',
     'diag-limite-gpu': ctx => ctx.diagnostic.goulot === 'gpu',
     'diag-limite-rendu': ctx => ctx.diagnostic.fil === 'rendu',

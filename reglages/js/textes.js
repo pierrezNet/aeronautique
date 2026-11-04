@@ -41,6 +41,13 @@ const TEXTES = {
             'Volez dans une situation habituelle et notez ce que l\'affichage indique comme limite (par exemple « Limited by MainThread » ou « Limited by GPU »), et les temps en millisecondes.',
             'Les libellés exacts peuvent varier selon la version : ils sont relevés sur les forums, pas dans une documentation officielle.'
         ],
+        captureTitre: 'Ou bien : importer une capture PresentMon',
+        captureAide: 'PresentMon, outil libre d\'Intel, enregistre la durée de chaque image et le temps de travail de la carte graphique. Pendant le vol, lancez par exemple : PresentMon --process_name FlightSimulator2024.exe --output_file capture.csv --timed 60 --terminate_after_timed (FlightSimulator.exe pour MSFS 2020), puis importez le fichier. Il est lu dans votre navigateur, rien n\'est envoyé.',
+        importerCapture: 'Importer une capture (CSV)',
+        oublierCapture: 'Retirer la capture',
+        resumeCapture: c => `Capture de ${c.application ?? 'l\'application'} : ${c.images} images sur ${nombre(c.dureeSecondes)} s, ${nombre(c.fpsMoyen)} FPS moyens, 1 % bas ${nombre(c.unPourcentBas)} FPS${c.partGpu !== null ? `, carte graphique occupée ${Math.round(c.partGpu * 100)} % du temps` : ''}${c.imagesGenerees ? ` (${c.imagesGenerees} images générées exclues)` : ''}.${c.synchro ? ' Synchronisation verticale active pendant la capture.' : ''}`,
+        erreurCapture: 'Ce fichier ne ressemble pas à une capture PresentMon (colonne MsBetweenPresents introuvable).',
+        remplirDepuisCapture: 'Remplir depuis une capture PresentMon',
         limite: 'Ce qui limite, selon l\'affichage',
         limiteMain: 'Thread principal (MainThread)',
         limiteRendu: 'Thread de rendu (RdrThread)',
@@ -82,6 +89,7 @@ const TEXTES = {
         fils: { principal: 'thread principal', rendu: 'thread de rendu', gpu: 'carte graphique' },
         confiances: {
             mesure: 'D\'après vos mesures.',
+            capture: 'D\'après votre capture PresentMon.',
             symptomes: 'D\'après vos symptômes seulement : à confirmer par une mesure.',
             aucune: 'Ni mesure ni symptôme suffisant pour conclure.'
         },
@@ -114,7 +122,7 @@ const TEXTES = {
         aVerifier: 'À vérifier',
         aVerifierAide: 'Aucune source officielle ou mesure publiée ne confirme encore ce point.',
         sources: 'Sources',
-        rang: r => ['', 'officielle', 'NVIDIA', 'mesure publiée', 'forum ou guide'][r],
+        rang: r => ['', 'officielle', 'constructeur', 'mesure publiée', 'forum ou guide'][r],
         gravites: { important: 'Important', attention: 'Attention', info: 'Info' },
 
         challenge: 'Mode challenge',
@@ -239,6 +247,13 @@ const TEXTES = {
             'Fly in a usual situation and note what the display shows as the limit (for example “Limited by MainThread” or “Limited by GPU”), and the times in milliseconds.',
             'Exact labels may vary between versions: they come from forums, not from official documentation.'
         ],
+        captureTitre: 'Or: import a PresentMon capture',
+        captureAide: 'PresentMon, a free Intel tool, records the duration of each frame and the graphics card\'s working time. During the flight, run for example: PresentMon --process_name FlightSimulator2024.exe --output_file capture.csv --timed 60 --terminate_after_timed (FlightSimulator.exe for MSFS 2020), then import the file. It is read in your browser, nothing is sent.',
+        importerCapture: 'Import a capture (CSV)',
+        oublierCapture: 'Remove the capture',
+        resumeCapture: c => `Capture of ${c.application ?? 'the application'}: ${c.images} frames over ${nombre(c.dureeSecondes)} s, ${nombre(c.fpsMoyen)} average FPS, 1% low ${nombre(c.unPourcentBas)} FPS${c.partGpu !== null ? `, graphics card busy ${Math.round(c.partGpu * 100)}% of the time` : ''}${c.imagesGenerees ? ` (${c.imagesGenerees} generated frames excluded)` : ''}.${c.synchro ? ' Vertical sync was active during the capture.' : ''}`,
+        erreurCapture: 'This file does not look like a PresentMon capture (MsBetweenPresents column not found).',
+        remplirDepuisCapture: 'Fill from a PresentMon capture',
         limite: 'What limits, according to the display',
         limiteMain: 'Main thread (MainThread)',
         limiteRendu: 'Render thread (RdrThread)',
@@ -277,6 +292,7 @@ const TEXTES = {
         fils: { principal: 'main thread', rendu: 'render thread', gpu: 'graphics card' },
         confiances: {
             mesure: 'Based on your measurements.',
+            capture: 'Based on your PresentMon capture.',
             symptomes: 'Based on your symptoms only: to be confirmed by a measurement.',
             aucune: 'Not enough measurements or symptoms to conclude.'
         },
@@ -309,7 +325,7 @@ const TEXTES = {
         aVerifier: 'To be checked',
         aVerifierAide: 'No official source or published measurement confirms this point yet.',
         sources: 'Sources',
-        rang: r => ['', 'official', 'NVIDIA', 'published measurement', 'forum or guide'][r],
+        rang: r => ['', 'official', 'manufacturer', 'published measurement', 'forum or guide'][r],
         gravites: { important: 'Important', attention: 'Caution', info: 'Info' },
 
         challenge: 'Challenge mode',
