@@ -2,7 +2,9 @@
 // Chaque page existe en deux exemplaires : /chemin/ (français) et /en/chemin/ (anglais),
 // reliés par des <link rel="alternate" hreflang="…"> placés AVANT ce script dans <head>.
 // Chargé sans defer : la redirection vers la bonne langue a lieu avant l'affichage.
-// Priorité : choix explicite (bouton FR/EN, clé localStorage 'lang') > langues du navigateur.
+// Priorité : choix explicite (bouton FR/EN, clé localStorage 'lang'), appliqué partout ;
+// sinon langues du navigateur, mais seulement depuis une page française (sans préfixe) :
+// une adresse /en/… tapée ou partagée est un choix explicite, elle n'est jamais quittée d'office.
 (function () {
     const CLE = 'lang';
     const LANGUES = ['fr', 'en'];
@@ -52,7 +54,8 @@
         return cible.pathname + location.search + location.hash;
     }
 
-    const voulue = lireChoix() || langueNavigateur();
+    const choix = lireChoix();
+    const voulue = choix || langueNavigateur();
 
     // Page sans équivalent (404, servie à n'importe quelle adresse) : elle s'affiche dans
     // la langue de l'adresse demandée si elle commence par /en/, sinon dans la langue voulue
@@ -60,7 +63,9 @@
         racine.lang = location.pathname.startsWith('/en/') ? 'en' : voulue;
     }
 
-    if (voulue !== actuelle && !estUnRobot()) {
+    // Sans choix mémorisé, une page anglaise reste anglaise
+    const redirectionPermise = choix !== null || actuelle === 'fr';
+    if (voulue !== actuelle && redirectionPermise && !estUnRobot()) {
         const adresse = adresseAlternative(voulue);
         if (adresse) {
             location.replace(adresse);

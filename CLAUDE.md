@@ -60,7 +60,7 @@ L'application **Phraséologie** (phraseo.aeronautique.xyz) est hébergée dans u
 
 - Le site est **bilingue** : français à la racine (`/watch/`…), anglais sous `/en/` (`/en/watch/`…). Toute modification de texte d'une page se reporte dans sa version anglaise.
 - Chaque page déclare `<link rel="alternate" hreflang="fr|en|x-default">` (x-default = anglais) **avant** `<script src="/lang.js">`, et un lien `#langToggle` vers l'autre version. Les pages anglaises reprennent les scripts et le SVG par chemins absolus (`/selcal/selcal.js`, `/watch/watch.svg`).
-- `lang.js` redirige vers la langue voulue (choix mémorisé, sinon navigateur ; anglais si ni fr ni en), sauf pour les robots d'indexation. `404.html` est une page unique bilingue (blocs `lang="fr"` / `lang="en"`).
+- `lang.js` redirige vers la langue voulue : choix mémorisé (bouton FR/EN) partout ; sinon langue du navigateur (anglais si ni fr ni en), seulement depuis une page française (une adresse /en/… n'est jamais quittée d'office). Jamais pour les robots d'indexation. `404.html` est une page unique bilingue (blocs `lang="fr"` / `lang="en"`).
 - Textes générés en JS (SELCAL) : dictionnaire `TEXTES` de `selcal/selcal-commun.js`, selon l'attribut `lang` de `<html>`. Le widget `embed.html` prend `?lang=fr|en`, sinon la langue du navigateur.
 - `sitemap.xml` liste les deux versions de chaque page avec leurs `xhtml:link` alternates.
 - La langue de travail reste le **français**
