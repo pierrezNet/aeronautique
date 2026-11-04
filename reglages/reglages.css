@@ -327,6 +327,8 @@ a:focus-visible {
 
 .tableau tbody th { font-weight: 700; min-width: 160px; }
 
+.chez-vous { font-weight: 700; white-space: nowrap; }
+
 .impacts {
     list-style: none;
     padding: 0;

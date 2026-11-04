@@ -1,0 +1,6 @@
+Fichiers UserCfg.opt réels, repris de dépôts publics sous licence MIT, pour tester la lecture :
+
+- msfs2024-rigready.opt : MSFS 2024, préréglage High
+  https://github.com/MCheli/RigReady (licence MIT)
+- msfs2020-usercfg-opt-parser.opt : MSFS 2020, préréglage Custom
+  https://github.com/NathanVaughn/usercfg-opt-parser (licence MIT)

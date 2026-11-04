@@ -1,0 +1,395 @@
+{
+  "description": "Correspondances entre les clés du fichier UserCfg.opt de MSFS et les réglages de parametres.json. « chemin » : sections et clé séparées par « / » (section Graphics pour l'écran ; GraphicsVR, réalité virtuelle, ignorée). « type » : nombre (multiplié par « echelle »), liste (code → libellé, voir textes.js), texte (valeur brute). « actif » : clé Enabled qui, à 0, désactive le réglage. Correspondances déduites de fichiers réels : à vérifier.",
+  "correspondances": [
+    {
+      "id": "echelle-rendu",
+      "parametre": "echelle-rendu",
+      "simulateur": "les-deux",
+      "chemin": "Video/PrimaryScaling",
+      "type": "nombre",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020 (préréglage Medium), dépôt bne-arduino-flight-simulator-interfaces",
+          "url": "https://github.com/bnepethomas/bne-arduino-flight-simulator-interfaces/blob/master/Hornet/Hornet%20Documentation/Fly%20Elise/4K%2020230408%20MSFS%20Separate%20Windows/MSFS%202020%20Configuration%20Files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "echelle": 100,
+      "note": {
+        "fr": "PrimaryScaling 1.0 lu comme une échelle de rendu de 100 : correspondance déduite, à vérifier.",
+        "en": "PrimaryScaling 1.0 read as render scaling 100: inferred mapping, to be checked."
+      }
+    },
+    {
+      "id": "anticrenelage",
+      "parametre": "anticrenelage",
+      "simulateur": "les-deux",
+      "chemin": "Video/AntiAliasing",
+      "type": "texte",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020 (préréglage Medium), dépôt bne-arduino-flight-simulator-interfaces",
+          "url": "https://github.com/bnepethomas/bne-arduino-flight-simulator-interfaces/blob/master/Hornet/Hornet%20Documentation/Fly%20Elise/4K%2020230408%20MSFS%20Separate%20Windows/MSFS%202020%20Configuration%20Files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "note": {
+        "fr": "Accompagné du mode DLSS (Video/DLSSMode) quand l'anticrénelage est DLSS.",
+        "en": "Together with the DLSS mode (Video/DLSSMode) when anti-aliasing is DLSS."
+      }
+    },
+    {
+      "id": "generation-images-2024",
+      "parametre": "generation-images-2024",
+      "simulateur": "2024",
+      "chemin": "Video/FrameGeneration",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "valeurs": {
+        "NONE": "desactive"
+      },
+      "note": {
+        "fr": "Seule la valeur NONE (désactivée) a été vue dans un fichier réel ; les autres valeurs s'affichent telles quelles.",
+        "en": "Only the NONE value (off) has been seen in a real file; other values are shown as is."
+      }
+    },
+    {
+      "id": "generation-images-2020",
+      "parametre": "generation-images-2020",
+      "simulateur": "2020",
+      "chemin": "Video/DLSSG",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020 (préréglage Medium), dépôt bne-arduino-flight-simulator-interfaces",
+          "url": "https://github.com/bnepethomas/bne-arduino-flight-simulator-interfaces/blob/master/Hornet/Hornet%20Documentation/Fly%20Elise/4K%2020230408%20MSFS%20Separate%20Windows/MSFS%202020%20Configuration%20Files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "valeurs": {
+        "0": "desactive",
+        "1": "active"
+      }
+    },
+    {
+      "id": "tlod",
+      "parametre": "tlod",
+      "simulateur": "les-deux",
+      "chemin": "Graphics/Terrain/LoDFactor",
+      "type": "nombre",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020 (préréglage Medium), dépôt bne-arduino-flight-simulator-interfaces",
+          "url": "https://github.com/bnepethomas/bne-arduino-flight-simulator-interfaces/blob/master/Hornet/Hornet%20Documentation/Fly%20Elise/4K%2020230408%20MSFS%20Separate%20Windows/MSFS%202020%20Configuration%20Files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "Forum officiel, « UserCfg.opt very different » (LoDFactor 2.65 pour un TLOD de 265)",
+          "url": "https://forums.flightsimulator.com/t/usercfg-opt-very-different/633581",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "echelle": 100,
+      "note": {
+        "fr": "LoDFactor × 100 = valeur du menu (1,0 → 100 ; 2,65 → 265).",
+        "en": "LoDFactor × 100 = menu value (1.0 → 100; 2.65 → 265)."
+      }
+    },
+    {
+      "id": "olod",
+      "parametre": "olod",
+      "simulateur": "les-deux",
+      "chemin": "Graphics/ObjectsLoD/LoDFactor",
+      "type": "nombre",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020 (préréglage Medium), dépôt bne-arduino-flight-simulator-interfaces",
+          "url": "https://github.com/bnepethomas/bne-arduino-flight-simulator-interfaces/blob/master/Hornet/Hornet%20Documentation/Fly%20Elise/4K%2020230408%20MSFS%20Separate%20Windows/MSFS%202020%20Configuration%20Files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "echelle": 100
+    },
+    {
+      "id": "nuages-volumetriques",
+      "parametre": "nuages-volumetriques",
+      "simulateur": "les-deux",
+      "chemin": "Graphics/VolumetricClouds/Quality",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020 (préréglage Medium), dépôt bne-arduino-flight-simulator-interfaces",
+          "url": "https://github.com/bnepethomas/bne-arduino-flight-simulator-interfaces/blob/master/Hornet/Hornet%20Documentation/Fly%20Elise/4K%2020230408%20MSFS%20Separate%20Windows/MSFS%202020%20Configuration%20Files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "valeurs": {
+        "-1": "desactive",
+        "0": "bas",
+        "1": "moyen",
+        "2": "haut",
+        "3": "ultra"
+      },
+      "actif": "Graphics/VolumetricClouds/Enabled",
+      "note": {
+        "fr": "0 = Bas … 3 = Ultra ; recoupé avec les préréglages High (2) et Medium (1) des fichiers d'exemple.",
+        "en": "0 = Low … 3 = Ultra; cross-checked with the High (2) and Medium (1) presets of the sample files."
+      }
+    },
+    {
+      "id": "resolution-textures",
+      "parametre": "resolution-textures",
+      "simulateur": "les-deux",
+      "chemin": "Graphics/Texture/Quality",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020 (préréglage Medium), dépôt bne-arduino-flight-simulator-interfaces",
+          "url": "https://github.com/bnepethomas/bne-arduino-flight-simulator-interfaces/blob/master/Hornet/Hornet%20Documentation/Fly%20Elise/4K%2020230408%20MSFS%20Separate%20Windows/MSFS%202020%20Configuration%20Files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "valeurs": {
+        "0": "ultra",
+        "1": "haut",
+        "2": "moyen",
+        "3": "bas"
+      },
+      "note": {
+        "fr": "Échelle inversée : 0 = Ultra … 3 = Bas ; recoupé avec les préréglages High (1) et Medium (2) des fichiers d'exemple.",
+        "en": "Reversed scale: 0 = Ultra … 3 = Low; cross-checked with the High (1) and Medium (2) presets of the sample files."
+      }
+    },
+    {
+      "id": "ombres-terrain",
+      "parametre": "ombres-terrain",
+      "simulateur": "les-deux",
+      "chemin": "Graphics/HeightFieldShadows/Size",
+      "type": "nombre",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020 (préréglage Medium), dépôt bne-arduino-flight-simulator-interfaces",
+          "url": "https://github.com/bnepethomas/bne-arduino-flight-simulator-interfaces/blob/master/Hornet/Hornet%20Documentation/Fly%20Elise/4K%2020230408%20MSFS%20Separate%20Windows/MSFS%202020%20Configuration%20Files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "actif": "Graphics/HeightFieldShadows/Enabled"
+    },
+    {
+      "id": "trafic-2024",
+      "parametre": "trafic-2024",
+      "simulateur": "2024",
+      "chemin": "Graphics/Traffic/AircraftTrafficQuantity",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "valeurs": {
+        "-1": "desactive",
+        "0": "bas",
+        "1": "moyen",
+        "2": "haut",
+        "3": "ultra"
+      },
+      "note": {
+        "fr": "Quantité de trafic aérien ; les autres densités (services d'aéroport, routes, mer) sont dans la même section.",
+        "en": "Aircraft traffic quantity; the other densities (airport services, roads, sea) are in the same section."
+      }
+    },
+    {
+      "id": "ecrans-cockpit",
+      "parametre": "ecrans-cockpit",
+      "simulateur": "les-deux",
+      "chemin": "Graphics/GlassCockpitsRefreshRate/Quality",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "valeurs": {
+        "0": "bas",
+        "1": "moyen",
+        "2": "haut"
+      }
+    },
+    {
+      "id": "vsync-2024",
+      "parametre": "vsync-2024",
+      "simulateur": "2024",
+      "chemin": "Video/VSync",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "valeurs": {
+        "0": "desactive",
+        "1": "active"
+      }
+    },
+    {
+      "id": "directx-2020",
+      "parametre": "directx-2020",
+      "simulateur": "2020",
+      "chemin": "Video/PreferD3D12",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-04",
+      "valeurs": {
+        "0": "dx11",
+        "1": "dx12"
+      }
+    }
+  ]
+}

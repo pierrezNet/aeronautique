@@ -8,6 +8,7 @@ import { T, langue, nombre, tr } from './textes.js';
 import * as stockage from './stockage.js';
 import { choisirFichierTexte, el } from './dom.js';
 import { lireCapture } from './moteur/presentmon.js';
+import { lireUserCfg } from './moteur/usercfg.js';
 import { monterJournal } from './interfaceJournal.js';
 
 const racine = document.getElementById('atelier');
@@ -20,12 +21,12 @@ async function chargerBase() {
         if (!reponse.ok) throw new Error(`${nom} : ${reponse.status}`);
         return reponse.json();
     };
-    const [parametres, regles, materiel, symptomes, challenges] = await Promise.all(
-        ['parametres.json', 'regles.json', 'materiel.json', 'symptomes.json', 'challenges.json'].map(lire)
+    const [parametres, regles, materiel, symptomes, challenges, usercfg] = await Promise.all(
+        ['parametres.json', 'regles.json', 'materiel.json', 'symptomes.json', 'challenges.json', 'usercfg.json'].map(lire)
     );
     return {
         parametres: parametres.parametres, regles: regles.regles, materiel,
-        symptomes: symptomes.symptomes, challenges: challenges.challenges
+        symptomes: symptomes.symptomes, challenges: challenges.challenges, correspondances: usercfg.correspondances
     };
 }
 
@@ -96,13 +97,51 @@ function blocCapture() {
         resume, memoire);
 }
 
+// Import de UserCfg.opt : seules les valeurs utiles sont gardées (champ caché, mémorisé avec le reste).
+// Simulateur, carte graphique et définition sont remplis s'ils sont vides ; rien de saisi n'est écrasé.
+function blocUserCfg(base) {
+    const memoire = el('input', { type: 'hidden', name: 'usercfg', id: 'champ-usercfg' });
+    const resume = el('p', { class: 'aide', id: 'resume-usercfg', 'aria-live': 'polite' });
+    const importer = el('button', { type: 'button', class: 'btn btn-secondaire' }, T.importerUsercfg);
+    const oublier = el('button', { type: 'button', class: 'btn btn-secondaire', id: 'oublier-usercfg', hidden: true }, T.oublierUsercfg);
+
+    importer.addEventListener('click', async () => {
+        const contenu = await choisirFichierTexte('.opt,text/plain');
+        if (contenu === null) return;
+        const lu = lireUserCfg(contenu, base.correspondances, base.parametres);
+        if (lu.erreur) {
+            resume.textContent = T.erreurUsercfg;
+            return;
+        }
+        const formulaire = memoire.form;
+        const choisi = formulaire.querySelector('input[name=simulateur]:checked');
+        if (!choisi && lu.simulateur) formulaire.querySelector(`input[name=simulateur][value="${lu.simulateur}"]`).checked = true;
+        const gpu = document.getElementById('champ-gpu');
+        if (!gpu.value && lu.carte) gpu.value = lu.carte;
+        const resolution = document.getElementById('champ-resolution');
+        if (!resolution.value && [...resolution.options].some(o => o.value === lu.resolution)) resolution.value = lu.resolution;
+        memoire.value = JSON.stringify(lu);
+        formulaire.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    oublier.addEventListener('click', () => {
+        memoire.value = '';
+        memoire.form.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    return el('div', { class: 'bloc-capture' },
+        el('p', { class: 'sous-titre' }, T.usercfgTitre),
+        el('p', { class: 'aide' }, T.usercfgAide),
+        el('div', { class: 'actions' }, importer, oublier),
+        resume, memoire);
+}
+
 // La valeur du champ « FPS réels » est-elle celle posée par la capture mémorisée ?
 function vientDeLaCapture(valeurChamp, captureMemorisee) {
-    const capture = lireCaptureMemorisee(captureMemorisee);
+    const capture = lireJsonMemorise(captureMemorisee);
     return capture !== null && nb(valeurChamp) === capture.fpsMoyen;
 }
 
-const lireCaptureMemorisee = valeur => {
+const lireJsonMemorise = valeur => {
     try {
         return valeur ? JSON.parse(valeur) : null;
     } catch (e) {
@@ -124,6 +163,7 @@ function construireFormulaire(base) {
 
     const configuration = el('fieldset', { class: 'etape' },
         el('legend', {}, T.configuration),
+        blocUserCfg(base),
         choix('simulateur', T.simulateur, [['2024', 'Microsoft Flight Simulator 2024'], ['2020', 'Microsoft Flight Simulator 2020']]),
         blocDirectx,
         el('div', { class: 'grille' },
@@ -134,7 +174,7 @@ function construireFormulaire(base) {
             el('div', { class: 'champ' },
                 el('label', { for: 'champ-resolution' }, T.resolution),
                 el('select', { id: 'champ-resolution', name: 'resolution' },
-                    ['', '1920×1080', '2560×1440', '3440×1440', '3840×2160'].map(v => el('option', { value: v }, v || '—')))
+                    ['', '1920×1080', '2560×1440', '3440×1440', '3840×2160', '5120×1440'].map(v => el('option', { value: v }, v || '—')))
             ),
             champ('frequenceHz', T.frequence, { type: 'number', min: 30, max: 500, step: 'any', aide: T.frequenceAide })
         ),
@@ -275,8 +315,9 @@ function versSaisie(v, base) {
             vramUtiliseeGo: nb(v.vramUtiliseeGo),
             fpsReels: nb(v.fpsReels),
             verrouFps: nb(v.verrouFps),
-            capture: lireCaptureMemorisee(v.capture)
+            capture: lireJsonMemorise(v.capture)
         },
+        usercfg: lireJsonMemorise(v.usercfg),
         symptomes: v.symptomes ?? [],
         // Seulement les changements du simulateur choisi (les menus d'un autre restent mémorisés)
         changements: Object.entries(v)
@@ -356,7 +397,17 @@ function blocMessages(r) {
     );
 }
 
-function blocTableau(r) {
+// Valeur lue dans UserCfg.opt pour un réglage, mise en forme (libellé traduit, ou nombre)
+function valeurChezVous(usercfg, id) {
+    const v = usercfg?.valeurs?.[id];
+    if (!v) return '—';
+    if (v.libelle) return T.libellesValeurs[v.libelle] ?? v.libelle;
+    return typeof v.valeur === 'number' ? nombre(v.valeur) : v.valeur;
+}
+
+function blocTableau(r, usercfg) {
+    // Colonne « Chez vous » seulement si un UserCfg.opt du même simulateur a été importé
+    const avecUsercfg = usercfg !== null && Object.keys(usercfg.valeurs ?? {}).length > 0;
     const impact = l => el('ul', { class: 'impacts' },
         el('li', {}, T.impact(T.impactCpu, l.impact.cpu)),
         el('li', {}, T.impact(T.impactGpu, l.impact.gpu)),
@@ -367,9 +418,11 @@ function blocTableau(r) {
         el('p', {}, T.tableauIntro),
         el('table', { class: 'tableau' },
             el('thead', {}, el('tr', {},
-                [T.colReglage, T.colImpact, T.colDepart, T.colCout, T.colTest].map(t => el('th', { scope: 'col' }, t)))),
+                [T.colReglage, avecUsercfg && T.colChezVous, T.colImpact, T.colDepart, T.colCout, T.colTest]
+                    .filter(Boolean).map(t => el('th', { scope: 'col' }, t)))),
             el('tbody', {}, r.tableau.map(l => el('tr', {},
                 el('th', { scope: 'row', 'data-label': T.colReglage }, tr(l.libelle), ' ', badgeStatut(l.statut), listeSources(l.sources)),
+                avecUsercfg && el('td', { 'data-label': T.colChezVous, class: 'chez-vous' }, valeurChezVous(usercfg, l.id)),
                 el('td', { 'data-label': T.colImpact }, impact(l)),
                 el('td', { 'data-label': T.colDepart }, tr(l.depart)),
                 el('td', { 'data-label': T.colCout }, tr(l.coutVisuel)),
@@ -422,7 +475,7 @@ function afficherResultats(zone, r, saisie, base, donnerFocus = true) {
         el('div', { class: 'cartes' }, blocDiagnostic(r), blocCadence(r, profil), blocGeneration(r)),
         blocMessages(r),
         blocChallenge(r, saisie, base),
-        blocTableau(r)
+        blocTableau(r, saisie.usercfg && saisie.usercfg.simulateur === profil.simulateur ? saisie.usercfg : null)
     );
     zone.hidden = false;
     // Après « Analyser », le focus passe au titre des résultats : lecteurs d'écran et clavier y arrivent directement
@@ -463,11 +516,21 @@ async function demarrer() {
         document.getElementById('gpu-inconnu').hidden = !v.gpu || familleGpu(v.gpu, base.materiel) !== null;
         document.getElementById('vr-avertissement').hidden = v.affichage !== 'vr';
         // Résumé de la capture importée, s'il y en a une
-        const capture = lireCaptureMemorisee(v.capture);
+        const capture = lireJsonMemorise(v.capture);
         const resume = document.getElementById('resume-capture');
         if (capture) resume.textContent = T.resumeCapture(capture);
         else if (resume.textContent !== T.erreurCapture) resume.textContent = '';
         document.getElementById('oublier-capture').hidden = !capture;
+        // Résumé du UserCfg.opt importé, et avertissement s'il vient de l'autre simulateur
+        const usercfg = lireJsonMemorise(v.usercfg);
+        const resumeUsercfg = document.getElementById('resume-usercfg');
+        if (usercfg) {
+            resumeUsercfg.textContent = T.resumeUsercfg(usercfg)
+                + (v.simulateur && usercfg.simulateur && usercfg.simulateur !== v.simulateur ? ' ' + T.usercfgAutreSimulateur(usercfg.simulateur) : '');
+        } else if (resumeUsercfg.textContent !== T.erreurUsercfg) {
+            resumeUsercfg.textContent = '';
+        }
+        document.getElementById('oublier-usercfg').hidden = !usercfg;
     };
 
     const memorise = stockage.lire();
