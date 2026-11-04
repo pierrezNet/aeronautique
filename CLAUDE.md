@@ -7,7 +7,7 @@ Suite d'outils aéronautiques interactifs, site statique pur (HTML/CSS/JS vanill
 ## Structure
 
 ```
-index.html          # Landing page (hub) avec grille de cartes vers les 3 apps
+index.html          # Accueil (hub) : cartes Phraséologie, Montre UTC, SELCAL, Atelier réglages, Forum AvroBB, Appel à projets (lien provisoire vers avrobb.org en attendant sa section)
 phraseologie/index.html # Présentation détaillée de la Phraséologie ; boutons vers l'application (phraseo.aeronautique.xyz)
 theme.css           # Commun : polices locales (@font-face), variables de couleur, bouton de thème
 theme.js            # Commun : thème clair/sombre (clé localStorage 'theme', data-theme sur <html>)
@@ -15,7 +15,7 @@ lang.js             # Commun : langue FR/EN (clé localStorage 'lang', sinon lan
 en/                 # Version anglaise : même arborescence (en/index.html, en/watch/, en/selcal/, en/phraseologie/)
 retour.js / .css    # Formulaire « J'ai un retour » (horloge UTC, SELCAL) : <dialog> bilingue, POST /api/retour
 relais/             # Worker Cloudflare (JS sans build) sur la route aeronautique.xyz/api/retour → forum AvroBB
-reglages/           # Atelier réglages MSFS (noindex tant qu'il n'est pas annoncé) : moteur JS pur (js/moteur/), base de connaissances JSON (donnees/), imports PresentMon et UserCfg.opt, journal, IA avec la clé de l'utilisateur ; voir reglages/README.md et CONTRIBUTING.md
+reglages/           # Atelier réglages MSFS : moteur JS pur (js/moteur/), base de connaissances JSON (donnees/), imports PresentMon et UserCfg.opt, journal, IA avec la clé de l'utilisateur ; voir reglages/README.md et CONTRIBUTING.md
 fonts/              # Polices woff2 auto-hébergées (Orbitron, Roboto, Inter) + licences OFL
 watch/index.html    # Horloge UTC avec effets gyroscope (SVG + DeviceOrientation API)
 watch/watch.js      # Aide iOS + capteur de lumière ambiante
@@ -24,7 +24,7 @@ selcal/index.html   # Simulateur SELCAL (Web Audio API, 16 fréquences normalis�
 selcal/selcal-commun.js # Noyau SELCAL partagé : lettres, fréquences, validation, ?code=, audio
 selcal/selcal.js    # Page SELCAL : interface, partage de lien (?code=AB-CD)
 selcal/embed.html   # Widget SELCAL intégrable en iframe (noindex) + embed.js / embed-theme.js
-images/             # Visuels : PNG 1024 px (sources), WebP 300 px (cartes), og-*.jpg 1200×630 (Open Graph)
+images/             # Visuels : PNG 1024 px (sources ; SVG pour reglages et appel-projets), WebP 300 px (cartes), og-*.jpg 1200×630 (Open Graph)
 404.html            # Page d'erreur GitHub Pages (noindex, chemins absolus)
 robots.txt          # Autorise tout, pointe vers le sitemap
 sitemap.xml         # Mettre à jour <lastmod> quand une page change

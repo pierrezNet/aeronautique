@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Icône de l'appel à projets : ampoule contenant un avion, style des icônes montre et SELCAL -->
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1f45"/>
+      <stop offset="0.55" stop-color="#121a3a"/>
+      <stop offset="1" stop-color="#3a1c5c"/>
+    </linearGradient>
+    <filter id="lueur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="9" result="flou"/>
+      <feMerge><feMergeNode in="flou"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#fond)"/>
+  <circle cx="512" cy="512" r="400" fill="none" stroke="#5fd4ff" stroke-opacity="0.18" stroke-width="3"/>
+  <circle cx="512" cy="512" r="440" fill="none" stroke="#5fd4ff" stroke-opacity="0.08" stroke-width="2"/>
+  <g filter="url(#lueur)" fill="none" stroke="#67e3ff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Ampoule -->
+    <path d="M512,230 C385,230 300,325 300,440 C300,520 345,575 390,620 C420,650 432,680 432,715 L592,715 C592,680 604,650 634,620 C679,575 724,520 724,440 C724,325 639,230 512,230 Z"/>
+    <line x1="440" y1="760" x2="584" y2="760"/>
+    <line x1="458" y1="805" x2="566" y2="805"/>
+    <!-- Rayons -->
+    <line x1="512" y1="150" x2="512" y2="185" stroke-opacity="0.8"/>
+    <line x1="300" y1="235" x2="325" y2="260" stroke-opacity="0.8"/>
+    <line x1="724" y1="235" x2="699" y2="260" stroke-opacity="0.8"/>
+    <line x1="215" y1="440" x2="250" y2="440" stroke-opacity="0.8"/>
+    <line x1="809" y1="440" x2="774" y2="440" stroke-opacity="0.8"/>
+  </g>
+  <!-- Avion vu de dessus, dans l'ampoule -->
+  <g transform="translate(512 470) rotate(35) scale(1.05)" fill="#e8fbff" filter="url(#lueur)">
+    <path d="M0,-150 C10,-150 14,-138 14,-120 L14,-30 L120,25 L120,48 L14,20 L14,90 L48,115 L48,132 L0,118 L-48,132 L-48,115 L-14,90 L-14,20 L-120,48 L-120,25 L-14,-30 L-14,-120 C-14,-138 -10,-150 0,-150 Z"/>
+  </g>
+  <!-- Plus : proposer -->
+  <g stroke="#e8fbff" stroke-width="14" stroke-linecap="round" filter="url(#lueur)">
+    <line x1="760" y1="700" x2="760" y2="800"/>
+    <line x1="710" y1="750" x2="810" y2="750"/>
+  </g>
+</svg>

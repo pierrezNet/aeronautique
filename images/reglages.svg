@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Icône de l'Atelier réglages : curseurs de réglage et courbe d'images par seconde, style des icônes montre et SELCAL -->
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1f45"/>
+      <stop offset="0.55" stop-color="#121a3a"/>
+      <stop offset="1" stop-color="#3a1c5c"/>
+    </linearGradient>
+    <filter id="lueur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="9" result="flou"/>
+      <feMerge><feMergeNode in="flou"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#fond)"/>
+  <circle cx="512" cy="512" r="400" fill="none" stroke="#5fd4ff" stroke-opacity="0.18" stroke-width="3"/>
+  <circle cx="512" cy="512" r="440" fill="none" stroke="#5fd4ff" stroke-opacity="0.08" stroke-width="2"/>
+  <g filter="url(#lueur)" stroke="#67e3ff" stroke-linecap="round" fill="none">
+    <!-- Courbe de FPS qui se stabilise -->
+    <polyline stroke-width="10" points="250,380 300,330 340,410 385,300 430,370 475,315 520,345 565,325 610,335 655,328 700,332 774,330"/>
+    <!-- Trois curseurs -->
+    <line x1="270" y1="520" x2="754" y2="520" stroke-width="12" stroke-opacity="0.55"/>
+    <line x1="270" y1="620" x2="754" y2="620" stroke-width="12" stroke-opacity="0.55"/>
+    <line x1="270" y1="720" x2="754" y2="720" stroke-width="12" stroke-opacity="0.55"/>
+    <line x1="270" y1="520" x2="600" y2="520" stroke-width="12"/>
+    <line x1="270" y1="620" x2="430" y2="620" stroke-width="12"/>
+    <line x1="270" y1="720" x2="680" y2="720" stroke-width="12"/>
+  </g>
+  <g fill="#0f1b3d" stroke="#e8fbff" stroke-width="8" filter="url(#lueur)">
+    <circle cx="600" cy="520" r="30"/>
+    <circle cx="430" cy="620" r="30"/>
+    <circle cx="680" cy="720" r="30"/>
+  </g>
+  <text x="512" y="250" text-anchor="middle" font-family="Orbitron, Verdana, sans-serif" font-size="64" font-weight="700" letter-spacing="10" fill="#e8fbff" filter="url(#lueur)">FPS</text>
+</svg>
