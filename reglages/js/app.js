@@ -10,6 +10,7 @@ import { choisirFichierTexte, el } from './dom.js';
 import { lireCapture } from './moteur/presentmon.js';
 import { lireUserCfg } from './moteur/usercfg.js';
 import { monterJournal } from './interfaceJournal.js';
+import { blocIa } from './interfaceIa.js';
 
 const racine = document.getElementById('atelier');
 const DONNEES = '/reglages/donnees/';
@@ -475,7 +476,8 @@ function afficherResultats(zone, r, saisie, base, donnerFocus = true) {
         el('div', { class: 'cartes' }, blocDiagnostic(r), blocCadence(r, profil), blocGeneration(r)),
         blocMessages(r),
         blocChallenge(r, saisie, base),
-        blocTableau(r, saisie.usercfg && saisie.usercfg.simulateur === profil.simulateur ? saisie.usercfg : null)
+        blocTableau(r, saisie.usercfg && saisie.usercfg.simulateur === profil.simulateur ? saisie.usercfg : null),
+        blocIa(saisie, r, base)
     );
     zone.hidden = false;
     // Après « Analyser », le focus passe au titre des résultats : lecteurs d'écran et clavier y arrivent directement

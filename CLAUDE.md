@@ -15,7 +15,7 @@ lang.js             # Commun : langue FR/EN (clé localStorage 'lang', sinon lan
 en/                 # Version anglaise : même arborescence (en/index.html, en/watch/, en/selcal/, en/phraseologie/)
 retour.js / .css    # Formulaire « J'ai un retour » (horloge UTC, SELCAL) : <dialog> bilingue, POST /api/retour
 relais/             # Worker Cloudflare (JS sans build) sur la route aeronautique.xyz/api/retour → forum AvroBB
-reglages/           # Atelier réglages MSFS (en construction) : moteur JS pur (js/moteur/), base de connaissances JSON (donnees/), tests node:test ; voir reglages/CONTRIBUTING.md
+reglages/           # Atelier réglages MSFS (noindex tant qu'il n'est pas annoncé) : moteur JS pur (js/moteur/), base de connaissances JSON (donnees/), imports PresentMon et UserCfg.opt, journal, IA avec la clé de l'utilisateur ; voir reglages/README.md et CONTRIBUTING.md
 fonts/              # Polices woff2 auto-hébergées (Orbitron, Roboto, Inter) + licences OFL
 watch/index.html    # Horloge UTC avec effets gyroscope (SVG + DeviceOrientation API)
 watch/watch.js      # Aide iOS + capteur de lumière ambiante
@@ -42,6 +42,7 @@ L'application **Phraséologie** (phraseo.aeronautique.xyz) est hébergée dans u
 - Polices : auto-hébergées dans `fonts/` (Orbitron pour les titres, Roboto/Inter pour le corps), pas de Google Fonts
 - Thème sombre/clair : toggle + `prefers-color-scheme` + persistence localStorage, via `theme.js`
 - CSP en `<meta>` sur chaque page : **aucun script inline ni attribut `onclick`** (scripts en fichiers externes) ; seul tiers autorisé : Cloudflare Web Analytics
+  - Exception limitée aux pages `reglages/` et `en/reglages/` : `connect-src` autorise aussi `api.anthropic.com`, `api.openai.com` et `generativelanguage.googleapis.com`, appelés seulement à la demande de l'utilisateur avec SA clé d'API (section IA de l'Atelier réglages)
 
 ## Retours « J'ai un retour »
 
