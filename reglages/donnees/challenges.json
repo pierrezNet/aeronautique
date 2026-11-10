@@ -1,6 +1,278 @@
 {
-  "description": "Questions du mode challenge. Une question s'affiche quand l'utilisateur a changé un des « reglages » (début d'id de parametres.json) dans le « sens » indiqué, et que le goulot diagnostiqué est dans « goulots » (liste vide : tout goulot) ; « avisGeneration », facultatif, restreint aux avis de génération d'images listés. Une réponse au moins est correcte ; chaque choix porte son explication.",
+  "description": "Questions du mode challenge. Une question s'affiche quand l'utilisateur a changé un des « reglages » (début d'id de parametres.json) dans le « sens » indiqué, et que le goulot diagnostiqué est dans « goulots » (liste vide : tout goulot) ; « avisGeneration », facultatif, restreint aux avis de génération d'images listés. Une réponse au moins est correcte ; chaque choix porte son explication. Les questions marquées « declencheur »: « diagnostic » ne dépendent pas des réglages changés : elles portent sur le goulot diagnostiqué (« goulots », non vide) et n'ont ni « reglages » ni « sens ».",
   "challenges": [
+    {
+      "id": "diag-cpu-premier-reglage",
+      "declencheur": "diagnostic",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-10",
+      "goulots": [
+        "cpu"
+      ],
+      "question": {
+        "fr": "Votre processeur limite les images. Quel réglage essayer en premier ?",
+        "en": "Your processor limits the frames. Which setting should you try first?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "L'échelle de rendu",
+            "en": "Render scaling"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Les mesures publiées ne montrent aucun effet de l'échelle de rendu sur le processeur : l'image serait plus floue pour rien.",
+            "en": "Published measurements show no effect of render scaling on the processor: the image would get blurrier for nothing."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Le niveau de détail du terrain (TLOD)",
+            "en": "Terrain level of detail (TLOD)"
+          },
+          "correct": true,
+          "explication": {
+            "fr": "C'est le réglage le plus lourd pour le processeur : en 2020, de 100 à 400, les FPS mesurés chutent de 46 % quand le processeur limite. Baissez-le par étapes, en refaisant le même vol.",
+            "en": "It is the heaviest setting for the processor: in 2020, from 100 to 400, measured FPS drop by 46% when the processor limits. Lower it step by step, flying the same flight again."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Les nuages volumétriques",
+            "en": "Volumetric clouds"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Ils pèsent sur la carte graphique, sans effet mesurable sur le processeur.",
+            "en": "They weigh on the graphics card, with no measurable effect on the processor."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diag-gpu-premier-reglage",
+      "declencheur": "diagnostic",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-10",
+      "goulots": [
+        "gpu"
+      ],
+      "question": {
+        "fr": "Votre carte graphique limite les images. Quel réglage la soulage le plus ?",
+        "en": "Your graphics card limits the frames. Which setting relieves it most?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Le niveau de détail du terrain (TLOD)",
+            "en": "Terrain level of detail (TLOD)"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Son effet sur la carte graphique est réel mais plus faible que sur le processeur (−16 % contre −46 % en 2020, de 100 à 400).",
+            "en": "Its effect on the graphics card is real but smaller than on the processor (−16% versus −46% in 2020, from 100 to 400)."
+          }
+        },
+        {
+          "texte": {
+            "fr": "L'échelle de rendu, ou le DLSS en mode Qualité",
+            "en": "Render scaling, or DLSS in Quality mode"
+          },
+          "correct": true,
+          "explication": {
+            "fr": "C'est le levier le plus fort : la carte calcule moins de pixels. En 2020, de 150 à 100, les FPS mesurés passent de 51,3 à 88,5.",
+            "en": "It is the strongest lever: the card renders fewer pixels. In 2020, from 150 to 100, measured FPS go from 51.3 to 88.5."
+          }
+        },
+        {
+          "texte": {
+            "fr": "La résolution des textures",
+            "en": "Texture resolution"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Elle agit sur la mémoire vidéo, presque pas sur les FPS (−1,3 % en 2020, aucun effet mesuré en 2024).",
+            "en": "It acts on video memory, hardly on FPS (−1.3% in 2020, no measured effect in 2024)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diag-vram-premier-reglage",
+      "declencheur": "diagnostic",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "TheOriginalBabu, « FS2020 Graphics Settings and Performance Guide (SU12 Update) » : mesures i9-9900K / RTX 3080 / 1440p, build 1.33.8.0",
+          "url": "https://forums.flightsimulator.com/t/fs2020-graphics-settings-and-performance-guide-su12-update-7-26-2023/132407",
+          "consulte": "2026-11-04",
+          "rang": 3
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : mesures i9-9900K / RTX 3080 / 1440p",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-10",
+      "goulots": [
+        "vram"
+      ],
+      "question": {
+        "fr": "Votre mémoire vidéo est presque pleine. Quel réglage baisser en premier ?",
+        "en": "Your video memory is almost full. Which setting should you lower first?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Les nuages volumétriques",
+            "en": "Volumetric clouds"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Les mesures publiées ne montrent pas d'effet des nuages sur la mémoire vidéo.",
+            "en": "Published measurements show no effect of clouds on video memory."
+          }
+        },
+        {
+          "texte": {
+            "fr": "La résolution des textures",
+            "en": "Texture resolution"
+          },
+          "correct": true,
+          "explication": {
+            "fr": "C'est le réglage qui occupe le plus de mémoire vidéo (jusqu'à 2,8 Go d'écart en 2024), pour très peu d'effet sur les FPS. Le niveau de détail du terrain vient ensuite.",
+            "en": "It is the setting that uses the most video memory (up to 2.8 GB difference in 2024), for very little effect on FPS. Terrain level of detail comes next."
+          }
+        },
+        {
+          "texte": {
+            "fr": "La génération d'images",
+            "en": "Frame Generation"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Elle utilise elle-même de la mémoire vidéo : l'activer ou la garder n'aide pas quand la mémoire est pleine.",
+            "en": "It uses video memory itself: turning it on or keeping it does not help when memory is full."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diag-indetermine-mesurer",
+      "declencheur": "diagnostic",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "SDK MSFS 2020, menu Debug du mode développeur (option « Display FPS »)",
+          "url": "https://docs.flightsimulator.com/html/Developer_Mode/Menus/Debug.htm",
+          "consulte": "2026-11-04",
+          "rang": 1
+        },
+        {
+          "titre": "SDK MSFS 2024, menu Debug du mode développeur (option « Display FPS »)",
+          "url": "https://docs.flightsimulator.com/msfs2024/retail/devmode/menus/debug/",
+          "consulte": "2026-11-04",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-10",
+      "goulots": [
+        "indetermine"
+      ],
+      "question": {
+        "fr": "L'atelier ne sait pas encore ce qui vous limite. Quelle est la meilleure prochaine étape ?",
+        "en": "The workshop does not know yet what limits you. What is the best next step?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Baisser un peu tous les réglages",
+            "en": "Lower all settings a little"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Vous perdriez en qualité partout, sans savoir lequel a aidé : on change au hasard.",
+            "en": "You would lose quality everywhere without knowing which one helped: that is changing things at random."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Relever l'affichage FPS du mode développeur (étape 2)",
+            "en": "Note the developer mode FPS display (step 2)"
+          },
+          "correct": true,
+          "explication": {
+            "fr": "Il indique ce qui limite chaque image (« Limited by … ») et le temps de chaque partie : c'est ce qui permet ensuite de choisir le bon réglage.",
+            "en": "It shows what limits each frame (“Limited by …”) and how long each part takes: that is what lets you pick the right setting afterwards."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Activer le DLSS",
+            "en": "Turn on DLSS"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Il n'aide que si la carte graphique limite ; sinon, il ne change rien aux FPS.",
+            "en": "It only helps if the graphics card is the limit; otherwise it does not change FPS."
+          }
+        }
+      ]
+    },
     {
       "id": "echelle-baissee-goulot-cpu",
       "simulateur": "les-deux",

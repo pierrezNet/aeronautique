@@ -3,7 +3,7 @@
 // le tableau de réglages et les messages (règles) à afficher. Aucune lecture ni écriture de la page.
 
 import { analyserCadence } from './cadence.js';
-import { questionsChallenge } from './challenge.js';
+import { questionsChallenge, questionsDiagnostic } from './challenge.js';
 import { diagnostiquer } from './diagnostic.js';
 import { evaluerGeneration } from './generationImages.js';
 import { familleGpu } from './materiel.js';
@@ -46,6 +46,7 @@ export function analyser(saisie, base) {
         messages: reglesApplicables(base.regles, ctx),
         challenge: questionsChallenge(base.challenges ?? [], {
             simulateur: profil.simulateur, changements, goulot: diagnostic.goulot, avisGeneration: generation.avis
-        })
+        }),
+        quiz: questionsDiagnostic(base.challenges ?? [], { simulateur: profil.simulateur, goulot: diagnostic.goulot })
     };
 }

@@ -98,12 +98,19 @@ export function verifierIdentifiants(entrees, nomFichier) {
 export function verifierChallenge(c, chemin, idsParametres) {
     const erreurs = [];
     suivi(c, chemin, erreurs);
-    if (!Array.isArray(c.reglages) || c.reglages.length === 0) erreurs.push(`${chemin}.reglages : liste non vide attendue`);
-    for (const r of c.reglages ?? []) {
-        if (![...idsParametres].some(id => id === r || id.startsWith(r + '-'))) erreurs.push(`${chemin}.reglages : « ${r} » ne vise aucun paramètre`);
-    }
-    if (!['baisse', 'hausse'].includes(c.sens)) erreurs.push(`${chemin}.sens : baisse ou hausse`);
     if (!Array.isArray(c.goulots) || c.goulots.some(g => !GOULOTS.includes(g))) erreurs.push(`${chemin}.goulots : liste de ${GOULOTS.join(', ')} (vide : tous)`);
+    if (c.declencheur === 'diagnostic') {
+        // Question sur le diagnostic : pas de réglage changé, au moins un goulot visé
+        if (c.reglages !== undefined || c.sens !== undefined) erreurs.push(`${chemin} : une question « diagnostic » n'a ni reglages ni sens`);
+        if (!c.goulots?.length) erreurs.push(`${chemin}.goulots : au moins un goulot pour une question « diagnostic »`);
+    } else {
+        if (c.declencheur !== undefined) erreurs.push(`${chemin}.declencheur : « diagnostic », ou absent pour une question sur un changement`);
+        if (!Array.isArray(c.reglages) || c.reglages.length === 0) erreurs.push(`${chemin}.reglages : liste non vide attendue`);
+        for (const r of c.reglages ?? []) {
+            if (![...idsParametres].some(id => id === r || id.startsWith(r + '-'))) erreurs.push(`${chemin}.reglages : « ${r} » ne vise aucun paramètre`);
+        }
+        if (!['baisse', 'hausse'].includes(c.sens)) erreurs.push(`${chemin}.sens : baisse ou hausse`);
+    }
     texteBilingue(c.question, `${chemin}.question`, erreurs);
     if (!Array.isArray(c.choix) || c.choix.length < 2) {
         erreurs.push(`${chemin}.choix : au moins deux choix`);

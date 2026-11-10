@@ -46,3 +46,14 @@ test('une question obsolète ne s\'affiche plus', () => {
     const challenges = base.challenges.map(c => ({ ...c, statut: 'obsolete' }));
     assert.deepEqual(questionsChallenge(challenges, { simulateur: '2024', goulot: 'cpu', changements: [{ id: 'echelle-rendu-2024', sens: 'baisse' }] }), []);
 });
+
+test('questions sur le diagnostic : une par goulot, sans réglage déclaré', async () => {
+    const { questionsDiagnostic } = await import('../js/moteur/challenge.js');
+    const ids = goulot => questionsDiagnostic(base.challenges, { simulateur: '2024', goulot }).map(c => c.id);
+    assert.deepEqual(ids('cpu'), ['diag-cpu-premier-reglage']);
+    assert.deepEqual(ids('gpu'), ['diag-gpu-premier-reglage']);
+    assert.deepEqual(ids('vram'), ['diag-vram-premier-reglage']);
+    assert.deepEqual(ids('indetermine'), ['diag-indetermine-mesurer']);
+    // Elles ne se mêlent pas aux questions sur les changements
+    assert.ok(!questionsChallenge(base.challenges, { simulateur: '2024', goulot: 'cpu', changements: [] }).length);
+});

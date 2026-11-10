@@ -2,7 +2,7 @@
 // exports JSON et CSV, import JSON. La logique est dans moteur/journal.js ; le stockage
 // dans stockage.js (clé séparée des réponses du formulaire principal).
 
-import { choisirFichierTexte, el } from './dom.js';
+import { choisirFichierTexte, el, telecharger } from './dom.js';
 import { lireCapture } from './moteur/presentmon.js';
 import { avecComparaisons, champsInvalides, creerEntree, fusionner, lireJson, versCsv, versJson } from './moteur/journal.js';
 import { parametresDuSimulateur } from './moteur/recommandations.js';
@@ -12,16 +12,6 @@ import { T, langue, nombre, tr } from './textes.js';
 const douteuse = c => c.avertissements.includes('scenario-different') || c.avertissements.includes('generation-differente');
 
 const formatDate = iso => new Date(iso).toLocaleString(langue === 'en' ? 'en-GB' : 'fr-FR', { dateStyle: 'short', timeStyle: 'short' });
-
-// Téléchargement d'un fichier produit dans le navigateur (rien ne passe par un serveur)
-function telecharger(contenu, nom, type) {
-    const url = URL.createObjectURL(new Blob([contenu], { type }));
-    const lien = el('a', { href: url, download: nom });
-    document.body.append(lien);
-    lien.click();
-    lien.remove();
-    URL.revokeObjectURL(url);
-}
 
 function champ(nom, libelle, { type = 'text', min = null, max = null } = {}) {
     const id = `essai-${nom}`;

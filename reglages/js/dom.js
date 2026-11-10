@@ -7,7 +7,8 @@ export function el(balise, attributs = {}, ...enfants) {
         if (valeur === false || valeur === null || valeur === undefined) continue;
         noeud.setAttribute(nom, valeur === true ? '' : String(valeur));
     }
-    for (const enfant of enfants.flat()) {
+    // Listes imbriquées à toute profondeur (ex. paires titre + liste produites par map)
+    for (const enfant of enfants.flat(Infinity)) {
         if (enfant === null || enfant === undefined || enfant === false) continue;
         noeud.append(enfant instanceof Node ? enfant : document.createTextNode(String(enfant)));
     }
@@ -28,4 +29,14 @@ export function choisirFichierTexte(accept) {
         document.body.append(champ);
         champ.click();
     });
+}
+
+// Téléchargement d'un fichier produit dans le navigateur (rien ne passe par un serveur)
+export function telecharger(contenu, nom, type) {
+    const url = URL.createObjectURL(new Blob([contenu], { type }));
+    const lien = el('a', { href: url, download: nom });
+    document.body.append(lien);
+    lien.click();
+    lien.remove();
+    URL.revokeObjectURL(url);
 }

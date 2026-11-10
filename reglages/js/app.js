@@ -6,13 +6,15 @@ import { familleGpu } from './moteur/materiel.js';
 import { parametresDuSimulateur } from './moteur/recommandations.js';
 import { T, langue, nombre, tr } from './textes.js';
 import * as stockage from './stockage.js';
-import { choisirFichierTexte, el } from './dom.js';
+import { choisirFichierTexte, el, telecharger } from './dom.js';
 import { lireCapture } from './moteur/presentmon.js';
 import { lireUserCfg } from './moteur/usercfg.js';
 import { lireMemoireVideo } from './moteur/mesures.js';
 import { monterJournal } from './interfaceJournal.js';
 import { blocIa } from './interfaceIa.js';
 import { creerParcours } from './parcours.js';
+import { construireRapport, copierRapport, imprimerRapport, telechargerRapport } from './rapport.js';
+import { journalRestaure, lireSauvegarde, versSauvegarde } from './moteur/sauvegarde.js';
 
 const racine = document.getElementById('atelier');
 const DONNEES = '/reglages/donnees/';
@@ -152,9 +154,9 @@ const lireJsonMemorise = valeur => {
     }
 };
 
-// Numéro rond (① à ⑦) qui relie une ligne du schéma de l'affichage FPS au champ correspondant
-const NUMEROS = ['', '①', '②', '③', '④', '⑤', '⑥', '⑦'];
-const numero = n => el('span', { class: 'numero', 'aria-hidden': 'true' }, NUMEROS[n]);
+// Pastille numérotée (1 à 7) qui relie une ligne du schéma de l'affichage FPS au champ correspondant.
+// Chiffre simple dans un cercle dessiné en CSS : les caractères « ① » sont mal centrés selon la police.
+const numero = n => el('span', { class: 'numero', 'aria-hidden': 'true' }, String(n));
 
 // Réplique simplifiée de l'affichage FPS du mode développeur, d'après une capture réelle de
 // MSFS 2020 (forum AvroBB, sujet 15). Lignes numérotées : celles que l'atelier utilise.
@@ -253,7 +255,12 @@ function construireFormulaire(base) {
     const panneau = (id, titre, ...contenu) => el('div', { class: 'panneau', id: `panneau-${id}` }, el('h2', {}, titre), ...contenu);
     const panneaux = {
         configuration: panneau('configuration', T.etapes.configuration, el('p', { class: 'intro' }, T.intro), configuration,
-            el('div', { class: 'actions' }, el('button', { type: 'button', class: 'btn btn-secondaire', id: 'effacer' }, T.effacer))),
+            el('div', { class: 'actions' },
+                el('button', { type: 'button', class: 'btn btn-secondaire', id: 'sauvegarder' }, T.sauvegarder),
+                el('button', { type: 'button', class: 'btn btn-secondaire', id: 'restaurer' }, T.restaurer),
+                el('button', { type: 'button', class: 'btn btn-secondaire', id: 'effacer' }, T.effacer)),
+            el('p', { class: 'aide' }, T.sauvegardeAide),
+            el('p', { class: 'erreur', id: 'erreur-sauvegarde', role: 'alert', hidden: true })),
         mesures: panneau('mesures', T.etapes.mesures, mesures),
         constats: panneau('constats', T.etapes.constats, symptomes, changements)
     };
@@ -438,36 +445,60 @@ function valeurChezVous(usercfg, id) {
     return typeof v.valeur === 'number' ? nombre(v.valeur) : v.valeur;
 }
 
+// Impact d'un réglage en clair : « fort », « nul »… plutôt qu'un chiffre de 0 à 3
+const impactClair = l => el('ul', { class: 'impacts' },
+    el('li', {}, T.impact(T.impactCpu, T.impactNiveaux[l.impact.cpu])),
+    el('li', {}, T.impact(T.impactGpu, T.impactNiveaux[l.impact.gpu])),
+    el('li', {}, T.impact(T.impactVram, T.impactNiveaux[l.impact.vram]))
+);
+
+// Fiche d'un réglage prioritaire : tout ce qu'il faut pour l'essayer, sur une colonne
+function ficheReglage(l, usercfg) {
+    const chezVous = usercfg ? valeurChezVous(usercfg, l.id) : '—';
+    return el('article', { class: 'fiche' },
+        el('h3', {}, tr(l.libelle), ' ', badgeStatut(l.statut)),
+        el('dl', {},
+            chezVous !== '—' && [el('dt', {}, T.colChezVous), el('dd', { class: 'chez-vous' }, chezVous)],
+            el('dt', {}, T.colDepart), el('dd', {}, el('strong', {}, tr(l.depart))),
+            el('dt', {}, T.colTest), el('dd', {}, tr(l.test)),
+            el('dt', {}, T.colCout), el('dd', {}, tr(l.coutVisuel)),
+            el('dt', {}, T.colImpact), el('dd', {}, impactClair(l))),
+        listeSources(l.sources));
+}
+
 function blocTableau(r, usercfg) {
     // Colonne « Chez vous » seulement si un UserCfg.opt du même simulateur a été importé
     const avecUsercfg = usercfg !== null && Object.keys(usercfg.valeurs ?? {}).length > 0;
-    const impact = l => el('ul', { class: 'impacts' },
-        el('li', {}, T.impact(T.impactCpu, l.impact.cpu)),
-        el('li', {}, T.impact(T.impactGpu, l.impact.gpu)),
-        el('li', {}, T.impact(T.impactVram, l.impact.vram))
-    );
-    // Le titre et l'introduction sont ceux de l'étape « Réglages »
-    return el('div', {},
-        el('table', { class: 'tableau' },
+    const connu = r.diagnostic.goulot !== 'indetermine';
+    // Goulot connu : les trois réglages qui pèsent le plus dessus, en fiches ; les autres repliés
+    const prioritaires = connu ? r.tableau.slice(0, 3) : [];
+    const autres = connu ? r.tableau.slice(3) : r.tableau;
+    const tableau = lignes => el('table', { class: 'tableau' },
             el('thead', {}, el('tr', {},
                 [T.colReglage, avecUsercfg && T.colChezVous, T.colImpact, T.colDepart, T.colCout, T.colTest]
                     .filter(Boolean).map(t => el('th', { scope: 'col' }, t)))),
-            el('tbody', {}, r.tableau.map(l => el('tr', {},
+            el('tbody', {}, lignes.map(l => el('tr', {},
                 el('th', { scope: 'row', 'data-label': T.colReglage }, tr(l.libelle), ' ', badgeStatut(l.statut), listeSources(l.sources)),
                 avecUsercfg && el('td', { 'data-label': T.colChezVous, class: 'chez-vous' }, valeurChezVous(usercfg, l.id)),
-                el('td', { 'data-label': T.colImpact }, impact(l)),
+                el('td', { 'data-label': T.colImpact }, impactClair(l)),
                 el('td', { 'data-label': T.colDepart }, tr(l.depart)),
                 el('td', { 'data-label': T.colCout }, tr(l.coutVisuel)),
                 el('td', { 'data-label': T.colTest }, tr(l.test))
             )))
-        )
+        );
+    // Le titre et l'introduction sont ceux de l'étape « Réglages »
+    return el('div', {},
+        connu
+            ? [el('h3', {}, T.prioritaires), el('p', { class: 'aide' }, T.prioritairesAide),
+                el('div', { class: 'fiches' }, prioritaires.map(l => ficheReglage(l, avecUsercfg ? usercfg : null))),
+                el('details', { class: 'autres-reglages' }, el('summary', {}, T.autresReglages(autres.length)), tableau(autres))]
+            : [el('p', { class: 'avertissement' }, T.prioritairesIndetermine), tableau(autres)]
     );
 }
 
 // Une question du challenge : choix radio, puis explication du choix fait (et de la réponse attendue)
-function questionChallenge({ challenge, changement }, index, base) {
-    const parametre = base.parametres.find(p => p.id === changement.id);
-    const nom = `challenge-${index}`;
+function questionChallenge({ challenge, changement = null }, nom, base) {
+    const parametre = changement && base.parametres.find(p => p.id === changement.id);
     const retour = el('div', { class: 'retour-challenge', 'aria-live': 'polite' });
     const choisir = choix => {
         const attendu = challenge.choix.find(c => c.correct);
@@ -479,7 +510,7 @@ function questionChallenge({ challenge, changement }, index, base) {
     };
     return el('fieldset', { class: 'question' },
         el('legend', {}, tr(challenge.question), ' ', badgeStatut(challenge.statut)),
-        el('p', { class: 'aide' }, T.challengeVotreChangement(tr(parametre?.libelle) || changement.id,
+        changement && el('p', { class: 'aide' }, T.challengeVotreChangement(tr(parametre?.libelle) || changement.id,
             (changement.sens === 'baisse' ? T.sensBaisse : T.sensHausse).toLowerCase())),
         challenge.choix.map(choix => {
             const radio = el('input', { type: 'radio', name: nom });
@@ -492,11 +523,39 @@ function questionChallenge({ challenge, changement }, index, base) {
 }
 
 function blocChallenge(r, saisie, base) {
-    let contenu;
-    if (saisie.changements.length === 0) contenu = el('p', {}, T.challengeAucunChangement);
-    else if (r.challenge.length === 0) contenu = el('p', {}, T.challengeAucuneQuestion);
-    else contenu = r.challenge.map((q, i) => questionChallenge(q, i, base));
-    return el('div', {}, contenu);
+    let changements;
+    if (saisie.changements.length === 0) {
+        changements = el('p', {}, T.challengeAucunChangement, ' ', el('a', { href: '#constats' }, T.allerConstats));
+    } else if (r.challenge.length === 0) {
+        changements = el('p', {}, T.challengeAucuneQuestion);
+    } else {
+        changements = r.challenge.map((q, i) => questionChallenge(q, `challenge-${i}`, base));
+    }
+    return el('div', {},
+        r.quiz.length > 0 && [el('h3', {}, T.quizTitre), r.quiz.map((c, i) => questionChallenge({ challenge: c }, `quiz-${i}`, base))],
+        el('h3', {}, T.changementsTitre),
+        changements);
+}
+
+// « Conserver ces résultats » : rapport sur une colonne, à imprimer, copier ou télécharger
+function blocConserver(saisie, r, base) {
+    const statut = el('p', { class: 'statut', role: 'status' });
+    const bouton = (texte, action) => {
+        const b = el('button', { type: 'button', class: 'btn btn-secondaire' }, texte);
+        b.addEventListener('click', action);
+        return b;
+    };
+    const rapport = () => construireRapport(saisie, r, base);
+    return el('section', { class: 'conserver', 'aria-label': T.conserverTitre },
+        el('h3', {}, T.conserverTitre),
+        el('p', { class: 'aide' }, T.conserverAide),
+        el('div', { class: 'actions' },
+            bouton(T.imprimer, () => imprimerRapport(rapport())),
+            bouton(T.copierRapport, async () => {
+                statut.textContent = (await copierRapport(rapport())) ? T.rapportCopie : T.rapportCopieErreur;
+            }),
+            bouton(T.telechargerRapport, () => telechargerRapport(rapport()))),
+        statut);
 }
 
 // Contenu des étapes de résultats (4 à 6, et 8), recalculé à chaque entrée dans l'une d'elles
@@ -513,8 +572,11 @@ function afficherResultats(zones, saisie, base) {
     const r = analyser(saisie, base);
     zones.diagnostic.replaceChildren(
         el('div', { class: 'cartes' }, blocDiagnostic(r), blocCadence(r, profil), blocGeneration(r)),
-        blocMessages(r));
-    zones.reglages.replaceChildren(blocTableau(r, saisie.usercfg && saisie.usercfg.simulateur === profil.simulateur ? saisie.usercfg : null));
+        blocMessages(r),
+        blocConserver(saisie, r, base));
+    zones.reglages.replaceChildren(
+        blocTableau(r, saisie.usercfg && saisie.usercfg.simulateur === profil.simulateur ? saisie.usercfg : null),
+        blocConserver(saisie, r, base));
     zones.challenge.replaceChildren(blocChallenge(r, saisie, base));
     zones.ia.replaceChildren(blocIa(saisie, r, base));
 }
@@ -540,7 +602,7 @@ async function demarrer() {
         zones[id] = el('div', { class: 'zone-resultat' });
         return el('section', { class: 'panneau', id: `panneau-${id}` }, el('h2', {}, T.etapes[id]), intro && el('p', { class: 'intro' }, intro), zones[id]);
     };
-    const diagnostic = panneauResultat('diagnostic');
+    const diagnostic = panneauResultat('diagnostic', T.diagnosticIntro);
     const reglages = panneauResultat('reglages', T.tableauIntro);
     const challenge = panneauResultat('challenge', T.challengeIntro);
     const ia = panneauResultat('ia');
@@ -630,6 +692,28 @@ async function demarrer() {
     window.contexteRetour = function contexteRetour() {
         return { simulateur: valeursBrutes(formulaire).simulateur ?? '', etape: parcours.courante ?? '' };
     };
+
+    // Sauvegarde complète : réponses mémorisées et journal, dans un seul fichier
+    document.getElementById('sauvegarder').addEventListener('click', function sauvegarder() {
+        const reponses = { ...(stockage.lire() ?? {}), ...valeursBrutes(formulaire) };
+        telecharger(versSauvegarde(reponses, stockage.lireJournal()), `${T.nomSauvegarde}-${new Date().toISOString().slice(0, 10)}.json`, 'application/json');
+    });
+    document.getElementById('restaurer').addEventListener('click', async function restaurer() {
+        const erreur = document.getElementById('erreur-sauvegarde');
+        const contenu = await choisirFichierTexte('.json,application/json');
+        if (contenu === null) return;
+        const lu = lireSauvegarde(contenu);
+        if (lu.erreur) {
+            erreur.textContent = T.sauvegardeErreur;
+            erreur.hidden = false;
+            return;
+        }
+        if (!window.confirm(T.restaurerConfirmer)) return;
+        if (lu.reponses) stockage.ecrire(lu.reponses);
+        stockage.ecrireJournal(journalRestaure(stockage.lireJournal(), lu.journal));
+        // Rechargement : formulaire, journal et résultats repartent des données restaurées
+        location.reload();
+    });
 
     parcours.demarrer();
 }
