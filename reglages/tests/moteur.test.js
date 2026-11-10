@@ -163,3 +163,30 @@ describe('tableau des réglages', () => {
         assert.ok(!tableauReglages(parametres, '2024', 'cpu').some(l => l.id === 'tlod-2024'));
     });
 });
+
+describe('mesures recopiées de l\'affichage', () => {
+    test('ligne « GPU Mem » : utilisée et totale, formats variés', async () => {
+        const { lireMemoireVideo } = await import('../js/moteur/mesures.js');
+        assert.deepEqual(lireMemoireVideo('GPU Mem: 6.869GB/14.926GB'), { utiliseeGo: 6.869, totaleGo: 14.926 });
+        assert.deepEqual(lireMemoireVideo('6,9 / 14,9'), { utiliseeGo: 6.9, totaleGo: 14.9 });
+        assert.deepEqual(lireMemoireVideo('6.9 Go'), { utiliseeGo: 6.9, totaleGo: null });
+        assert.deepEqual(lireMemoireVideo('7034 MB'), { utiliseeGo: 6.869, totaleGo: null });
+        // Saisie inversée : on ne garde que la première valeur
+        assert.deepEqual(lireMemoireVideo('14,9 / 6,9'), { utiliseeGo: 14.9, totaleGo: null });
+        assert.equal(lireMemoireVideo(''), null);
+        assert.equal(lireMemoireVideo('rien'), null);
+    });
+
+    test('mémoire totale affichée prioritaire sur la capacité commerciale de la carte', () => {
+        // 14 Go utilisés : 87,5 % d'une carte « 16 Go », mais 94 % des 14,9 Go réellement disponibles
+        assert.equal(diagnostiquer({ vramGo: 16 }, { vramUtiliseeGo: 14 }).goulot, 'indetermine');
+        assert.equal(diagnostiquer({ vramGo: 16 }, { vramUtiliseeGo: 14, vramTotaleGo: 14.9 }).goulot, 'vram');
+    });
+
+    test('capture réelle d\'un utilisateur (MSFS 2020) : limité par le thread principal', () => {
+        // MainThread 41,1 ms, RdrThread 4,8 ms, GPU 14,0 ms, GPU Mem 6.869/14.926 Go, 20,2 FPS
+        const d = diagnostiquer({ vramGo: 16 }, { limite: 'main-thread', msPrincipal: 41.1, msRendu: 4.8, msGpu: 14, vramUtiliseeGo: 6.869, vramTotaleGo: 14.926 });
+        assert.deepEqual([d.goulot, d.fil, d.confiance], ['cpu', 'principal', 'mesure']);
+        assert.equal(Math.round(d.tauxVram * 100), 46);
+    });
+});

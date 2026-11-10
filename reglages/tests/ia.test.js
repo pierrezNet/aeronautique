@@ -8,7 +8,7 @@ import { lireErreur, lireModeles, lireReponse, requeteMessage, requeteModeles } 
 
 const saisie = {
     profil: { simulateur: '2024', gpu: 'RTX 5060 Ti', vramGo: 16, frequenceHz: 165, vrr: false, vrrInconnu: false, affichage: 'moniteur', avion: 'A320neo' },
-    mesures: { limite: 'main-thread', fpsReels: 47, verrouFps: 41, capture: null },
+    mesures: { limite: 'main-thread', fpsReels: 47, verrouFps: 41, capture: null, vramUtiliseeGo: 6.869, vramTotaleGo: 14.926, synchroAffichee: 'novsync' },
     symptomes: ['chute-villes'],
     changements: [{ id: 'echelle-rendu-2024', sens: 'baisse' }],
     usercfg: { simulateur: '2024', valeurs: { 'tlod-2024': { valeur: 200, libelle: null }, 'nuages-volumetriques': { valeur: '3', libelle: 'ultra' } } }
@@ -23,6 +23,8 @@ test('prompt : instructions, profil, réglages actuels, diagnostic, règles marq
     assert.match(p, /- Niveau de détail du terrain \(Terrain LOD\) : 200/);
     assert.match(p, /- Nuages volumétriques : ultra/);
     assert.match(p, /- Goulot : cpu/);
+    assert.match(p, /- Mémoire vidéo totale affichée \(Go\) : 14.926/);
+    assert.match(p, /- Synchronisation verticale affichée : NoVSync/);
     assert.match(p, /\[à vérifier\]/);
     assert.match(p, /200 → 100 : 46 FPS, 1 % bas 35 \(LFPG, Ciel clair\)/);
     assert.match(p, /## Ma question\nPourquoi ça saccade \?/);

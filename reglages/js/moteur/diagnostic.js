@@ -36,15 +36,17 @@ export function capturePlafonnee(mesures = {}) {
 
 /**
  * @param {object} profil   { vramGo, … }
- * @param {object} mesures  { limite: 'main-thread'|'rendu'|'gpu'|null, msPrincipal, msRendu, msGpu, vramUtiliseeGo,
+ * @param {object} mesures  { limite: 'main-thread'|'rendu'|'gpu'|null, msPrincipal, msRendu, msGpu, vramUtiliseeGo, vramTotaleGo,
  *                            capture: résumé de lireCapture() ou null }
  * @param {string[]} idsSymptomes  symptômes cochés (ids de symptomes.json)
  * @param {object[]} symptomes     liste de symptomes.json
  * @returns {{ goulot: string, fil: string|null, confiance: 'mesure'|'capture'|'symptomes'|'aucune', tauxVram: number|null }}
  */
 export function diagnostiquer(profil = {}, mesures = {}, idsSymptomes = [], symptomes = []) {
-    // 1. Mémoire vidéo : une mémoire pleine dégrade tout le reste, on la traite en premier
-    const vramTotale = nombre(profil.vramGo);
+    // 1. Mémoire vidéo : une mémoire pleine dégrade tout le reste, on la traite en premier.
+    // Total affiché par le simulateur (ligne « GPU Mem ») de préférence : il est un peu plus petit
+    // que la capacité commerciale de la carte (14,9 Go pour une carte « 16 Go »).
+    const vramTotale = nombre(mesures.vramTotaleGo) ?? nombre(profil.vramGo);
     const vramUtilisee = nombre(mesures.vramUtiliseeGo);
     const tauxVram = vramTotale && vramUtilisee ? vramUtilisee / vramTotale : null;
     if (tauxVram !== null && tauxVram >= SEUIL_VRAM) {

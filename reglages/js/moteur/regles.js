@@ -23,6 +23,7 @@ export const CONDITIONS = {
     // Cadence
     'cadence-sous-multiple': ctx => ctx.cadence.valide && ctx.cadence.verrouProblematique,
     'cadence-vrr': ctx => ctx.cadence.valide && ctx.cadence.vrr,
+    'cadence-vsync-affichee': ctx => ctx.mesures.synchroAffichee === 'vsync',
 
     // Génération d'images
     'generation-pas-la-simulation': ctx => ctx.generation.disponible === true,

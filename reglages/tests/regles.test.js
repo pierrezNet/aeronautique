@@ -93,6 +93,11 @@ describe('cas imposés', () => {
         assert.equal(casDeDepart({ capture: { goulotEstime: 'cpu', fpsMoyen: 33 } }).diagnostic.goulot, 'cpu');
     });
 
+    test('« VSync » lu sur l\'affichage : les FPS mesurés sont calés sur l\'écran', () => {
+        assert.ok(ids(casDeDepart({ synchroAffichee: 'vsync' })).includes('cadence-vsync-affichee'));
+        assert.ok(!ids(casDeDepart({ synchroAffichee: 'novsync' })).includes('cadence-vsync-affichee'));
+    });
+
     test('sans aucune mesure : on demande de mesurer d\'abord', () => {
         const r = casDeDepart({ verrouFps: null });
         assert.equal(r.diagnostic.goulot, 'indetermine');

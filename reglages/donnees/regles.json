@@ -121,9 +121,15 @@
           "url": "https://forums.flightsimulator.com/t/psa-use-the-in-game-fps-counter-to-check-for-performance-bottlenecks/136961",
           "consulte": "2026-11-04",
           "rang": 4
+        },
+        {
+          "titre": "Capture réelle de l'affichage FPS du mode développeur (MSFS 2020, DirectX 12) partagée sur le forum AvroBB : « Limited by MainThread », lignes MainThread, RdrThread, GPU, GPU Mem, « SDR NoVSync »",
+          "url": "https://avrobb.org/sujet/15#p16",
+          "consulte": "2026-11-10",
+          "rang": 4
         }
       ],
-      "dateVerification": "2026-11-04",
+      "dateVerification": "2026-11-10",
       "type": "diagnostic",
       "gravite": "important",
       "message": {
@@ -158,9 +164,15 @@
           "url": "https://forums.flightsimulator.com/t/psa-use-the-in-game-fps-counter-to-check-for-performance-bottlenecks/136961",
           "consulte": "2026-11-04",
           "rang": 4
+        },
+        {
+          "titre": "Capture réelle de l'affichage FPS du mode développeur (MSFS 2020, DirectX 12) partagée sur le forum AvroBB : « Limited by MainThread », lignes MainThread, RdrThread, GPU, GPU Mem, « SDR NoVSync »",
+          "url": "https://avrobb.org/sujet/15#p16",
+          "consulte": "2026-11-10",
+          "rang": 4
         }
       ],
-      "dateVerification": "2026-11-04",
+      "dateVerification": "2026-11-10",
       "type": "diagnostic",
       "gravite": "important",
       "message": {
@@ -183,9 +195,15 @@
           "url": "https://forums.flightsimulator.com/t/low-fps-limited-by-rdrthread/370489",
           "consulte": "2026-11-04",
           "rang": 4
+        },
+        {
+          "titre": "Capture réelle de l'affichage FPS du mode développeur (MSFS 2020, DirectX 12) partagée sur le forum AvroBB : « Limited by MainThread », lignes MainThread, RdrThread, GPU, GPU Mem, « SDR NoVSync »",
+          "url": "https://avrobb.org/sujet/15#p16",
+          "consulte": "2026-11-10",
+          "rang": 4
         }
       ],
-      "dateVerification": "2026-11-04",
+      "dateVerification": "2026-11-10",
       "type": "diagnostic",
       "gravite": "attention",
       "message": {
@@ -208,9 +226,15 @@
           "url": "https://forums.flightsimulator.com/t/fps-performance-vram-bug/668753",
           "consulte": "2026-11-04",
           "rang": 4
+        },
+        {
+          "titre": "Capture réelle de l'affichage FPS du mode développeur (MSFS 2020, DirectX 12) partagée sur le forum AvroBB : « Limited by MainThread », lignes MainThread, RdrThread, GPU, GPU Mem, « SDR NoVSync »",
+          "url": "https://avrobb.org/sujet/15#p16",
+          "consulte": "2026-11-10",
+          "rang": 4
         }
       ],
-      "dateVerification": "2026-11-04",
+      "dateVerification": "2026-11-10",
       "type": "diagnostic",
       "gravite": "important",
       "message": {
@@ -259,6 +283,37 @@
       "message": {
         "fr": "Avec un écran à fréquence variable (VRR) actif, l'écran suit la cadence du jeu : la cible n'a plus besoin d'être un sous-multiple, elle doit seulement rester dans la plage VRR de l'écran. Pratique courante, source à trouver.",
         "en": "With an active variable refresh (VRR) display, the screen follows the game's pace: the target no longer needs to be a divisor, it only has to stay within the display's VRR range. Common practice, source to be found."
+      }
+    },
+    {
+      "id": "cadence-vsync-affichee",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU12",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Capture réelle de l'affichage FPS du mode développeur (MSFS 2020, DirectX 12) partagée sur le forum AvroBB : « Limited by MainThread », lignes MainThread, RdrThread, GPU, GPU Mem, « SDR NoVSync »",
+          "url": "https://avrobb.org/sujet/15#p16",
+          "consulte": "2026-11-10",
+          "rang": 4
+        },
+        {
+          "titre": "TheOriginalBabu, « FS2024 Graphics Settings and Performance Guide (11/20/2024) » : synchronisation verticale et régularité des images",
+          "url": "https://forums.flightsimulator.com/t/fs2024-graphics-settings-and-performance-guide-11-20-2024/667840",
+          "consulte": "2026-11-04",
+          "rang": 3
+        }
+      ],
+      "dateVerification": "2026-11-10",
+      "type": "cadence",
+      "gravite": "attention",
+      "message": {
+        "fr": "L'affichage indique « VSync » : la synchronisation verticale est active. Les images attendent alors le rafraîchissement de l'écran, et les FPS mesurés se calent sur les sous-multiples de la fréquence : ils ne montrent pas ce que la machine tient réellement. Pour mesurer, désactivez-la le temps d'un vol, puis choisissez la cible.",
+        "en": "The display shows “VSync”: vertical sync is on. Frames then wait for the display refresh, and measured FPS snap to divisors of the refresh rate: they do not show what the machine really holds. To measure, turn it off for one flight, then pick the target."
       }
     },
     {

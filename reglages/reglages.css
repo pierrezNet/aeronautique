@@ -276,6 +276,38 @@ a:focus-visible {
 
 .erreur { color: var(--alerte); font-weight: 600; }
 
+/* Schéma de l'affichage FPS du mode développeur (réplique simplifiée) */
+.schema-fps { margin: 14px 0 20px; }
+
+.ecran-fps {
+    max-width: 380px;
+    padding: 10px 12px;
+    background: #10151f;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: #f1f5f9;
+}
+
+.ligne-fps { display: flex; align-items: center; gap: 8px; min-height: 24px; }
+.ligne-fps code { font: 0.85rem/1.4 ui-monospace, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ligne-fps.gros code { font-size: 1.6rem; font-weight: 700; }
+.ligne-fps.alerte code { color: #fca5a5; }
+.ligne-fps.gris code { color: #64748b; }
+
+/* Numéro rond partagé par une ligne du schéma et son champ */
+.numero {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.6em;
+    height: 1.6em;
+    font-weight: 700;
+    color: #0f172a;
+    background: #67e3ff;
+    border-radius: 50%;
+}
+
+.numero.vide { background: transparent; }
+
 /* Import d'une capture PresentMon, dans l'étape des mesures */
 .bloc-capture {
     border-top: 1px dashed var(--border);

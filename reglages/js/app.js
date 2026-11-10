@@ -9,6 +9,7 @@ import * as stockage from './stockage.js';
 import { choisirFichierTexte, el } from './dom.js';
 import { lireCapture } from './moteur/presentmon.js';
 import { lireUserCfg } from './moteur/usercfg.js';
+import { lireMemoireVideo } from './moteur/mesures.js';
 import { monterJournal } from './interfaceJournal.js';
 import { blocIa } from './interfaceIa.js';
 import { creerParcours } from './parcours.js';
@@ -151,6 +152,26 @@ const lireJsonMemorise = valeur => {
     }
 };
 
+// Numéro rond (① à ⑦) qui relie une ligne du schéma de l'affichage FPS au champ correspondant
+const NUMEROS = ['', '①', '②', '③', '④', '⑤', '⑥', '⑦'];
+const numero = n => el('span', { class: 'numero', 'aria-hidden': 'true' }, NUMEROS[n]);
+
+// Réplique simplifiée de l'affichage FPS du mode développeur, d'après une capture réelle de
+// MSFS 2020 (forum AvroBB, sujet 15). Lignes numérotées : celles que l'atelier utilise.
+function schemaAffichage() {
+    const lignes = [
+        [1, '20.2', 'gros'], [null, '49.93 ms'], [2, 'SDR NoVSync'], [null, 'Screen 3440x1417', 'gris'],
+        [3, 'Limited by MainThread', 'alerte'], [4, 'MainThread      41.1 ms', 'alerte'], [5, 'RdrThread        4.8 ms'],
+        [null, 'Manipulators    12.3 ms', 'gris'], [null, 'CoherentGTDraw   1.9 ms', 'gris'], [6, 'GPU   14.0 ms   med=14.1'],
+        [null, 'CPU Mem: 14.581GB/31.918GB', 'gris'], [7, 'GPU Mem: 6.869GB/14.926GB']
+    ];
+    return el('figure', { class: 'schema-fps' },
+        el('p', { class: 'sous-titre' }, T.schemaTitre),
+        el('div', { class: 'ecran-fps' }, lignes.map(([n, texte, classe]) =>
+            el('div', { class: `ligne-fps ${classe ?? ''}` }, n ? numero(n) : el('span', { class: 'numero vide', 'aria-hidden': 'true' }), el('code', {}, texte)))),
+        el('figcaption', { class: 'aide' }, T.schemaLegende));
+}
+
 function construireFormulaire(base) {
     const exemplesGpu = el('datalist', { id: 'exemples-gpu' },
         ['RTX 5090', 'RTX 5080', 'RTX 5070 Ti', 'RTX 5070', 'RTX 5060 Ti', 'RTX 5060', 'RTX 4090', 'RTX 4080', 'RTX 4070 Ti', 'RTX 4070', 'RTX 4060 Ti', 'RTX 4060', 'RTX 3080', 'RTX 3070', 'RTX 3060', 'RTX 2070', 'GTX 1080', 'Radeon RX 7900 XTX', 'Radeon RX 7800 XT']
@@ -192,20 +213,25 @@ function construireFormulaire(base) {
         el('ol', {}, T.aideMesures.map(etape => el('li', {}, etape)))
     );
 
+    // Champs dans l'ordre de l'affichage, chacun avec le numéro de sa ligne sur le schéma
+    const memoireVideo = champ('gpuMem', [numero(7), ' ', T.gpuMem], { aide: T.gpuMemAide });
+    memoireVideo.append(el('p', { class: 'aide conseil', id: 'gpu-mem-lu', 'aria-live': 'polite' }));
     const mesures = el('fieldset', { class: 'etape' },
         el('legend', { class: 'sr-only' }, T.mesures),
         el('p', {}, T.mesuresIntro),
+        schemaAffichage(),
         aide,
-        blocCapture(),
-        choix('limite', T.limite, [['main-thread', T.limiteMain], ['rendu', T.limiteRendu], ['gpu', T.limiteGpu], ['', T.limiteNsp]]),
+        champ('fpsReels', [numero(1), ' ', T.fpsReels], { type: 'number', min: 1, step: 'any', aide: T.fpsReelsAide }),
+        choix('synchroAffichee', [numero(2), ' ', T.synchroAffichee], [['novsync', T.synchroNoVsync], ['vsync', T.synchroVsync], ['', T.synchroNsp]]),
+        choix('limite', [numero(3), ' ', T.limite], [['main-thread', T.limiteMain], ['rendu', T.limiteRendu], ['gpu', T.limiteGpu], ['', T.limiteNsp]]),
         el('div', { class: 'grille' },
-            champ('msPrincipal', T.msPrincipal, { type: 'number', min: 0, step: 'any' }),
-            champ('msRendu', T.msRendu, { type: 'number', min: 0, step: 'any' }),
-            champ('msGpu', T.msGpu, { type: 'number', min: 0, step: 'any' }),
-            champ('vramUtiliseeGo', T.vramUtilisee, { type: 'number', min: 0, step: 'any' }),
-            champ('fpsReels', T.fpsReels, { type: 'number', min: 1, step: 'any', aide: T.fpsReelsAide }),
+            champ('msPrincipal', [numero(4), ' ', T.msPrincipal], { type: 'number', min: 0, step: 'any' }),
+            champ('msRendu', [numero(5), ' ', T.msRendu], { type: 'number', min: 0, step: 'any' }),
+            champ('msGpu', [numero(6), ' ', T.msGpu], { type: 'number', min: 0, step: 'any' }),
+            memoireVideo,
             champ('verrouFps', T.verrou, { type: 'number', min: 1, step: 'any', aide: T.verrouAide })
-        )
+        ),
+        blocCapture()
     );
 
     const symptomes = el('fieldset', { class: 'etape' },
@@ -316,7 +342,10 @@ function versSaisie(v, base) {
             msPrincipal: nb(v.msPrincipal),
             msRendu: nb(v.msRendu),
             msGpu: nb(v.msGpu),
-            vramUtiliseeGo: nb(v.vramUtiliseeGo),
+            // Ligne « GPU Mem » recopiée ; ancien champ numérique repris pour les réponses mémorisées
+            vramUtiliseeGo: lireMemoireVideo(v.gpuMem)?.utiliseeGo ?? nb(v.vramUtiliseeGo),
+            vramTotaleGo: lireMemoireVideo(v.gpuMem)?.totaleGo ?? null,
+            synchroAffichee: v.synchroAffichee || null,
             fpsReels: nb(v.fpsReels),
             verrouFps: nb(v.verrouFps),
             capture: lireJsonMemorise(v.capture)
@@ -545,6 +574,10 @@ async function demarrer() {
         document.getElementById('bloc-directx').hidden = v.simulateur !== '2020';
         document.getElementById('gpu-inconnu').hidden = !v.gpu || familleGpu(v.gpu, base.materiel) !== null;
         document.getElementById('vr-avertissement').hidden = v.affichage !== 'vr';
+        // Ce que l'atelier a compris de la ligne « GPU Mem »
+        const memoire = lireMemoireVideo(v.gpuMem);
+        document.getElementById('gpu-mem-lu').textContent = !v.gpuMem ? ''
+            : memoire ? T.gpuMemLu(nombre(memoire.utiliseeGo), memoire.totaleGo && nombre(memoire.totaleGo)) : T.gpuMemIllisible;
         // Résumé de la capture importée, s'il y en a une
         const capture = lireJsonMemorise(v.capture);
         const resume = document.getElementById('resume-capture');
