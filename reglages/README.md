@@ -2,14 +2,14 @@
 
 *[English version](README.en.md)*
 
-Outil pédagogique pour Microsoft Flight Simulator 2020 et 2024 : comprendre ce qui limite les images par seconde, choisir une cible adaptée à son écran, puis tester un réglage à la fois. En ligne sur [aeronautique.xyz/reglages/](https://aeronautique.xyz/reglages/).
+Outil pédagogique pour Microsoft Flight Simulator 2020 et 2024 : comprendre ce qui limite les images par seconde, choisir une cible adaptée à son écran ou à son casque de réalité virtuelle, puis tester un réglage à la fois. En ligne sur [aeronautique.xyz/reglages/](https://aeronautique.xyz/reglages/).
 
 Outil indépendant, sans lien avec Microsoft ni Asobo Studio.
 
 ## Ce que fait l'outil
 
 1. **Diagnostic du goulot** : processeur (et quel fil), carte graphique, mémoire vidéo ou chargement des données, d'après l'affichage FPS du mode développeur, une capture [PresentMon](https://github.com/GameTechDev/PresentMon) ou, à défaut, les symptômes décrits.
-2. **Cible d'images par seconde** : valeurs qui divisent exactement la fréquence de l'écran (165 Hz → 82,5 ; 55 ; 41,25…), cas de la fréquence variable (VRR), limite qui « tombe juste » ou non.
+2. **Cible d'images par seconde** : valeurs qui divisent exactement la fréquence de l'écran (165 Hz → 82,5 ; 55 ; 41,25…), cas de la fréquence variable (VRR), limite qui « tombe juste » ou non. En **réalité virtuelle** (en bêta, vos retours sont bienvenus sur le [forum de l'Atelier](https://avrobb.org/forum/13-atelier-reglages-msfs)) : la fréquence du casque ou sa moitié avec reprojection (ASW, Motion Smoothing, SSW), le logiciel du casque, les réglages VR propres (rendu fovéal, génération d'images en VR) et la lecture des réglages VR de `UserCfg.opt`.
 3. **Génération d'images** : disponibilité selon la carte (RTX 40 / 50), et rappel qu'elle multiplie les images affichées, pas la simulation.
 4. **Tableau des réglages** trié selon le goulot : impact sur le processeur, la carte graphique et la mémoire vidéo, coût visuel, point de départ, test de vérification ; avec vos valeurs actuelles si vous importez votre `UserCfg.opt`.
 5. **Mode challenge** : des questions sur les réglages que vous avez changés, à la lumière de votre diagnostic.

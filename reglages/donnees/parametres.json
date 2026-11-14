@@ -358,7 +358,8 @@
       "testValidation": {
         "fr": "Notez les FPS affichés et le temps du thread principal, avec et sans. Le temps du thread principal doit rester le même : seuls les FPS affichés changent.",
         "en": "Note displayed FPS and main thread time, with and without. Main thread time should stay the same: only displayed FPS change."
-      }
+      },
+      "affichage": "ecran"
     },
     {
       "id": "generation-images-2024",
@@ -443,7 +444,8 @@
       "testValidation": {
         "fr": "Notez les FPS affichés et le temps du thread principal, avec et sans. Le temps du thread principal doit rester le même : seuls les FPS affichés changent.",
         "en": "Note displayed FPS and main thread time, with and without. Main thread time should stay the same: only displayed FPS change."
-      }
+      },
+      "affichage": "ecran"
     },
     {
       "id": "tlod-2020",
@@ -1200,7 +1202,8 @@
       "testValidation": {
         "fr": "Vol long et stable : la cadence est-elle régulière (pas de saccade périodique) ?",
         "en": "Long, steady flight: is frame pacing even (no periodic stutter)?"
-      }
+      },
+      "affichage": "ecran"
     },
     {
       "id": "directx-2020",
@@ -1270,6 +1273,233 @@
       "testValidation": {
         "fr": "Même vol, mêmes réglages, une fois en DX11 et une fois en DX12 (redémarrage entre les deux).",
         "en": "Same flight, same settings, once in DX11 and once in DX12 (restart in between)."
+      }
+    },
+    {
+      "id": "reprojection-vr",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU10",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Meta, « Asynchronous SpaceWarp » (documentation développeurs, PC)",
+          "url": "https://developers.meta.com/horizon/documentation/native/pc/asynchronous-spacewarp/",
+          "consulte": "2026-11-14",
+          "rang": 2
+        },
+        {
+          "titre": "Road to VR, « SteamVR Motion Smoothing » (présentation d'Alex Vlachos, Valve)",
+          "url": "https://roadtovr.com/steamvr-motion-smoothing-asw-alex-vlachos/",
+          "consulte": "2026-11-14",
+          "rang": 4
+        },
+        {
+          "titre": "Notes de version MSFS 2020 Sim Update 10 (1.27.21.0) : option Depth Reprojection, réglages graphiques VR",
+          "url": "https://forums.flightsimulator.com/t/release-release-notes-1-27-21-0-sim-update-10/543606",
+          "consulte": "2026-11-14",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "affichage": "vr",
+      "categorie": "vr",
+      "libelle": {
+        "fr": "Reprojection (runtime du casque et option du simulateur)",
+        "en": "Reprojection (headset runtime and simulator option)"
+      },
+      "valeurs": [
+        "Automatique",
+        "Forcée (moitié de la fréquence)",
+        "Désactivée"
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 0,
+        "vram": 0
+      },
+      "explication": {
+        "fr": "Réglée dans l'outil du casque (ASW dans l'Oculus Debug Tool, Motion Smoothing dans SteamVR, SSW dans Virtual Desktop) ; MSFS 2020 a ajouté une option de reprojection en profondeur (SU10). Quand le PC ne suit pas, elle fixe le rendu à la moitié de la fréquence et fabrique une image sur deux. Elle ne coûte rien en elle-même : elle change la cadence à viser.",
+        "en": "Set in the headset tool (ASW in the Oculus Debug Tool, Motion Smoothing in SteamVR, SSW in Virtual Desktop); MSFS 2020 added a depth reprojection option (SU10). When the PC cannot keep up, it locks rendering to half the refresh rate and synthesises every other frame. It costs nothing by itself: it changes the cadence to aim for."
+      },
+      "coutVisuel": {
+        "fr": "Images fabriquées : légers dédoublements (« ghosting ») sur les mouvements rapides, les hélices, les écrans du cockpit.",
+        "en": "Synthesised frames: slight ghosting on fast motion, propellers, cockpit screens."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Automatique : visez une moitié de fréquence tenue en permanence (voir cible FPS).",
+          "en": "Automatic: aim for a half rate held constantly (see FPS target)."
+        },
+        "gpu": {
+          "fr": "Automatique : visez une moitié de fréquence tenue en permanence (voir cible FPS).",
+          "en": "Automatic: aim for a half rate held constantly (see FPS target)."
+        },
+        "vram": {
+          "fr": "Sans rapport : réglez d'abord la mémoire vidéo.",
+          "en": "Unrelated: fix video memory first."
+        },
+        "streaming": {
+          "fr": "Automatique : elle masque une partie des à-coups de chargement.",
+          "en": "Automatic: it hides part of the loading hitches."
+        },
+        "indetermine": {
+          "fr": "Automatique, puis mesurez ce qui limite.",
+          "en": "Automatic, then measure what is limiting."
+        }
+      },
+      "testValidation": {
+        "fr": "Tour d'horizon lent de la tête en virage : l'image reste-t-elle stable, sans à-coups ni dédoublement gênant ?",
+        "en": "Slow look-around during a turn: does the image stay steady, without judder or disturbing ghosting?"
+      }
+    },
+    {
+      "id": "rendu-foveal-2024",
+      "simulateur": "2024",
+      "miseAJourMin": "SU2",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "UploadVR, « Microsoft Flight Simulator 2024 Now Has Foveated Rendering »",
+          "url": "https://www.uploadvr.com/microsoft-flight-simulator-2024-now-has-foveated-rendering/",
+          "consulte": "2026-11-14",
+          "rang": 3
+        },
+        {
+          "titre": "Notes de version MSFS 2024 Sim Update 4 (1.6.32.0) : Foveated Rendering Scale, facteur de LOD VR",
+          "url": "https://forums.flightsimulator.com/t/release-notes-microsoft-flight-simulator-2024-sim-update-4-1-6-32-0-available-now/749383",
+          "consulte": "2026-11-14",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "affichage": "vr",
+      "categorie": "vr",
+      "libelle": {
+        "fr": "Rendu fovéal (Foveated Rendering) et son échelle",
+        "en": "Foveated rendering and its scale"
+      },
+      "valeurs": [
+        "Désactivé",
+        "Activé (fixe)",
+        "Activé (suivi oculaire, si le casque le permet)"
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 2,
+        "vram": 0
+      },
+      "explication": {
+        "fr": "Arrivé avec la SU2 de 2024 ; la SU4 a ajouté le curseur d'échelle. La périphérie de la vue est calculée en moins bonne définition, le centre reste net ; avec un casque à suivi oculaire, la zone nette suit le regard. Les gains chiffrés publiés sont des témoignages, pas des mesures.",
+        "en": "Added in 2024 SU2; SU4 added the scale slider. The edge of the view is rendered at lower resolution, the centre stays sharp; with an eye-tracking headset, the sharp area follows your gaze. Published gains are anecdotal, not measurements."
+      },
+      "coutVisuel": {
+        "fr": "Bords de la vue plus flous ; visible en regardant de côté sans tourner la tête (sans suivi oculaire).",
+        "en": "Blurrier edges of the view; visible when looking sideways without turning your head (without eye tracking)."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Inutile pour vous : il ne soulage pas le processeur.",
+          "en": "Useless for you: it does not relieve the processor."
+        },
+        "gpu": {
+          "fr": "À essayer en premier : activé, échelle par défaut, puis ajustez.",
+          "en": "Try it first: on, default scale, then adjust."
+        },
+        "vram": {
+          "fr": "Effet sur la mémoire vidéo non documenté : pas en premier.",
+          "en": "Effect on video memory not documented: not first."
+        },
+        "streaming": {
+          "fr": "Pas de recommandation sourcée pour ce cas : ne pas y toucher en premier.",
+          "en": "No sourced recommendation for this case: do not change it first."
+        },
+        "indetermine": {
+          "fr": "Mesurez d'abord ce qui limite avant de toucher à ce réglage.",
+          "en": "First measure what is limiting you before changing this setting."
+        }
+      },
+      "testValidation": {
+        "fr": "Même vol, même endroit : la carte graphique (temps GPU du runtime) a-t-elle gagné de la marge, et les bords restent-ils acceptables ?",
+        "en": "Same flight, same spot: has the graphics card (runtime GPU time) gained headroom, and are the edges still acceptable?"
+      }
+    },
+    {
+      "id": "generation-images-vr",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU10",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-14",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-14",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "affichage": "vr",
+      "categorie": "generation-images",
+      "libelle": {
+        "fr": "Génération d'images en VR",
+        "en": "Frame generation in VR"
+      },
+      "valeurs": [
+        "Désactivée",
+        "Activée"
+      ],
+      "impact": {
+        "cpu": 0,
+        "gpu": 1,
+        "vram": 1
+      },
+      "explication": {
+        "fr": "L'option existe dans les réglages VR (FrameGenerationVR en 2024, DLSSGVR en 2020). Aucun document officiel ne décrit son effet dans un casque ni sa cohabitation avec la reprojection du runtime.",
+        "en": "The option exists in the VR settings (FrameGenerationVR in 2024, DLSSGVR in 2020). No official document describes its effect in a headset or how it coexists with the runtime's reprojection."
+      },
+      "coutVisuel": {
+        "fr": "Non documenté en VR : surveillez les dédoublements et les écrans du cockpit.",
+        "en": "Not documented in VR: watch for ghosting and cockpit screens."
+      },
+      "departSelonGoulot": {
+        "cpu": {
+          "fr": "Désactivée par défaut ; à essayer seulement après avoir réglé la cadence.",
+          "en": "Off by default; only try it once the cadence is set."
+        },
+        "gpu": {
+          "fr": "Désactivée par défaut ; à essayer seulement après avoir réglé la cadence.",
+          "en": "Off by default; only try it once the cadence is set."
+        },
+        "vram": {
+          "fr": "Désactivée par défaut ; à essayer seulement après avoir réglé la cadence.",
+          "en": "Off by default; only try it once the cadence is set."
+        },
+        "streaming": {
+          "fr": "Désactivée par défaut ; à essayer seulement après avoir réglé la cadence.",
+          "en": "Off by default; only try it once the cadence is set."
+        },
+        "indetermine": {
+          "fr": "Désactivée par défaut ; à essayer seulement après avoir réglé la cadence.",
+          "en": "Off by default; only try it once the cadence is set."
+        }
+      },
+      "testValidation": {
+        "fr": "Avec et sans, au même endroit : mouvements de tête rapides, écrans du cockpit, sensation générale.",
+        "en": "With and without, at the same spot: fast head movements, cockpit screens, overall feel."
       }
     }
   ]

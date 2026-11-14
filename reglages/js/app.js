@@ -8,7 +8,7 @@ import { T, langue, nombre, tr } from './textes.js';
 import * as stockage from './stockage.js';
 import { choisirFichierTexte, el, telecharger } from './dom.js';
 import { lireCapture } from './moteur/presentmon.js';
-import { lireUserCfg } from './moteur/usercfg.js';
+import { lireUserCfg, valeursPourAffichage } from './moteur/usercfg.js';
 import { lireMemoireVideo } from './moteur/mesures.js';
 import { monterJournal } from './interfaceJournal.js';
 import { blocIa } from './interfaceIa.js';
@@ -68,7 +68,7 @@ function choix(nom, legende, options, aide = null) {
 // Import d'une capture PresentMon : le résumé est gardé dans un champ caché (mémorisé avec le reste)
 function blocCapture() {
     const memoire = el('input', { type: 'hidden', name: 'capture', id: 'champ-capture' });
-    const resume = el('p', { class: 'aide', id: 'resume-capture', 'aria-live': 'polite' });
+    const resume = el('div', { id: 'resume-capture', 'aria-live': 'polite' });
     const importer = el('button', { type: 'button', class: 'btn btn-secondaire' }, T.importerCapture);
     const oublier = el('button', { type: 'button', class: 'btn btn-secondaire', id: 'oublier-capture', hidden: true }, T.oublierCapture);
 
@@ -77,7 +77,7 @@ function blocCapture() {
         if (contenu === null) return;
         const capture = lireCapture(contenu);
         if (capture.erreur) {
-            resume.textContent = T.erreurCapture;
+            statutImport(resume, { erreur: T.erreurCapture });
             return;
         }
         // Les FPS de la capture sont des FPS réels (images générées exclues). On remplit le champ s'il
@@ -106,29 +106,52 @@ function blocCapture() {
 // Simulateur, carte graphique et définition sont remplis s'ils sont vides ; rien de saisi n'est écrasé.
 function blocUserCfg(base) {
     const memoire = el('input', { type: 'hidden', name: 'usercfg', id: 'champ-usercfg' });
-    const resume = el('p', { class: 'aide', id: 'resume-usercfg', 'aria-live': 'polite' });
+    const resume = el('div', { id: 'resume-usercfg', 'aria-live': 'polite' });
     const importer = el('button', { type: 'button', class: 'btn btn-secondaire' }, T.importerUsercfg);
     const oublier = el('button', { type: 'button', class: 'btn btn-secondaire', id: 'oublier-usercfg', hidden: true }, T.oublierUsercfg);
 
     importer.addEventListener('click', async () => {
         const contenu = await choisirFichierTexte('.opt,text/plain');
         if (contenu === null) return;
-        const lu = lireUserCfg(contenu, base.correspondances, base.parametres);
-        if (lu.erreur) {
-            resume.textContent = T.erreurUsercfg;
-            return;
-        }
         const formulaire = memoire.form;
         const choisi = formulaire.querySelector('input[name=simulateur]:checked');
-        if (!choisi && lu.simulateur) formulaire.querySelector(`input[name=simulateur][value="${lu.simulateur}"]`).checked = true;
+        // Version non reconnue dans le fichier : celle du formulaire, si elle est choisie
+        const lu = lireUserCfg(contenu, base.correspondances, base.parametres, { simulateurParDefaut: choisi?.value ?? null });
+        if (lu.erreur) {
+            statutImport(resume, { erreur: T.erreurUsercfg });
+            return;
+        }
+        // Champs vides remplis par le fichier ; une valeur déjà saisie n'est jamais écrasée
+        const remplis = [];
+        const conserves = [];
+        if (!choisi && lu.simulateurDetecte) {
+            const radio = formulaire.querySelector(`input[name=simulateur][value="${lu.simulateur}"]`);
+            radio.checked = true;
+            remplis.push(['simulateur', radio.closest('fieldset')]);
+        }
         const gpu = document.getElementById('champ-gpu');
-        if (!gpu.value && lu.carte) gpu.value = lu.carte;
+        if (lu.carte && !gpu.value) {
+            gpu.value = lu.carte;
+            remplis.push(['gpu', gpu.closest('.champ')]);
+        } else if (lu.carte && gpu.value !== lu.carte) {
+            conserves.push('gpu');
+        }
         const resolution = document.getElementById('champ-resolution');
-        if (!resolution.value && [...resolution.options].some(o => o.value === lu.resolution)) resolution.value = lu.resolution;
+        if ([...resolution.options].some(o => o.value === lu.resolution)) {
+            if (!resolution.value) {
+                resolution.value = lu.resolution;
+                remplis.push(['resolution', resolution.closest('.champ')]);
+            } else if (resolution.value !== lu.resolution) {
+                conserves.push('resolution');
+            }
+        }
+        dernierImport = { remplis: remplis.map(([nom]) => nom), conserves };
+        for (const [, bloc] of remplis) miseEnEvidence(bloc);
         memoire.value = JSON.stringify(lu);
         formulaire.dispatchEvent(new Event('input', { bubbles: true }));
     });
     oublier.addEventListener('click', () => {
+        dernierImport = null;
         memoire.value = '';
         memoire.form.dispatchEvent(new Event('input', { bubbles: true }));
     });
@@ -138,6 +161,38 @@ function blocUserCfg(base) {
         el('p', { class: 'aide' }, T.usercfgAide),
         el('div', { class: 'actions' }, importer, oublier),
         resume, memoire);
+}
+
+// Champs remplis par le dernier import de UserCfg.opt (pendant cette visite seulement)
+let dernierImport = null;
+
+// Brève mise en évidence d'un champ que l'import vient de remplir
+function miseEnEvidence(bloc) {
+    if (!bloc) return;
+    bloc.classList.remove('rempli');
+    void bloc.offsetWidth; // relance l'animation si le champ vient déjà d'être mis en évidence
+    bloc.classList.add('rempli');
+    bloc.addEventListener('animationend', () => bloc.classList.remove('rempli'), { once: true });
+}
+
+// Encadré d'état d'un import, bien visible : confirmation (✓, détails, lien) ou erreur.
+// Reconstruit seulement si son contenu change, pour ne pas le faire relire à chaque saisie (aria-live).
+function statutImport(zone, { titre = null, lignes = [], avertissements = [], lien = null, erreur = null } = {}) {
+    const cle = JSON.stringify([titre, lignes, avertissements, erreur, Boolean(lien)]);
+    if (zone.dataset.cle === cle) return;
+    zone.dataset.cle = cle;
+    zone.dataset.erreur = erreur ? 'oui' : '';
+    if (erreur) {
+        zone.replaceChildren(el('p', { class: 'import-statut import-erreur' }, erreur));
+    } else if (titre) {
+        zone.replaceChildren(el('div', { class: 'import-statut' },
+            el('p', { class: 'import-titre' }, el('span', { 'aria-hidden': 'true' }, '✓ '), titre),
+            lignes.map(ligne => el('p', {}, ligne)),
+            avertissements.map(texte => el('p', { class: 'avertissement' }, texte)),
+            lien));
+    } else {
+        zone.replaceChildren();
+    }
 }
 
 // La valeur du champ « FPS réels » est-elle celle posée par la capture mémorisée ?
@@ -184,13 +239,29 @@ function construireFormulaire(base) {
     blocDirectx.id = 'bloc-directx';
 
     const avertissementGpu = el('p', { class: 'aide avertissement', id: 'gpu-inconnu', hidden: true }, T.gpuInconnu);
-    const avertissementVr = el('p', { class: 'aide avertissement', id: 'vr-avertissement', hidden: true }, T.vrAvertissement);
+    // Réalité virtuelle : le casque remplace l'écran pour la cadence (fréquence, reprojection)
+    const blocVr = el('div', { id: 'bloc-vr', class: 'bloc-vr', hidden: true },
+        el('p', { class: 'aide' }, badgeBeta(), ' ', T.vrIntro),
+        noteBeta(),
+        el('div', { class: 'grille' },
+            champ('casque', T.casque, { aide: T.casqueAide }),
+            champ('frequenceCasqueHz', T.frequenceCasque, { type: 'number', min: 30, max: 240, step: 'any', aide: T.frequenceCasqueAide, liste: 'frequences-casques' })),
+        choix('runtime', T.runtime, Object.entries(T.runtimes), T.runtimeAide),
+        el('p', { class: 'aide avertissement', id: 'wmr-avertissement', hidden: true }, T.wmrAvertissement),
+        choix('reprojection', T.reprojection, Object.entries(T.reprojections), T.reprojectionAide),
+        el('datalist', { id: 'frequences-casques' }, [72, 80, 90, 120].map(f => el('option', { value: f }))));
+    const frequenceEcran = champ('frequenceHz', T.frequence, { type: 'number', min: 30, max: 500, step: 'any', aide: T.frequenceAide });
+    frequenceEcran.id = 'bloc-frequence';
+    const blocVrr = choix('vrr', T.vrr, [['oui', T.oui], ['non', T.non], ['nsp', T.nsp]], T.vrrAide);
+    blocVrr.id = 'bloc-vrr';
 
     const configuration = el('fieldset', { class: 'etape' },
         el('legend', { class: 'sr-only' }, T.configuration),
         blocUserCfg(base),
         choix('simulateur', T.simulateur, [['2024', 'Microsoft Flight Simulator 2024'], ['2020', 'Microsoft Flight Simulator 2020']]),
         blocDirectx,
+        choix('affichage', T.affichage, [['moniteur', T.moniteur], ['vr', T.vr]]),
+        blocVr,
         el('div', { class: 'grille' },
             el('div', {}, champ('gpu', T.gpu, { aide: T.gpuAide, liste: 'exemples-gpu' }), avertissementGpu),
             champ('vramGo', T.vram, { type: 'number', min: 1, max: 64, step: 'any', aide: T.vramAide }),
@@ -201,11 +272,9 @@ function construireFormulaire(base) {
                 el('select', { id: 'champ-resolution', name: 'resolution' },
                     ['', '1920×1080', '2560×1440', '3440×1440', '3840×2160', '5120×1440'].map(v => el('option', { value: v }, v || '—')))
             ),
-            champ('frequenceHz', T.frequence, { type: 'number', min: 30, max: 500, step: 'any', aide: T.frequenceAide })
+            frequenceEcran
         ),
-        choix('vrr', T.vrr, [['oui', T.oui], ['non', T.non], ['nsp', T.nsp]], T.vrrAide),
-        choix('affichage', T.affichage, [['moniteur', T.moniteur], ['vr', T.vr]]),
-        avertissementVr,
+        blocVrr,
         champ('avion', T.avion),
         exemplesGpu
     );
@@ -216,12 +285,19 @@ function construireFormulaire(base) {
     );
 
     // Champs dans l'ordre de l'affichage, chacun avec le numéro de sa ligne sur le schéma
+    const aideVr = el('details', { class: 'aide-mesures', id: 'aide-vr', hidden: true },
+        el('summary', {}, T.aideVrTitre),
+        el('ul', {}, T.aideVr.map(point => el('li', {}, point))));
+    // La limite d'images de l'écran n'a pas de sens dans un casque (la reprojection fixe la cadence)
+    const verrou = champ('verrouFps', T.verrou, { type: 'number', min: 1, step: 'any', aide: T.verrouAide });
+    verrou.id = 'bloc-verrou';
     const memoireVideo = champ('gpuMem', [numero(7), ' ', T.gpuMem], { aide: T.gpuMemAide });
     memoireVideo.append(el('p', { class: 'aide conseil', id: 'gpu-mem-lu', 'aria-live': 'polite' }));
     const mesures = el('fieldset', { class: 'etape' },
         el('legend', { class: 'sr-only' }, T.mesures),
         el('p', {}, T.mesuresIntro),
         schemaAffichage(),
+        aideVr,
         aide,
         champ('fpsReels', [numero(1), ' ', T.fpsReels], { type: 'number', min: 1, step: 'any', aide: T.fpsReelsAide }),
         choix('synchroAffichee', [numero(2), ' ', T.synchroAffichee], [['novsync', T.synchroNoVsync], ['vsync', T.synchroVsync], ['', T.synchroNsp]]),
@@ -231,7 +307,7 @@ function construireFormulaire(base) {
             champ('msRendu', [numero(5), ' ', T.msRendu], { type: 'number', min: 0, step: 'any' }),
             champ('msGpu', [numero(6), ' ', T.msGpu], { type: 'number', min: 0, step: 'any' }),
             memoireVideo,
-            champ('verrouFps', T.verrou, { type: 'number', min: 1, step: 'any', aide: T.verrouAide })
+            verrou
         ),
         blocCapture()
     );
@@ -268,17 +344,18 @@ function construireFormulaire(base) {
     return { formulaire, panneaux };
 }
 
-// Un menu par réglage du simulateur choisi : pas touché, baissé, augmenté.
+// Un menu par réglage du simulateur et de l'affichage choisis : pas touché, baissé, augmenté.
 // Les menus portent le nom « changement:<id du paramètre> ».
-function majChangements(base, simulateur) {
+function majChangements(base, simulateur, affichage) {
     const liste = document.getElementById('liste-changements');
-    if (liste.dataset.simulateur === (simulateur ?? '')) return false;
-    liste.dataset.simulateur = simulateur ?? '';
+    const cle = `${simulateur ?? ''}/${affichage ?? ''}`;
+    if (liste.dataset.cle === cle) return false;
+    liste.dataset.cle = cle;
     if (!simulateur) {
         liste.replaceChildren(el('p', { class: 'aide' }, T.changementsChoisirSimulateur));
         return true;
     }
-    liste.replaceChildren(...parametresDuSimulateur(base.parametres, simulateur).map(p => {
+    liste.replaceChildren(...parametresDuSimulateur(base.parametres, simulateur, affichage).map(p => {
         const id = `changement-${p.id}`;
         return el('div', { class: 'champ' },
             el('label', { for: id }, tr(p.libelle)),
@@ -328,7 +405,7 @@ const nb = v => {
 
 // Valeurs brutes → saisie attendue par le moteur (analyser.js)
 function versSaisie(v, base) {
-    const idsDuSimulateur = new Set(parametresDuSimulateur(base.parametres, v.simulateur).map(p => p.id));
+    const idsDuSimulateur = new Set(parametresDuSimulateur(base.parametres, v.simulateur, v.affichage).map(p => p.id));
     return {
         profil: {
             simulateur: v.simulateur ?? null,
@@ -342,6 +419,10 @@ function versSaisie(v, base) {
             vrr: v.vrr === 'oui',
             vrrInconnu: v.vrr === 'nsp' || v.vrr === undefined,
             affichage: v.affichage ?? 'moniteur',
+            casque: v.casque ?? '',
+            frequenceCasqueHz: nb(v.frequenceCasqueHz),
+            runtime: v.runtime ?? null,
+            reprojection: v.reprojection ?? null,
             avion: v.avion ?? ''
         },
         mesures: {
@@ -395,9 +476,44 @@ function blocDiagnostic(r) {
     );
 }
 
+// La VR est en bêta : badge et appel aux retours sur le forum de l'Atelier
+function badgeBeta() {
+    return el('span', { class: 'badge badge-beta' }, T.vrBeta);
+}
+
+function noteBeta() {
+    return el('p', { class: 'aide note-beta' }, T.vrBetaTexte,
+        el('a', { href: T.forumAtelier, rel: 'noopener' }, T.vrBetaLien), '.');
+}
+
+// Cadence dans un casque : pleine fréquence ou moitié avec reprojection (moteur/cadenceVr.js)
+function blocCadenceVr(c) {
+    const contenu = [
+        el('p', {}, T.ciblesVr(nombre(c.frequenceHz))),
+        el('ul', { class: 'cibles' }, c.cibles.map(cible => el('li', {
+            class: cible === c.cibleConseillee ? 'cible conseillee' : 'cible'
+        }, cible.reprojection ? T.cibleMoitie(nombre(cible.fps)) : T.ciblePleine(nombre(cible.fps)))))
+    ];
+    if (c.mesurePlafonnee) contenu.push(el('p', { class: 'alerte' }, T.vrMesurePlafonnee));
+    else if (c.pleineTenue) contenu.push(el('p', { class: 'conseil' }, T.vrPleineTenue));
+    else if (c.demiTenue) contenu.push(el('p', { class: 'conseil' }, T.vrCibleMoitie(nombre(c.cibleConseillee.fps))));
+    else if (c.frequencePlusBasse) contenu.push(el('p', { class: 'alerte' }, T.vrFrequencePlusBasse(c.frequencePlusBasse, nombre(c.frequencePlusBasse / 2))));
+    else if (c.demiTenue === false) contenu.push(el('p', { class: 'alerte' }, T.vrAlleger));
+    else contenu.push(el('p', {}, T.vrSansMesure));
+    contenu.push(noteBeta());
+    return el('section', { class: 'carte', 'aria-labelledby': 'titre-cadence' },
+        el('h3', { id: 'titre-cadence' }, T.cadence, ' ', badgeBeta()), contenu);
+}
+
 function blocCadence(r, profil) {
     const c = r.cadence;
-    if (!c.valide) return null;
+    // Sans fréquence, le reste du diagnostic vaut quand même : seule la cible attend
+    if (!c.valide) {
+        return el('section', { class: 'carte', 'aria-labelledby': 'titre-cadence' }, el('h3', { id: 'titre-cadence' }, T.cadence),
+            el('p', {}, profil.affichage === 'vr' ? T.cadenceSansFrequenceVr : T.cadenceSansFrequence, ' ',
+                el('a', { href: '#configuration' }, T.allerConfiguration)));
+    }
+    if (c.vr) return blocCadenceVr(c);
     const contenu = [
         el('p', {}, T.sousMultiples(nombre(c.frequenceHz))),
         el('ul', { class: 'cibles' }, c.cibles.map(cible => el('li', {
@@ -437,9 +553,10 @@ function blocMessages(r) {
     );
 }
 
-// Valeur lue dans UserCfg.opt pour un réglage, mise en forme (libellé traduit, ou nombre)
+// Valeur lue dans UserCfg.opt pour un réglage, mise en forme (libellé traduit, ou nombre).
+// usercfg.affichees : valeurs de l'écran ou du casque, selon l'affichage choisi (voir afficherResultats)
 function valeurChezVous(usercfg, id) {
-    const v = usercfg?.valeurs?.[id];
+    const v = usercfg?.affichees?.[id];
     if (!v) return '—';
     if (v.libelle) return T.libellesValeurs[v.libelle] ?? v.libelle;
     return typeof v.valeur === 'number' ? nombre(v.valeur) : v.valeur;
@@ -468,7 +585,7 @@ function ficheReglage(l, usercfg) {
 
 function blocTableau(r, usercfg) {
     // Colonne « Chez vous » seulement si un UserCfg.opt du même simulateur a été importé
-    const avecUsercfg = usercfg !== null && Object.keys(usercfg.valeurs ?? {}).length > 0;
+    const avecUsercfg = usercfg !== null && Object.keys(usercfg.affichees).length > 0;
     const connu = r.diagnostic.goulot !== 'indetermine';
     // Goulot connu : les trois réglages qui pèsent le plus dessus, en fiches ; les autres repliés
     const prioritaires = connu ? r.tableau.slice(0, 3) : [];
@@ -561,7 +678,8 @@ function blocConserver(saisie, r, base) {
 // Contenu des étapes de résultats (4 à 6, et 8), recalculé à chaque entrée dans l'une d'elles
 function afficherResultats(zones, saisie, base) {
     const profil = saisie.profil;
-    if (!profil.simulateur || !profil.frequenceHz) {
+    // Le simulateur suffit : sans fréquence, seule la cible FPS manque (voir blocCadence)
+    if (!profil.simulateur) {
         // Il manque l'essentiel : chaque étape renvoie vers l'étape 1
         for (const zone of Object.values(zones)) {
             zone.replaceChildren(el('p', { class: 'avertissement' }, T.resultatsManquants, ' ',
@@ -574,8 +692,10 @@ function afficherResultats(zones, saisie, base) {
         el('div', { class: 'cartes' }, blocDiagnostic(r), blocCadence(r, profil), blocGeneration(r)),
         blocMessages(r),
         blocConserver(saisie, r, base));
+    const usercfg = saisie.usercfg && saisie.usercfg.simulateur === profil.simulateur
+        ? { ...saisie.usercfg, affichees: valeursPourAffichage(saisie.usercfg, profil.affichage) } : null;
     zones.reglages.replaceChildren(
-        blocTableau(r, saisie.usercfg && saisie.usercfg.simulateur === profil.simulateur ? saisie.usercfg : null),
+        blocTableau(r, usercfg),
         blocConserver(saisie, r, base));
     zones.challenge.replaceChildren(blocChallenge(r, saisie, base));
     zones.ia.replaceChildren(blocIa(saisie, r, base));
@@ -632,10 +752,14 @@ async function demarrer() {
     const majDependances = () => {
         const v = valeursBrutes(formulaire);
         // Liste reconstruite pour un autre simulateur : on y remet les choix mémorisés
-        if (majChangements(base, v.simulateur)) restaurer(formulaire, stockage.lire() ?? {});
+        if (majChangements(base, v.simulateur, v.affichage)) restaurer(formulaire, stockage.lire() ?? {});
         document.getElementById('bloc-directx').hidden = v.simulateur !== '2020';
         document.getElementById('gpu-inconnu').hidden = !v.gpu || familleGpu(v.gpu, base.materiel) !== null;
-        document.getElementById('vr-avertissement').hidden = v.affichage !== 'vr';
+        // Casque : ses champs remplacent la fréquence de l'écran, le VRR et la limite d'images
+        const vr = v.affichage === 'vr';
+        for (const id of ['bloc-vr', 'aide-vr']) document.getElementById(id).hidden = !vr;
+        for (const id of ['bloc-frequence', 'bloc-vrr', 'bloc-verrou']) document.getElementById(id).hidden = vr;
+        document.getElementById('wmr-avertissement').hidden = !vr || v.runtime !== 'wmr';
         // Ce que l'atelier a compris de la ligne « GPU Mem »
         const memoire = lireMemoireVideo(v.gpuMem);
         document.getElementById('gpu-mem-lu').textContent = !v.gpuMem ? ''
@@ -643,17 +767,30 @@ async function demarrer() {
         // Résumé de la capture importée, s'il y en a une
         const capture = lireJsonMemorise(v.capture);
         const resume = document.getElementById('resume-capture');
-        if (capture) resume.textContent = T.resumeCapture(capture);
-        else if (resume.textContent !== T.erreurCapture) resume.textContent = '';
+        if (capture) statutImport(resume, { titre: T.captureImportee(capture), lignes: [T.resumeCapture(capture)] });
+        else if (!resume.dataset.erreur) statutImport(resume);
         document.getElementById('oublier-capture').hidden = !capture;
         // Résumé du UserCfg.opt importé, et avertissement s'il vient de l'autre simulateur
         const usercfg = lireJsonMemorise(v.usercfg);
         const resumeUsercfg = document.getElementById('resume-usercfg');
         if (usercfg) {
-            resumeUsercfg.textContent = T.resumeUsercfg(usercfg)
-                + (v.simulateur && usercfg.simulateur && usercfg.simulateur !== v.simulateur ? ' ' + T.usercfgAutreSimulateur(usercfg.simulateur) : '');
-        } else if (resumeUsercfg.textContent !== T.erreurUsercfg) {
-            resumeUsercfg.textContent = '';
+            const noms = liste => liste.map(nom => T.champsImport[nom]).join(', ');
+            statutImport(resumeUsercfg, {
+                titre: T.usercfgImporte(usercfg),
+                lignes: [
+                    T.usercfgLus(usercfg),
+                    dernierImport?.remplis.length && T.usercfgRemplis(noms(dernierImport.remplis)),
+                    dernierImport?.conserves.length && T.usercfgConserves(noms(dernierImport.conserves))
+                ].filter(Boolean),
+                avertissements: [
+                    !usercfg.simulateur && T.usercfgSimulateurInconnu,
+                    usercfg.simulateur && usercfg.simulateurDetecte === false && T.usercfgSimulateurChoisi(usercfg.simulateur),
+                    v.simulateur && usercfg.simulateur && usercfg.simulateur !== v.simulateur && T.usercfgAutreSimulateur(usercfg.simulateur)
+                ].filter(Boolean),
+                lien: usercfg.simulateur ? el('a', { href: '#reglages', class: 'import-lien' }, T.usercfgVoir, ' →') : null
+            });
+        } else if (!resumeUsercfg.dataset.erreur) {
+            statutImport(resumeUsercfg);
         }
         document.getElementById('oublier-usercfg').hidden = !usercfg;
     };

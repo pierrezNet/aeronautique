@@ -1,5 +1,5 @@
 {
-  "description": "Règles du diagnostic, de la cadence, de la génération d'images et du mode challenge. Ce fichier porte les textes et les sources ; la condition de chaque règle est une fonction JS du même id dans js/moteur/regles.js.",
+  "description": "Règles du diagnostic, de la cadence, de la génération d'images, de la réalité virtuelle et du mode challenge. Ce fichier porte les textes et les sources ; la condition de chaque règle est une fonction JS du même id dans js/moteur/regles.js.",
   "regles": [
     {
       "id": "diag-sans-mesure",
@@ -468,6 +468,239 @@
       "message": {
         "fr": "Écrans du cockpit flous avec DLSS ou FSR : défaut connu, ces techniques masquent mal les écrans des instruments. Essayez le DLAA ou le TAA si la lisibilité des instruments compte plus que les FPS.",
         "en": "Blurry cockpit screens with DLSS or FSR: known issue, these techniques mask instrument displays poorly. Try DLAA or TAA if instrument readability matters more than FPS."
+      }
+    },
+    {
+      "id": "vr-profil-separe",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU10",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Notes de version MSFS 2020 Sim Update 10 (1.27.21.0) : option Depth Reprojection, réglages graphiques VR",
+          "url": "https://forums.flightsimulator.com/t/release-release-notes-1-27-21-0-sim-update-10/543606",
+          "consulte": "2026-11-14",
+          "rang": 1
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-14",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-14",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "type": "vr",
+      "gravite": "important",
+      "message": {
+        "fr": "En réalité virtuelle, le simulateur garde des réglages graphiques à part (onglet VR des réglages graphiques ; section GraphicsVR et clés en …VR dans UserCfg.opt). Changer un réglage pour l'écran ne change rien dans le casque, et inversement : faites vos essais casque en place.",
+        "en": "In virtual reality, the simulator keeps separate graphics settings (VR tab of the graphics settings; GraphicsVR section and …VR keys in UserCfg.opt). Changing a setting for the monitor changes nothing in the headset, and vice versa: run your tests with the headset on."
+      }
+    },
+    {
+      "id": "vr-wmr-fin-de-vie",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU10",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Microsoft Learn, « Deprecated features for Windows client » (Windows Mixed Reality)",
+          "url": "https://learn.microsoft.com/en-us/windows/whats-new/deprecated-features",
+          "consulte": "2026-11-14",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "type": "vr",
+      "gravite": "important",
+      "message": {
+        "fr": "Windows Mixed Reality est retiré de Windows 11 à partir de la version 24H2 : un casque WMR (Reverb G2…) n'y fonctionne plus sans solution tierce. Avant de régler finement, vérifiez que votre configuration restera utilisable.",
+        "en": "Windows Mixed Reality is removed from Windows 11 starting with version 24H2: a WMR headset (Reverb G2…) no longer works there without a third-party solution. Before fine-tuning, check that your setup will remain usable."
+      }
+    },
+    {
+      "id": "vr-reprojection-moitie",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU10",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Meta, « Asynchronous SpaceWarp » (documentation développeurs, PC)",
+          "url": "https://developers.meta.com/horizon/documentation/native/pc/asynchronous-spacewarp/",
+          "consulte": "2026-11-14",
+          "rang": 2
+        },
+        {
+          "titre": "Road to VR, « SteamVR Motion Smoothing » (présentation d'Alex Vlachos, Valve)",
+          "url": "https://roadtovr.com/steamvr-motion-smoothing-asw-alex-vlachos/",
+          "consulte": "2026-11-14",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "type": "cadence",
+      "gravite": "info",
+      "message": {
+        "fr": "Quand le PC ne tient pas la fréquence du casque, la reprojection (ASW chez Meta, Motion Smoothing dans SteamVR, SSW dans Virtual Desktop) fixe le rendu à la moitié de la fréquence et fabrique une image sur deux : 90 Hz donne 45 images réellement calculées. Visez d'abord une moitié tenue en permanence, puis la pleine fréquence si la marge le permet.",
+        "en": "When the PC cannot hold the headset refresh rate, reprojection (ASW on Meta, Motion Smoothing in SteamVR, SSW in Virtual Desktop) locks rendering to half the refresh rate and synthesises every other frame: 90 Hz gives 45 truly rendered frames. First aim for a half rate held constantly, then the full rate if there is headroom."
+      }
+    },
+    {
+      "id": "vr-entre-les-deux",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU10",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Meta, « Asynchronous SpaceWarp » (documentation développeurs, PC)",
+          "url": "https://developers.meta.com/horizon/documentation/native/pc/asynchronous-spacewarp/",
+          "consulte": "2026-11-14",
+          "rang": 2
+        },
+        {
+          "titre": "Road to VR, « SteamVR Motion Smoothing » (présentation d'Alex Vlachos, Valve)",
+          "url": "https://roadtovr.com/steamvr-motion-smoothing-asw-alex-vlachos/",
+          "consulte": "2026-11-14",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "type": "cadence",
+      "gravite": "attention",
+      "message": {
+        "fr": "Vos FPS sont entre la moitié et la pleine fréquence du casque. Avec la reprojection automatique, le runtime vous ramènera à la moitié dès que la pleine fréquence n'est pas tenue : les images au-delà de la moitié ne se voient pas. Pratique courante : une moitié stable est plus agréable qu'une cadence qui oscille ; soit vous allégez les réglages pour tenir la pleine fréquence, soit vous profitez de la marge pour la qualité d'image.",
+        "en": "Your FPS are between half and full headset refresh rate. With automatic reprojection, the runtime drops you back to half as soon as the full rate is not held: frames above half are not seen. Common practice: a steady half rate feels better than oscillating pacing; either lighten settings to hold the full rate, or spend the headroom on image quality."
+      }
+    },
+    {
+      "id": "vr-reprojection-desactivee",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU10",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Meta, « Asynchronous SpaceWarp » (documentation développeurs, PC)",
+          "url": "https://developers.meta.com/horizon/documentation/native/pc/asynchronous-spacewarp/",
+          "consulte": "2026-11-14",
+          "rang": 2
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "type": "cadence",
+      "gravite": "attention",
+      "message": {
+        "fr": "Reprojection désactivée sans tenir la pleine fréquence du casque : chaque image manquée se voit (saccades, à-coups en tournant la tête). Réactivez-la en mode automatique, ou allégez les réglages jusqu'à tenir la pleine fréquence.",
+        "en": "Reprojection off without holding the full headset refresh rate: every missed frame shows (stutter, judder when turning your head). Turn it back on in automatic mode, or lighten settings until you hold the full rate."
+      }
+    },
+    {
+      "id": "vr-mesure-plafonnee",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU10",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Meta, « Asynchronous SpaceWarp » (documentation développeurs, PC)",
+          "url": "https://developers.meta.com/horizon/documentation/native/pc/asynchronous-spacewarp/",
+          "consulte": "2026-11-14",
+          "rang": 2
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "type": "diagnostic",
+      "gravite": "attention",
+      "message": {
+        "fr": "Reprojection forcée : le rendu est bloqué à la moitié de la fréquence, vos FPS mesurés ne disent donc pas si la pleine fréquence serait tenue. Pour le savoir, mesurez une fois reprojection désactivée.",
+        "en": "Forced reprojection: rendering is locked to half the refresh rate, so your measured FPS do not tell whether the full rate would be held. To find out, measure once with reprojection off."
+      }
+    },
+    {
+      "id": "vr-foveal-pas-le-processeur",
+      "simulateur": "2024",
+      "miseAJourMin": "SU2",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "UploadVR, « Microsoft Flight Simulator 2024 Now Has Foveated Rendering »",
+          "url": "https://www.uploadvr.com/microsoft-flight-simulator-2024-now-has-foveated-rendering/",
+          "consulte": "2026-11-14",
+          "rang": 3
+        },
+        {
+          "titre": "Notes de version MSFS 2024 Sim Update 4 (1.6.32.0) : Foveated Rendering Scale, facteur de LOD VR",
+          "url": "https://forums.flightsimulator.com/t/release-notes-microsoft-flight-simulator-2024-sim-update-4-1-6-32-0-available-now/749383",
+          "consulte": "2026-11-14",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "type": "vr",
+      "gravite": "info",
+      "message": {
+        "fr": "Le rendu fovéal calcule moins de pixels en périphérie de la vue : il soulage la carte graphique, pas le processeur. Votre processeur limite : il ne vous fera pas gagner d'images ; jouez plutôt sur le niveau de détail VR (terrain, objets) et le trafic.",
+        "en": "Foveated rendering computes fewer pixels at the edge of the view: it relieves the graphics card, not the processor. Your processor is the limit: it will not gain you frames; adjust the VR level of detail (terrain, objects) and traffic instead."
+      }
+    },
+    {
+      "id": "vr-generation-a-verifier",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU10",
+        "2024": "Lancement"
+      },
+      "statut": "a-verifier",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-14",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-14",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "type": "generation",
+      "gravite": "attention",
+      "message": {
+        "fr": "La génération d'images existe aussi dans les réglages VR (clés FrameGenerationVR ou DLSSGVR de UserCfg.opt), mais aucun document officiel ne dit ce qu'elle donne dans un casque, ni comment elle se combine avec la reprojection. Si vous l'essayez, comparez avec et sans, au même endroit, en regardant les mouvements rapides de la tête et les écrans du cockpit.",
+        "en": "Frame generation also exists in the VR settings (FrameGenerationVR or DLSSGVR keys in UserCfg.opt), but no official document says what it does in a headset, nor how it combines with reprojection. If you try it, compare with and without, at the same spot, watching fast head movements and cockpit screens."
       }
     }
   ]

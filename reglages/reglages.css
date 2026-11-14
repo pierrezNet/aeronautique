@@ -2,13 +2,13 @@
 
 /* Couleurs propres à l'outil, contrastées dans les deux thèmes (texte : au moins 4,5:1) */
 :root {
-    --alerte: #b91c1c;
+    --alerte: #a11a1a;
     --alerte-fond: rgba(185, 28, 28, 0.08);
     --attention: #92400e;
     --attention-fond: rgba(245, 158, 11, 0.12);
-    --succes: #047857;
+    --succes: #04694c;
     --succes-fond: rgba(16, 185, 129, 0.12);
-    --texte-doux: #475569;
+    --texte-doux: #3d4a5c;
 }
 
 [data-theme='dark'] {
@@ -31,7 +31,7 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-a { color: var(--primary); }
+a { color: var(--lien); }
 
 .atelier {
     max-width: 960px;
@@ -44,7 +44,7 @@ header {
 }
 
 h1 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     color: var(--primary);
     font-size: 2rem;
     line-height: 1.25;
@@ -52,7 +52,7 @@ h1 {
 }
 
 h2, h3 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     color: var(--primary);
     line-height: 1.3;
 }
@@ -159,10 +159,11 @@ fieldset { min-width: 0; }
     border-radius: 14px;
     padding: 18px 22px 22px;
     margin: 0 0 24px;
+    box-shadow: var(--tuile-ombre);
 }
 
 .etape > legend {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 1.05rem;
     color: var(--primary);
     padding: 0 8px;
@@ -258,7 +259,7 @@ a:focus-visible {
     padding: 12px 26px;
     font: inherit;
     font-weight: 600;
-    color: #fff;
+    color: var(--cta-text);
     background: var(--primary);
     border: none;
     border-radius: 8px;
@@ -289,7 +290,7 @@ a:focus-visible {
 }
 
 .ligne-fps { display: flex; align-items: center; gap: 8px; min-height: 24px; }
-.ligne-fps code { font: 0.85rem/1.4 ui-monospace, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ligne-fps code { font: 0.85rem/1.4 'Space Mono', ui-monospace, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
 .ligne-fps.gros code { font-size: 1.6rem; font-weight: 700; }
 .ligne-fps.alerte code { color: #fca5a5; }
 .ligne-fps.gris code { color: #64748b; }
@@ -327,6 +328,40 @@ a:focus-visible {
 
 .sous-titre { font-weight: 600; margin: 8px 0 0; }
 
+/* Encadré d'état d'un import (UserCfg.opt, capture PresentMon) : bien visible, pas une ligne d'aide */
+.import-statut {
+    margin: 12px 0 4px;
+    padding: 12px 16px;
+    border: 1px solid var(--succes);
+    border-left-width: 5px;
+    border-radius: 10px;
+    background: var(--succes-fond);
+}
+
+.import-statut p { margin: 0 0 6px; overflow-wrap: anywhere; }
+.import-statut p:last-child { margin-bottom: 0; }
+.import-titre { font-weight: 700; color: var(--succes); }
+.import-lien { display: inline-block; font-weight: 600; margin-top: 2px; }
+
+.import-erreur {
+    border-color: var(--alerte);
+    background: var(--alerte-fond);
+    color: var(--alerte);
+    font-weight: 600;
+}
+
+/* Champ que l'import vient de remplir : brève mise en évidence */
+.rempli { animation: rempli 2.5s ease-out; border-radius: 8px; }
+
+@keyframes rempli {
+    0%, 40% { background: var(--succes-fond); box-shadow: 0 0 0 3px var(--succes); }
+    100% { background: transparent; box-shadow: 0 0 0 3px transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rempli { animation-duration: 0.01s; }
+}
+
 /* ── Résultats ──────────────────────────────────────────────────── */
 
 .resultats h2:focus { outline: none; }
@@ -343,6 +378,7 @@ a:focus-visible {
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 18px 20px;
+    box-shadow: var(--tuile-ombre);
 }
 
 .carte p { margin: 0 0 10px; }
@@ -385,6 +421,7 @@ a:focus-visible {
     padding: 12px 16px;
     margin: 0 0 12px;
     background: var(--card-bg);
+    box-shadow: var(--tuile-ombre);
 }
 
 .message p { margin: 0 0 8px; }
@@ -408,6 +445,16 @@ a:focus-visible {
     border: 1px solid var(--attention);
 }
 
+.badge-beta {
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.note-beta { margin-top: 10px; }
+
 .sources { font-size: 0.85rem; margin-top: 6px; }
 .sources summary { cursor: pointer; color: var(--texte-doux); }
 .sources ul { margin: 6px 0 0; padding-left: 20px; }
@@ -420,6 +467,7 @@ a:focus-visible {
     border-radius: 10px;
     padding: 12px 16px;
     margin: 0 0 14px;
+    box-shadow: var(--tuile-ombre);
 }
 
 .question > legend {
@@ -467,7 +515,7 @@ a:focus-visible {
 
 .choix-libre { border: none; padding: 0; margin: 0; }
 .choix-libre > legend {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 1.05rem;
     color: var(--primary);
 }
@@ -543,6 +591,7 @@ textarea {
     border-top: 4px solid var(--primary);
     border-radius: 12px;
     padding: 14px 18px;
+    box-shadow: var(--tuile-ombre);
 }
 
 .fiche h3 { margin: 0 0 8px; font-size: 1rem; }

@@ -4,9 +4,11 @@
 
 export const SIMULATEURS = ['2020', '2024', 'les-deux'];
 export const STATUTS = ['verifie', 'a-verifier', 'obsolete'];
-export const CATEGORIES = ['rendu', 'anticrenelage', 'generation-images', 'detail', 'nuages', 'textures', 'ombres', 'trafic', 'cockpit', 'cadence', 'api-graphique'];
+export const CATEGORIES = ['rendu', 'anticrenelage', 'generation-images', 'detail', 'nuages', 'textures', 'ombres', 'trafic', 'cockpit', 'cadence', 'api-graphique', 'vr'];
 export const GOULOTS = ['cpu', 'gpu', 'vram', 'streaming', 'indetermine'];
-export const TYPES_REGLE = ['diagnostic', 'cadence', 'generation', 'challenge'];
+export const TYPES_REGLE = ['diagnostic', 'cadence', 'generation', 'challenge', 'vr'];
+// Champ facultatif « affichage » : absent, l'entrée vaut pour l'écran et le casque
+export const AFFICHAGES = ['ecran', 'vr'];
 export const GRAVITES = ['info', 'attention', 'important'];
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -27,6 +29,7 @@ function texteBilingue(valeur, chemin, erreurs) {
 
 // Champs de suivi communs aux paramètres et aux règles
 function suivi(entree, chemin, erreurs) {
+    if (entree.affichage !== undefined && !AFFICHAGES.includes(entree.affichage)) erreurs.push(`${chemin}.affichage : ${AFFICHAGES.join(', ')}, ou absent (les deux)`);
     if (typeof entree.id !== 'string' || !ID.test(entree.id)) erreurs.push(`${chemin}.id : identifiant en minuscules-avec-tirets attendu`);
     if (!SIMULATEURS.includes(entree.simulateur)) erreurs.push(`${chemin}.simulateur : ${SIMULATEURS.join(', ')}`);
     // Les numéros de Sim Update de 2020 et 2024 se recouvrent : une entrée « les-deux » les donne séparément

@@ -23,9 +23,9 @@ Champs de suivi communs : `id` (minuscules-avec-tirets), `simulateur` (`2020`, `
 
 Fichier : [`donnees/parametres.json`](donnees/parametres.json). Si le réglage diffère entre 2020 et 2024 (nom, valeurs, effet), créez **deux entrées** (`tlod-2020`, `tlod-2024`).
 
-Champs propres : `categorie`, `libelle`, `valeurs`, `impact` (`cpu`, `gpu`, `vram`, de 0 à 3), `explication`, `coutVisuel`, `departSelonGoulot` (un texte pour `cpu`, `gpu`, `vram`, `streaming`, `indetermine`), `testValidation`.
+Champs propres : `categorie`, `libelle`, `valeurs`, `impact` (`cpu`, `gpu`, `vram`, de 0 à 3), `explication`, `coutVisuel`, `departSelonGoulot` (un texte pour `cpu`, `gpu`, `vram`, `streaming`, `indetermine`), `testValidation`. Facultatif : `affichage` (`ecran` ou `vr`) pour un réglage propre à l'écran ou au casque ; sans ce champ, il vaut pour les deux.
 
-Si le réglage figure dans le fichier `UserCfg.opt` du simulateur, ajoutez sa correspondance dans [`donnees/usercfg.json`](donnees/usercfg.json) (chemin de la clé, type, valeurs) et un cas dans `tests/usercfg.test.js`.
+Si le réglage figure dans le fichier `UserCfg.opt` du simulateur, ajoutez sa correspondance dans [`donnees/usercfg.json`](donnees/usercfg.json) (chemin de la clé, type, valeurs ; `cheminVr` et `actifVr` pour la même clé dans les réglages VR, section `GraphicsVR` ou clé en `…VR`) et un cas dans `tests/usercfg.test.js`.
 
 ## Ajouter une règle (message affiché selon le diagnostic)
 
@@ -35,7 +35,7 @@ Si le réglage figure dans le fichier `UserCfg.opt` du simulateur, ajoutez sa co
 
 ## Ajouter une question du mode challenge
 
-Fichier : [`donnees/challenges.json`](donnees/challenges.json). Une question s'affiche quand l'utilisateur a changé un des `reglages` (début d'id d'un paramètre) dans le `sens` indiqué (`baisse` ou `hausse`), avec un goulot de la liste `goulots` (vide : tous). Au moins un choix doit être correct ; chaque choix porte son explication. Ajoutez un cas dans `tests/challenge.test.js`.
+Fichier : [`donnees/challenges.json`](donnees/challenges.json). Une question s'affiche quand l'utilisateur a changé un des `reglages` (début d'id d'un paramètre) dans le `sens` indiqué (`baisse` ou `hausse`), avec un goulot de la liste `goulots` (vide : tous). Comme pour les réglages, `affichage` (`ecran` ou `vr`) réserve une question à l'écran ou au casque. Au moins un choix doit être correct ; chaque choix porte son explication. Ajoutez un cas dans `tests/challenge.test.js`.
 
 ## Ajouter un matériel
 

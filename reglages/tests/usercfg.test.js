@@ -77,3 +77,16 @@ test('chaque correspondance vise au moins un réglage existant', () => {
         assert.ok(ids.some(id => id === c.parametre || id.startsWith(c.parametre + '-')), c.id);
     }
 });
+
+test('version non reconnue : simulateur choisi dans le formulaire, sinon inconnu', () => {
+    const contenu = 'Version 66\n{Graphics\n\tVersion 9.0\n\t{Terrain\n\t\tLoDFactor 2.000000\n\t}\n}';
+    const choisi = lireUserCfg(contenu, correspondances, base.parametres, { simulateurParDefaut: '2024' });
+    assert.equal(choisi.simulateur, '2024');
+    assert.equal(choisi.simulateurDetecte, false);
+    assert.equal(choisi.valeurs['tlod-2024'].valeur, 200);
+    const inconnu = lireUserCfg(contenu, correspondances, base.parametres);
+    assert.equal(inconnu.simulateur, null);
+    // Un fichier reconnu garde sa version, quel que soit le choix du formulaire
+    assert.equal(lireFichier('msfs2020-usercfg-opt-parser.opt').simulateurDetecte, true);
+    assert.equal(lireUserCfg(fichier('msfs2020-usercfg-opt-parser.opt'), correspondances, base.parametres, { simulateurParDefaut: '2024' }).simulateur, '2020');
+});

@@ -1,7 +1,9 @@
 // Texte « prompt » à donner à une IA (copié, ou envoyé avec la clé de l'utilisateur).
 // Il reprend le profil, les mesures, le diagnostic, les règles affichées et les derniers essais du
-// journal, et demande à l'IA de rester prudente. Fonction pure : la langue et les textes de la base
+// journal, et demande à l'IA de rester prudente. En réalité virtuelle, il décrit le casque à la place de l'écran. Fonction pure : la langue et les textes de la base
 // sont passés en paramètres. Rien d'identifiant n'y figure (pas de clé, pas de chemin de fichier).
+
+import { valeursPourAffichage } from './usercfg.js';
 
 const INSTRUCTIONS = {
     fr: [
@@ -10,6 +12,7 @@ const INSTRUCTIONS = {
         'Propose au plus trois changements, un à la fois, du plus utile au moins utile, avec pour chacun le test qui permettra de vérifier son effet.',
         'Distingue ce qui est établi de ce qui est incertain, et ne présente pas comme un fait ce que tu supposes.',
         'Rappelle que la génération d\'images augmente les images affichées, pas la simulation.',
+        'En réalité virtuelle, tiens compte de la reprojection du casque (rendu calé sur la moitié de la fréquence quand le PC ne suit pas).',
         'Réponds en français, sans jargon non expliqué.'
     ],
     en: [
@@ -18,6 +21,7 @@ const INSTRUCTIONS = {
         'Suggest at most three changes, one at a time, from most to least useful, each with the test that will check its effect.',
         'Separate what is established from what is uncertain, and do not present assumptions as facts.',
         'Remember that Frame Generation raises displayed frames, not the simulation.',
+        'In virtual reality, take the headset reprojection into account (rendering locked to half the refresh rate when the PC cannot keep up).',
         'Answer in English, without unexplained jargon.'
     ]
 };
@@ -29,8 +33,8 @@ const TITRES = {
 
 // Noms des champs dans la langue du prompt
 const CHAMPS = {
-    fr: { simulateur: 'Simulateur', gpu: 'Carte graphique', vram: 'Mémoire vidéo (Go)', cpu: 'Processeur', ram: 'Mémoire vive (Go)', definition: 'Définition', frequence: 'Fréquence de l\'écran (Hz)', vrr: 'Fréquence variable (VRR)', affichage: 'Affichage', avion: 'Avion', limite: 'Limite affichée par le simulateur', msPrincipal: 'Thread principal (ms)', msRendu: 'Thread de rendu (ms)', msGpu: 'Carte graphique (ms)', vramUtilisee: 'Mémoire vidéo utilisée (Go)', vramTotale: 'Mémoire vidéo totale affichée (Go)', synchroAffichee: 'Synchronisation verticale affichée', fpsReels: 'FPS réels (sans génération d\'images ni limite)', verrou: 'Limite d\'images actuelle', capture: 'Capture PresentMon', goulot: 'Goulot', fil: 'Fil limitant', confiance: 'Confiance', sousMultiples: 'Sous-multiples de la fréquence', cible: 'Cible FPS conseillée', generation: 'Génération d\'images', oui: 'oui', non: 'non', reference: 'mesure de référence', generationActive: 'génération d\'images active', unPourcent: '1 % bas', gpuOccupe: 'carte graphique occupée', synchro: 'synchro verticale', aVerifier: '[à vérifier]', baisse: 'baissé ou désactivé', hausse: 'augmenté ou activé' },
-    en: { simulateur: 'Simulator', gpu: 'Graphics card', vram: 'Video memory (GB)', cpu: 'Processor', ram: 'System memory (GB)', definition: 'Resolution', frequence: 'Display refresh rate (Hz)', vrr: 'Variable refresh (VRR)', affichage: 'Display', avion: 'Aircraft', limite: 'Limit shown by the simulator', msPrincipal: 'Main thread (ms)', msRendu: 'Render thread (ms)', msGpu: 'Graphics card (ms)', vramUtilisee: 'Video memory in use (GB)', vramTotale: 'Total video memory shown (GB)', synchroAffichee: 'Vertical sync shown', fpsReels: 'Real FPS (without Frame Generation or limit)', verrou: 'Current frame limit', capture: 'PresentMon capture', goulot: 'Bottleneck', fil: 'Limiting thread', confiance: 'Confidence', sousMultiples: 'Refresh rate divisors', cible: 'Suggested FPS target', generation: 'Frame Generation', oui: 'yes', non: 'no', reference: 'reference measurement', generationActive: 'Frame Generation on', unPourcent: '1% low', gpuOccupe: 'graphics card busy', synchro: 'vertical sync', aVerifier: '[to be checked]', baisse: 'lowered or turned off', hausse: 'raised or turned on' }
+    fr: { simulateur: 'Simulateur', gpu: 'Carte graphique', vram: 'Mémoire vidéo (Go)', cpu: 'Processeur', ram: 'Mémoire vive (Go)', definition: 'Définition', frequence: 'Fréquence de l\'écran (Hz)', vrr: 'Fréquence variable (VRR)', affichage: 'Affichage', avion: 'Avion', limite: 'Limite affichée par le simulateur', msPrincipal: 'Thread principal (ms)', msRendu: 'Thread de rendu (ms)', msGpu: 'Carte graphique (ms)', vramUtilisee: 'Mémoire vidéo utilisée (Go)', vramTotale: 'Mémoire vidéo totale affichée (Go)', synchroAffichee: 'Synchronisation verticale affichée', fpsReels: 'FPS réels (sans génération d\'images ni limite)', verrou: 'Limite d\'images actuelle', capture: 'Capture PresentMon', goulot: 'Goulot', fil: 'Fil limitant', confiance: 'Confiance', sousMultiples: 'Sous-multiples de la fréquence', cible: 'Cible FPS conseillée', generation: 'Génération d\'images', oui: 'oui', non: 'non', reference: 'mesure de référence', generationActive: 'génération d\'images active', unPourcent: '1 % bas', casque: 'Casque', frequenceCasque: 'Fréquence du casque (Hz)', runtime: 'Runtime VR', reprojection: 'Reprojection', ciblesVr: 'Cibles VR (pleine fréquence, moitié avec reprojection)', gpuOccupe: 'carte graphique occupée', synchro: 'synchro verticale', aVerifier: '[à vérifier]', baisse: 'baissé ou désactivé', hausse: 'augmenté ou activé' },
+    en: { simulateur: 'Simulator', gpu: 'Graphics card', vram: 'Video memory (GB)', cpu: 'Processor', ram: 'System memory (GB)', definition: 'Resolution', frequence: 'Display refresh rate (Hz)', vrr: 'Variable refresh (VRR)', affichage: 'Display', avion: 'Aircraft', limite: 'Limit shown by the simulator', msPrincipal: 'Main thread (ms)', msRendu: 'Render thread (ms)', msGpu: 'Graphics card (ms)', vramUtilisee: 'Video memory in use (GB)', vramTotale: 'Total video memory shown (GB)', synchroAffichee: 'Vertical sync shown', fpsReels: 'Real FPS (without Frame Generation or limit)', verrou: 'Current frame limit', capture: 'PresentMon capture', goulot: 'Bottleneck', fil: 'Limiting thread', confiance: 'Confidence', sousMultiples: 'Refresh rate divisors', cible: 'Suggested FPS target', generation: 'Frame Generation', oui: 'yes', non: 'no', reference: 'reference measurement', generationActive: 'Frame Generation on', unPourcent: '1% low', casque: 'Headset', frequenceCasque: 'Headset refresh rate (Hz)', runtime: 'VR runtime', reprojection: 'Reprojection', ciblesVr: 'VR targets (full rate, half with reprojection)', gpuOccupe: 'graphics card busy', synchro: 'vertical sync', aVerifier: '[to be checked]', baisse: 'lowered or turned off', hausse: 'raised or turned on' }
 };
 
 const ligne = (cle, valeur) => (valeur === null || valeur === undefined || valeur === '' ? null : `- ${cle} : ${valeur}`);
@@ -50,6 +54,7 @@ export function construirePrompt({ langue = 'fr', saisie, resultat, base, journa
     const C = CHAMPS[langue];
     const libelle = id => t(base.parametres.find(p => p.id === id)?.libelle) || id;
     const { profil, mesures } = saisie;
+    const vr = profil.affichage === 'vr';
     const blocs = [INSTRUCTIONS[langue].join('\n')];
     const section = (titre, lignes) => {
         const utiles = lignes.filter(Boolean);
@@ -64,9 +69,11 @@ export function construirePrompt({ langue = 'fr', saisie, resultat, base, journa
         ligne(C.cpu, profil.cpu),
         ligne(C.ram, profil.ramGo),
         ligne(C.definition, profil.resolution),
-        ligne(C.frequence, profil.frequenceHz),
-        ligne(C.vrr, profil.vrrInconnu ? '?' : profil.vrr ? C.oui : C.non),
-        ligne(C.affichage, profil.affichage),
+        ...(vr
+            ? [ligne(C.affichage, 'VR'), ligne(C.casque, profil.casque), ligne(C.frequenceCasque, profil.frequenceCasqueHz),
+                ligne(C.runtime, profil.runtime), ligne(C.reprojection, profil.reprojection)]
+            : [ligne(C.frequence, profil.frequenceHz), ligne(C.vrr, profil.vrrInconnu ? '?' : profil.vrr ? C.oui : C.non),
+                ligne(C.affichage, profil.affichage)]),
         ligne(C.avion, profil.avion)
     ]);
 
@@ -86,7 +93,7 @@ export function construirePrompt({ langue = 'fr', saisie, resultat, base, journa
 
     const u = saisie.usercfg;
     if (u && u.simulateur === profil.simulateur) {
-        section(T.reglages, Object.entries(u.valeurs).map(([id, v]) => ligne(libelle(id), v.libelle ?? v.valeur)));
+        section(T.reglages, Object.entries(valeursPourAffichage(u, profil.affichage)).map(([id, v]) => ligne(libelle(id), v.libelle ?? v.valeur)));
     }
 
     section(T.symptomes, saisie.symptomes.map(id => `- ${t(base.symptomes.find(s => s.id === id)?.libelle) || id}`));
@@ -97,7 +104,7 @@ export function construirePrompt({ langue = 'fr', saisie, resultat, base, journa
         ligne(C.goulot, d.goulot),
         ligne(C.fil, d.fil),
         ligne(C.confiance, d.confiance),
-        resultat.cadence.valide && ligne(C.sousMultiples, resultat.cadence.cibles.map(x => x.fps).join(', ')),
+        resultat.cadence.valide && ligne(vr ? C.ciblesVr : C.sousMultiples, resultat.cadence.cibles.map(x => x.fps).join(', ')),
         resultat.cadence.cibleConseillee && ligne(C.cible, resultat.cadence.cibleConseillee.fps),
         ligne(C.generation, resultat.generation.avis)
     ]);

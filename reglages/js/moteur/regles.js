@@ -8,6 +8,8 @@
 
 import { capturePlafonnee } from './diagnostic.js';
 
+const enVr = ctx => ctx.profil.affichage === 'vr';
+
 export const CONDITIONS = {
     // Diagnostic
     'diag-sans-mesure': ctx => !['mesure', 'capture'].includes(ctx.diagnostic.confiance),
@@ -20,17 +22,27 @@ export const CONDITIONS = {
     'dlss-inutile-goulot-cpu': ctx => ctx.diagnostic.goulot === 'cpu',
     'dlss-ecrans-cockpit-flous': ctx => ctx.profil.simulateur === '2024' && ctx.symptomes.includes('ecrans-cockpit-flous'),
 
-    // Cadence
-    'cadence-sous-multiple': ctx => ctx.cadence.valide && ctx.cadence.verrouProblematique,
-    'cadence-vrr': ctx => ctx.cadence.valide && ctx.cadence.vrr,
-    'cadence-vsync-affichee': ctx => ctx.mesures.synchroAffichee === 'vsync',
+    // Cadence (écran ; en VR, voir plus bas)
+    'cadence-sous-multiple': ctx => ctx.cadence.valide && ctx.cadence.verrouProblematique === true,
+    'cadence-vrr': ctx => ctx.cadence.valide && ctx.cadence.vrr === true,
+    'cadence-vsync-affichee': ctx => !enVr(ctx) && ctx.mesures.synchroAffichee === 'vsync',
 
     // Génération d'images
     'generation-pas-la-simulation': ctx => ctx.generation.disponible === true,
     'generation-seuil-base': ctx => ['deconseillee', 'mesure-requise'].includes(ctx.generation.avis),
     'generation-juste-sous-seuil': ctx => ctx.generation.avis === 'juste-sous-seuil',
     // Information utile à qui a la génération d'images sans la multi-génération (RTX 40)
-    'generation-mfg-rtx50': ctx => ctx.profil.simulateur === '2024' && ctx.generation.disponible === true && !ctx.generation.multiDisponible
+    'generation-mfg-rtx50': ctx => ctx.profil.simulateur === '2024' && ctx.generation.disponible === true && !ctx.generation.multiDisponible,
+
+    // Réalité virtuelle
+    'vr-profil-separe': ctx => enVr(ctx),
+    'vr-wmr-fin-de-vie': ctx => enVr(ctx) && ctx.profil.runtime === 'wmr',
+    'vr-reprojection-moitie': ctx => enVr(ctx) && ctx.cadence.valide && ctx.cadence.pleineTenue !== true,
+    'vr-entre-les-deux': ctx => enVr(ctx) && ctx.cadence.entreLesDeux === true,
+    'vr-reprojection-desactivee': ctx => enVr(ctx) && ctx.profil.reprojection === 'desactivee' && ctx.cadence.pleineTenue !== true,
+    'vr-mesure-plafonnee': ctx => enVr(ctx) && ctx.cadence.mesurePlafonnee === true,
+    'vr-foveal-pas-le-processeur': ctx => enVr(ctx) && ctx.profil.simulateur === '2024' && ctx.diagnostic.goulot === 'cpu',
+    'vr-generation-a-verifier': ctx => ctx.generation.avis === 'vr-a-verifier'
 };
 
 /**

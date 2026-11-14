@@ -5,17 +5,22 @@
 // Axe d'impact à regarder pour chaque goulot (le streaming dépend surtout des données à charger)
 const AXE = { cpu: 'cpu', gpu: 'gpu', vram: 'vram', streaming: 'vram' };
 
-/** Réglages qui s'appliquent à ce simulateur, sans les entrées obsolètes */
-export function parametresDuSimulateur(parametres, simulateur) {
-    return parametres.filter(p => p.statut !== 'obsolete' && (p.simulateur === simulateur || p.simulateur === 'les-deux'));
+// Un réglage sans champ « affichage » vaut pour l'écran et le casque ; sinon 'ecran' ou 'vr' seulement
+const pourAffichage = (p, affichage) => !p.affichage || p.affichage === (affichage === 'vr' ? 'vr' : 'ecran');
+
+/** Réglages qui s'appliquent à ce simulateur et à cet affichage, sans les entrées obsolètes */
+export function parametresDuSimulateur(parametres, simulateur, affichage = 'ecran') {
+    return parametres.filter(p => p.statut !== 'obsolete'
+        && (p.simulateur === simulateur || p.simulateur === 'les-deux')
+        && pourAffichage(p, affichage));
 }
 
 /**
  * @returns {object[]} lignes : { id, categorie, libelle, impact, coutVisuel, depart, test, statut, sources }
  */
-export function tableauReglages(parametres, simulateur, goulot = 'indetermine') {
+export function tableauReglages(parametres, simulateur, goulot = 'indetermine', affichage = 'ecran') {
     const axe = AXE[goulot];
-    const lignes = parametresDuSimulateur(parametres, simulateur).map(p => ({
+    const lignes = parametresDuSimulateur(parametres, simulateur, affichage).map(p => ({
         id: p.id,
         categorie: p.categorie,
         libelle: p.libelle,

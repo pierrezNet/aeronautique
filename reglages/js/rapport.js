@@ -4,6 +4,7 @@
 
 import { el, telecharger } from './dom.js';
 import { avecComparaisons } from './moteur/journal.js';
+import { valeursPourAffichage } from './moteur/usercfg.js';
 import * as stockage from './stockage.js';
 import { T, langue, nombre, tr } from './textes.js';
 
@@ -18,9 +19,23 @@ const item = (libelle, valeur) => (valeur === null || valeur === undefined || va
 
 const niveau = n => T.impactNiveaux[n] ?? n;
 
+// Cadence dans un casque : pleine fréquence ou moitié avec reprojection
+function lignesCadenceVr(c) {
+    const lignes = [el('p', {}, T.ciblesVr(nombre(c.frequenceHz)), ' ',
+        c.cibles.map(x => (x.reprojection ? T.cibleMoitie : T.ciblePleine)(nombre(x.fps))).join(' · '))];
+    if (c.mesurePlafonnee) lignes.push(el('p', {}, T.vrMesurePlafonnee));
+    else if (c.pleineTenue) lignes.push(el('p', {}, el('strong', {}, T.vrPleineTenue)));
+    else if (c.demiTenue) lignes.push(el('p', {}, el('strong', {}, T.vrCibleMoitie(nombre(c.cibleConseillee.fps)))));
+    else if (c.frequencePlusBasse) lignes.push(el('p', {}, T.vrFrequencePlusBasse(c.frequencePlusBasse, nombre(c.frequencePlusBasse / 2))));
+    else if (c.demiTenue === false) lignes.push(el('p', {}, T.vrAlleger));
+    lignes.push(el('p', {}, T.vrBetaTexte, el('a', { href: T.forumAtelier }, T.vrBetaLien), '.'));
+    return [el('h3', {}, T.cadence, ` (${T.vrBeta.toLowerCase()})`), ...lignes];
+}
+
 function sectionCadence(r, profil) {
     const c = r.cadence;
     if (!c.valide) return [];
+    if (c.vr) return lignesCadenceVr(c);
     const lignes = [el('p', {}, T.sousMultiples(nombre(c.frequenceHz)), ' ', c.cibles.map(x => `${nombre(x.fps)} FPS`).join(' · '))];
     if (c.verrouFps !== null) {
         if (c.verrouExact) lignes.push(el('p', {}, T.verrouExact(nombre(c.verrouFps))));
@@ -39,7 +54,7 @@ export function construireRapport(saisie, r, base) {
     const libelleParametre = id => tr(base.parametres.find(p => p.id === id)?.libelle) || id;
     const usercfg = saisie.usercfg && saisie.usercfg.simulateur === profil.simulateur ? saisie.usercfg : null;
     const valeurChezVous = id => {
-        const v = usercfg?.valeurs?.[id];
+        const v = usercfg && valeursPourAffichage(usercfg, profil.affichage)[id];
         if (!v) return null;
         return v.libelle ? (T.libellesValeurs[v.libelle] ?? v.libelle) : (typeof v.valeur === 'number' ? nombre(v.valeur) : v.valeur);
     };
@@ -55,8 +70,12 @@ export function construireRapport(saisie, r, base) {
             item(T.simulateur, profil.simulateur && `Microsoft Flight Simulator ${profil.simulateur}`),
             item('DirectX', profil.directx),
             item(T.gpu, profil.gpu), item(libelleSimple(T.vram), profil.vramGo), item(libelleSimple(T.cpu), profil.cpu),
-            item(libelleSimple(T.ram), profil.ramGo), item(T.resolution, profil.resolution), item(T.frequence, profil.frequenceHz),
-            item(T.vrr, profil.vrrInconnu ? T.nsp : profil.vrr ? T.oui : T.non), item(libelleSimple(T.avion), profil.avion)),
+            item(libelleSimple(T.ram), profil.ramGo), item(T.resolution, profil.resolution),
+            profil.affichage === 'vr'
+                ? [item(T.affichage, T.vr), item(libelleSimple(T.casque), profil.casque), item(T.frequenceCasque, profil.frequenceCasqueHz),
+                    item(T.runtime, T.runtimes[profil.runtime]), item(T.reprojection, T.reprojections[profil.reprojection])]
+                : [item(T.frequence, profil.frequenceHz), item(T.vrr, profil.vrrInconnu ? T.nsp : profil.vrr ? T.oui : T.non)],
+            item(libelleSimple(T.avion), profil.avion)),
 
         el('h2', {}, T.etapes.mesures),
         el('ul', {},
@@ -67,7 +86,7 @@ export function construireRapport(saisie, r, base) {
             item(libelleSimple(T.msRendu), mesures.msRendu && `${nombre(mesures.msRendu)} ms`),
             item(libelleSimple(T.msGpu), mesures.msGpu && `${nombre(mesures.msGpu)} ms`),
             item(libelleSimple(T.gpuMem), mesures.vramUtiliseeGo && T.gpuMemLu(nombre(mesures.vramUtiliseeGo), mesures.vramTotaleGo && nombre(mesures.vramTotaleGo))),
-            item(T.verrou, mesures.verrouFps && nombre(mesures.verrouFps)),
+            profil.affichage !== 'vr' && item(T.verrou, mesures.verrouFps && nombre(mesures.verrouFps)),
             mesures.capture && el('li', {}, T.resumeCapture(mesures.capture))),
 
         el('h2', {}, T.etapes.constats),

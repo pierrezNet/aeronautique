@@ -808,6 +808,128 @@
           }
         }
       ]
+    },
+    {
+      "id": "vr-reprojection-90-60",
+      "declencheur": "diagnostic",
+      "affichage": "vr",
+      "simulateur": "les-deux",
+      "miseAJourMin": {
+        "2020": "SU10",
+        "2024": "Lancement"
+      },
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "Meta, « Asynchronous SpaceWarp » (documentation développeurs, PC)",
+          "url": "https://developers.meta.com/horizon/documentation/native/pc/asynchronous-spacewarp/",
+          "consulte": "2026-11-14",
+          "rang": 2
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "goulots": [
+        "cpu",
+        "gpu",
+        "vram",
+        "streaming",
+        "indetermine"
+      ],
+      "question": {
+        "fr": "Casque à 90 Hz, reprojection automatique, le PC calcule 60 images par seconde. Que voyez-vous ?",
+        "en": "90 Hz headset, automatic reprojection, the PC renders 60 frames per second. What do you see?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "60 images par seconde, irrégulières",
+            "en": "60 uneven frames per second"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Pas avec la reprojection automatique : dès que 90 n'est pas tenu, le runtime cale le rendu sur 45.",
+            "en": "Not with automatic reprojection: as soon as 90 is not held, the runtime locks rendering to 45."
+          }
+        },
+        {
+          "texte": {
+            "fr": "45 images calculées, et une image fabriquée entre chacune pour afficher 90",
+            "en": "45 rendered frames, with a synthesised frame between each to show 90"
+          },
+          "correct": true,
+          "explication": {
+            "fr": "C'est le principe de l'ASW (Meta), du Motion Smoothing (SteamVR) et du SSW (Virtual Desktop). Les 15 images de plus ne se voient pas : soit vous allégez pour tenir 90, soit vous utilisez la marge pour la qualité.",
+            "en": "That is how ASW (Meta), Motion Smoothing (SteamVR) and SSW (Virtual Desktop) work. The extra 15 frames are not seen: either lighten settings to hold 90, or use the headroom for quality."
+          }
+        },
+        {
+          "texte": {
+            "fr": "90 images grâce à la génération d'images DLSS",
+            "en": "90 frames thanks to DLSS frame generation"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "La reprojection est faite par le runtime du casque, pas par la génération d'images de la carte graphique : ce sont deux mécanismes distincts.",
+            "en": "Reprojection is done by the headset runtime, not by the graphics card's frame generation: they are two separate mechanisms."
+          }
+        }
+      ]
+    },
+    {
+      "id": "vr-foveal-goulot-cpu",
+      "declencheur": "diagnostic",
+      "affichage": "vr",
+      "simulateur": "2024",
+      "miseAJourMin": "SU2",
+      "statut": "verifie",
+      "remplacePar": null,
+      "sources": [
+        {
+          "titre": "UploadVR, « Microsoft Flight Simulator 2024 Now Has Foveated Rendering »",
+          "url": "https://www.uploadvr.com/microsoft-flight-simulator-2024-now-has-foveated-rendering/",
+          "consulte": "2026-11-14",
+          "rang": 3
+        },
+        {
+          "titre": "Notes de version MSFS 2024 Sim Update 4 (1.6.32.0) : Foveated Rendering Scale, facteur de LOD VR",
+          "url": "https://forums.flightsimulator.com/t/release-notes-microsoft-flight-simulator-2024-sim-update-4-1-6-32-0-available-now/749383",
+          "consulte": "2026-11-14",
+          "rang": 1
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "goulots": [
+        "cpu"
+      ],
+      "question": {
+        "fr": "En VR, votre processeur limite. Le rendu fovéal va-t-il vous faire gagner des images ?",
+        "en": "In VR, your processor is the limit. Will foveated rendering gain you frames?"
+      },
+      "choix": [
+        {
+          "texte": {
+            "fr": "Oui, il réduit tout le travail de l'image",
+            "en": "Yes, it reduces all the work for the frame"
+          },
+          "correct": false,
+          "explication": {
+            "fr": "Il réduit le nombre de pixels calculés en périphérie : c'est du travail de carte graphique. La préparation de la scène par le processeur ne change pas.",
+            "en": "It reduces the number of pixels computed at the edges: that is graphics card work. The processor's scene preparation does not change."
+          }
+        },
+        {
+          "texte": {
+            "fr": "Non : il soulage la carte graphique, pas le processeur",
+            "en": "No: it relieves the graphics card, not the processor"
+          },
+          "correct": true,
+          "explication": {
+            "fr": "Exactement. Pour le processeur, jouez sur le niveau de détail VR (terrain, objets) et le trafic.",
+            "en": "Exactly. For the processor, adjust the VR level of detail (terrain, objects) and traffic."
+          }
+        }
+      ]
     }
   ]
 }

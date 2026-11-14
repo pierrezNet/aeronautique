@@ -2,14 +2,14 @@
 
 *[Version française](README.md)*
 
-A learning tool for Microsoft Flight Simulator 2020 and 2024: understand what limits your frames per second, pick a target that suits your display, then test one setting at a time. Online at [aeronautique.xyz/en/reglages/](https://aeronautique.xyz/en/reglages/).
+A learning tool for Microsoft Flight Simulator 2020 and 2024: understand what limits your frames per second, pick a target that suits your monitor or virtual reality headset, then test one setting at a time. Online at [aeronautique.xyz/en/reglages/](https://aeronautique.xyz/en/reglages/).
 
 Independent tool, not affiliated with Microsoft or Asobo Studio.
 
 ## What the tool does
 
 1. **Bottleneck diagnosis**: processor (and which thread), graphics card, video memory or data loading, from the developer mode FPS display, a [PresentMon](https://github.com/GameTechDev/PresentMon) capture or, failing that, the symptoms you describe.
-2. **Frame rate target**: values that divide your display refresh rate exactly (165 Hz → 82.5; 55; 41.25…), variable refresh (VRR), whether your frame limit "fits".
+2. **Frame rate target**: values that divide your display refresh rate exactly (165 Hz → 82.5; 55; 41.25…), variable refresh (VRR), whether your frame limit "fits". In **virtual reality** (in beta, feedback welcome on the [Workshop forum](https://avrobb.org/en/forum/13-msfs-settings-workshop)): the headset refresh rate or half of it with reprojection (ASW, Motion Smoothing, SSW), the headset runtime, VR-specific settings (foveated rendering, frame generation in VR) and reading the VR settings from `UserCfg.opt`.
 3. **Frame Generation**: availability for your card (RTX 40 / 50), and a reminder that it multiplies displayed frames, not the simulation.
 4. **Settings table** sorted by bottleneck: impact on processor, graphics card and video memory, visual cost, starting point, how to check; with your current values if you import your `UserCfg.opt`.
 5. **Challenge mode**: questions about the settings you changed, in light of your diagnosis.

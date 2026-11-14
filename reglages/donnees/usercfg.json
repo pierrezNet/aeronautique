@@ -1,11 +1,12 @@
 {
-  "description": "Correspondances entre les clés du fichier UserCfg.opt de MSFS et les réglages de parametres.json. « chemin » : sections et clé séparées par « / » (section Graphics pour l'écran ; GraphicsVR, réalité virtuelle, ignorée). « type » : nombre (multiplié par « echelle »), liste (code → libellé, voir textes.js), texte (valeur brute). « actif » : clé Enabled qui, à 0, désactive le réglage. Correspondances déduites de fichiers réels : à vérifier.",
+  "description": "Correspondances entre les clés du fichier UserCfg.opt de MSFS et les réglages de parametres.json. « chemin » : sections et clé séparées par « / » (section Graphics et clés Video pour l'écran ; « cheminVr » et « actifVr » : section GraphicsVR et clés …VR, lues pour la réalité virtuelle ; « affichage »: « vr » : correspondance lue seulement pour la réalité virtuelle). « type » : nombre (multiplié par « echelle »), liste (code → libellé, voir textes.js), texte (valeur brute). « actif » : clé Enabled qui, à 0, désactive le réglage. Correspondances déduites de fichiers réels : à vérifier.",
   "correspondances": [
     {
       "id": "echelle-rendu",
       "parametre": "echelle-rendu",
       "simulateur": "les-deux",
       "chemin": "Video/PrimaryScaling",
+      "cheminVr": "Video/PrimaryScalingVR",
       "type": "nombre",
       "statut": "a-verifier",
       "sources": [
@@ -40,6 +41,7 @@
       "parametre": "anticrenelage",
       "simulateur": "les-deux",
       "chemin": "Video/AntiAliasing",
+      "cheminVr": "Video/AntiAliasingVR",
       "type": "texte",
       "statut": "a-verifier",
       "sources": [
@@ -124,6 +126,7 @@
       "parametre": "tlod",
       "simulateur": "les-deux",
       "chemin": "Graphics/Terrain/LoDFactor",
+      "cheminVr": "GraphicsVR/Terrain/LoDFactor",
       "type": "nombre",
       "statut": "a-verifier",
       "sources": [
@@ -164,6 +167,7 @@
       "parametre": "olod",
       "simulateur": "les-deux",
       "chemin": "Graphics/ObjectsLoD/LoDFactor",
+      "cheminVr": "GraphicsVR/ObjectsLoD/LoDFactor",
       "type": "nombre",
       "statut": "a-verifier",
       "sources": [
@@ -194,6 +198,7 @@
       "parametre": "nuages-volumetriques",
       "simulateur": "les-deux",
       "chemin": "Graphics/VolumetricClouds/Quality",
+      "cheminVr": "GraphicsVR/VolumetricClouds/Quality",
       "type": "liste",
       "statut": "a-verifier",
       "sources": [
@@ -225,6 +230,7 @@
         "3": "ultra"
       },
       "actif": "Graphics/VolumetricClouds/Enabled",
+      "actifVr": "GraphicsVR/VolumetricClouds/Enabled",
       "note": {
         "fr": "0 = Bas … 3 = Ultra ; recoupé avec les préréglages High (2) et Medium (1) des fichiers d'exemple.",
         "en": "0 = Low … 3 = Ultra; cross-checked with the High (2) and Medium (1) presets of the sample files."
@@ -235,6 +241,7 @@
       "parametre": "resolution-textures",
       "simulateur": "les-deux",
       "chemin": "Graphics/Texture/Quality",
+      "cheminVr": "GraphicsVR/Texture/Quality",
       "type": "liste",
       "statut": "a-verifier",
       "sources": [
@@ -274,6 +281,7 @@
       "parametre": "ombres-terrain",
       "simulateur": "les-deux",
       "chemin": "Graphics/HeightFieldShadows/Size",
+      "cheminVr": "GraphicsVR/HeightFieldShadows/Size",
       "type": "nombre",
       "statut": "a-verifier",
       "sources": [
@@ -297,13 +305,15 @@
         }
       ],
       "dateVerification": "2026-11-04",
-      "actif": "Graphics/HeightFieldShadows/Enabled"
+      "actif": "Graphics/HeightFieldShadows/Enabled",
+      "actifVr": "GraphicsVR/HeightFieldShadows/Enabled"
     },
     {
       "id": "trafic-2024",
       "parametre": "trafic-2024",
       "simulateur": "2024",
       "chemin": "Graphics/Traffic/AircraftTrafficQuantity",
+      "cheminVr": "GraphicsVR/Traffic/AircraftTrafficQuantity",
       "type": "liste",
       "statut": "a-verifier",
       "sources": [
@@ -332,6 +342,7 @@
       "parametre": "ecrans-cockpit",
       "simulateur": "les-deux",
       "chemin": "Graphics/GlassCockpitsRefreshRate/Quality",
+      "cheminVr": "GraphicsVR/GlassCockpitsRefreshRate/Quality",
       "type": "liste",
       "statut": "a-verifier",
       "sources": [
@@ -375,6 +386,7 @@
       "parametre": "directx-2020",
       "simulateur": "2020",
       "chemin": "Video/PreferD3D12",
+      "cheminVr": "Video/PreferD3D12",
       "type": "liste",
       "statut": "a-verifier",
       "sources": [
@@ -389,6 +401,115 @@
       "valeurs": {
         "0": "dx11",
         "1": "dx12"
+      }
+    },
+    {
+      "id": "generation-images-vr-2024",
+      "parametre": "generation-images-vr",
+      "simulateur": "2024",
+      "affichage": "vr",
+      "chemin": "Video/FrameGenerationVR",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "valeurs": {
+        "NONE": "desactive"
+      }
+    },
+    {
+      "id": "generation-images-vr-2020",
+      "parametre": "generation-images-vr",
+      "simulateur": "2020",
+      "affichage": "vr",
+      "chemin": "Video/DLSSGVR",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020 (préréglage Medium), dépôt bne-arduino-flight-simulator-interfaces",
+          "url": "https://github.com/bnepethomas/bne-arduino-flight-simulator-interfaces/blob/master/Hornet/Hornet%20Documentation/Fly%20Elise/4K%2020230408%20MSFS%20Separate%20Windows/MSFS%202020%20Configuration%20Files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "valeurs": {
+        "0": "desactive",
+        "1": "active"
+      }
+    },
+    {
+      "id": "rendu-foveal-2024",
+      "parametre": "rendu-foveal-2024",
+      "simulateur": "2024",
+      "affichage": "vr",
+      "chemin": "Video/FoveatedRendering",
+      "type": "liste",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "valeurs": {
+        "0": "desactive",
+        "1": "active"
+      },
+      "note": {
+        "fr": "Seule la valeur 0 a été vue dans un fichier réel ; 1 lu comme « activé » par déduction.",
+        "en": "Only value 0 has been seen in a real file; 1 read as “on” by inference."
+      }
+    },
+    {
+      "id": "reprojection-vr",
+      "parametre": "reprojection-vr",
+      "simulateur": "les-deux",
+      "affichage": "vr",
+      "chemin": "Video/ReprojectionMode",
+      "type": "texte",
+      "statut": "a-verifier",
+      "sources": [
+        {
+          "titre": "UserCfg.opt réel de MSFS 2024 (préréglage High), dépôt RigReady, licence MIT",
+          "url": "https://github.com/MCheli/RigReady/blob/main/fixtures/rigs/mark-full/files/AppData/Roaming/Microsoft%20Flight%20Simulator%202024/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020, dépôt usercfg-opt-parser, licence MIT",
+          "url": "https://github.com/NathanVaughn/usercfg-opt-parser/blob/main/tests/files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        },
+        {
+          "titre": "UserCfg.opt réel de MSFS 2020 (préréglage Medium), dépôt bne-arduino-flight-simulator-interfaces",
+          "url": "https://github.com/bnepethomas/bne-arduino-flight-simulator-interfaces/blob/master/Hornet/Hornet%20Documentation/Fly%20Elise/4K%2020230408%20MSFS%20Separate%20Windows/MSFS%202020%20Configuration%20Files/UserCfg.opt",
+          "consulte": "2026-11-04",
+          "rang": 4
+        }
+      ],
+      "dateVerification": "2026-11-14",
+      "note": {
+        "fr": "Seule la valeur 0 a été vue dans des fichiers réels, sans correspondance connue avec les choix du menu : valeur affichée telle quelle.",
+        "en": "Only value 0 has been seen in real files, with no known mapping to the menu choices: value shown as is."
       }
     }
   ]
