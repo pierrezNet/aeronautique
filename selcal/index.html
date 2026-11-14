@@ -5,8 +5,8 @@
     <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : blocs <style> propres à chaque page. -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#c3ccd7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1722" media="(prefers-color-scheme: dark)">
     <title>Générateur SELCAL - Simulateur d'appel sélectif | aeronautique.xyz</title>
     <meta name="description" content="Simulateur réaliste du système d'appel sélectif SELCAL. Génère les bitonalités audio exactes, vérifie les contraintes de codage et permet de tester n'importe quel code SELCAL.">
     <link rel="canonical" href="https://aeronautique.xyz/selcal/">
@@ -88,7 +88,7 @@
             margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; transition: all 0.3s ease;
         }
         .container { max-width: 800px; text-align: center; }
-        h1 { font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 30px; }
+        h1 { font-family: 'Space Grotesk', sans-serif; color: var(--primary); margin-bottom: 30px; }
         
         /* Grille des inputs */
         .selcal-grid {
@@ -96,11 +96,11 @@
             gap: 20px; margin: 30px 0;
         }
         .selcal-input-group { 
-            background: var(--card-bg); padding: 15px; border-radius: 15px; 
+            background: var(--card-bg); padding: 15px; border-radius: 15px; box-shadow: var(--tuile-ombre);
             border: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px;
         }
         input.car {
-            font-family: 'Orbitron', sans-serif; font-size: 3.5rem; text-align: center;
+            font-family: 'Space Mono', monospace; font-size: 3.5rem; text-align: center;
             text-transform: uppercase; background: transparent; color: var(--text);
             border: 2px solid var(--border); border-radius: 8px; width: 100%;
         }
@@ -125,19 +125,19 @@
         }
 
         .btn {
-            background: var(--primary); color: white; border: none; padding: 12px 20px;
+            background: var(--primary); color: var(--cta-text); border: none; padding: 12px 20px;
             border-radius: 8px; cursor: pointer; font-weight: 600; transition: transform 0.1s;
         }
         .btn:active { transform: scale(0.95); }
-        .btn-play { background: #10b981; font-size: 1.2rem; padding: 15px 40px; }
+        .btn-play { background: #047857; color: #fff; font-size: 1.2rem; padding: 15px 40px; }
         .controls-top { margin-bottom: 20px; display: flex; gap: 10px; justify-content: center; }
 
         .info-section {
             background: var(--card-bg); border: 1px solid var(--border);
-            padding: 25px; border-radius: 16px; text-align: left; margin-top: 30px;
+            padding: 25px; border-radius: 16px; box-shadow: var(--tuile-ombre); text-align: left; margin-top: 30px;
         }
         .info-section p { margin-bottom: 15px; line-height: 1.7; }
-        .info-section h2 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--primary); margin: 25px 0 10px; }
+        .info-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; color: var(--primary); margin: 25px 0 10px; }
         .info-section pre {
             background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
             padding: 12px 15px; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.85rem;

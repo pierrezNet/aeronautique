@@ -38,7 +38,7 @@ Un outil pédagogique pour comprendre et optimiser les réglages graphiques de M
 * **Langages :** HTML5, CSS3 (variables, Flexbox, Grid), JavaScript (ES6+, modules natifs), sans framework ni étape de construction.
 * **Audio :** API Web Audio pour la synthèse de fréquences SELCAL.
 * **Capteurs :** API Generic Sensor (orientation et lumière ambiante).
-* **Design :** thèmes clair et sombre, polices auto-hébergées (Orbitron, Roboto, Inter).
+* **Design :** thèmes clair et sombre, polices auto-hébergées (Space Grotesk, Space Mono, Roboto, Inter).
 * **Sécurité :** politique de sécurité du contenu (CSP) sur chaque page, aucun script en ligne.
 * **Hébergement :** GitHub Pages, derrière Cloudflare.
 * **Formulaire « J'ai un retour » :** un Worker Cloudflare en JavaScript sans dépendance ([`relais/`](relais/)), sur la seule adresse `aeronautique.xyz/api/retour`, transmet les messages au forum AvroBB.
@@ -75,6 +75,6 @@ Le projet est sous double licence :
 * **Contenus** (textes, images, favicons, graphisme du cadran de la montre, base de connaissances de l'Atelier réglages) : [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE-CC-BY-4.0). Vous pouvez les réutiliser et les adapter librement, à condition de citer l'auteur (Emmanuel Pierrez, [aeronautique.xyz](https://aeronautique.xyz/)).
 
 Exceptions :
-* les polices Orbitron, Roboto et Inter (dossier `fonts/`) restent sous licence [SIL Open Font License 1.1](https://openfontlicense.org/) ;
+* les polices Space Grotesk, Space Mono, Roboto et Inter (dossier `fonts/`) restent sous licence [SIL Open Font License 1.1](https://openfontlicense.org/) ;
 * le logo du forum AvroBB (`images/avrobb.*`) appartient au projet AvroBB ;
 * les fichiers d'exemple de `reglages/tests/captures/` et `reglages/tests/usercfg/` gardent leur licence MIT d'origine (voir leurs fichiers `LISEZMOI.txt`).

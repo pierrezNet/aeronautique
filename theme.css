@@ -1,14 +1,31 @@
 /* Thème commun à toutes les pages d'Aero Hub.
    Les pages peuvent surcharger ces variables dans leur propre <style>. */
 
-/* Polices hébergées localement (sous-ensemble latin, polices variables, licence SIL OFL 1.1 :
+/* Polices hébergées localement (sous-ensemble latin, licence SIL OFL 1.1 :
    voir fonts/OFL-*.txt). Évite de transmettre l'adresse IP des visiteurs à Google. */
 @font-face {
-    font-family: 'Orbitron';
+    font-family: 'Space Grotesk';
     font-style: normal;
-    font-weight: 400 900;
+    font-weight: 300 700;
     font-display: swap;
-    src: url('/fonts/orbitron.woff2') format('woff2');
+    src: url('/fonts/space-grotesk.woff2') format('woff2');
+}
+
+/* Chiffres et codes « d'instrument » (lettres SELCAL, affichage FPS) */
+@font-face {
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/space-mono-400.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/space-mono-700.woff2') format('woff2');
 }
 
 @font-face {
@@ -28,22 +45,41 @@
 }
 
 :root {
+    /* Couleurs d'un MCDU Airbus : boîtier gris clair bleuté de jour... */
     color-scheme: light;
-    --bg: #f8fafc;
-    --card-bg: #ffffff;
-    --text: #1e293b;
-    --primary: #0284c7;
-    --accent: #f59e0b;
-    --border: #e2e8f0;
+    --bg: #c3ccd7;
+    --card-bg: #e6ebf1;
+    --text: #1b222c;
+    --primary: #08527a;
+    --primary-hover: #063d5b;
+    --cta-text: #ffffff;
+    --lien: #08527a;
+    --accent: #8f4a00;
+    --border: #8e9db0;
+    --tuile-ombre: 0 2px 6px rgba(27, 34, 44, 0.18);
+    --tuile-ombre-survol: 0 6px 16px rgba(27, 34, 44, 0.25);
 }
 
 [data-theme='dark'] {
+    /* ... et ambiance nuit : boîtier dans la pénombre, rétroéclairage ambre, écran cyan.
+       Les tuiles s'éclairent sur leurs bords au lieu de porter une ombre. */
     color-scheme: dark;
-    --bg: #0f172a;
-    --card-bg: #1e293b;
-    --text: #f1f5f9;
-    --primary: #38bdf8;
-    --border: #334155;
+    --bg: #0f1722;
+    --card-bg: #1c2633;
+    --text: #e8edf3;
+    --primary: #ffb02e;
+    --primary-hover: #ffc35c;
+    --cta-text: #0f1722;
+    --lien: #5fd3f5;
+    --accent: #5fd3f5;
+    --border: #3a4859;
+    --tuile-ombre: 0 0 0 1px rgba(255, 176, 46, 0.35), 0 0 14px rgba(255, 176, 46, 0.16);
+    --tuile-ombre-survol: 0 0 0 1px rgba(255, 176, 46, 0.6), 0 0 22px rgba(255, 176, 46, 0.3);
+}
+
+/* Liens du texte : cyan de l'écran la nuit (les liens stylés par une classe gardent leur couleur) */
+a {
+    color: var(--lien);
 }
 
 /* Bouton de bascule clair/sombre */
@@ -109,7 +145,7 @@
     width: fit-content;
     margin-bottom: 10px;
     font-size: 0.95rem;
-    color: var(--primary);
+    color: var(--lien);
     text-decoration: none;
 }
 

@@ -5,8 +5,8 @@
     <!-- Politique de sécurité du contenu (GitHub Pages ne permet pas d'en-têtes HTTP). Styles inline tolérés : blocs <style> propres à chaque page. -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#c3ccd7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1722" media="(prefers-color-scheme: dark)">
     <title>Phraséologie aéronautique : simulateur VFR et IFR avec voix | aeronautique.xyz</title>
     <meta name="description" content="Entraînez-vous aux communications radio VFR et IFR, en français et en anglais : trois niveaux, quiz noté, vol complet guidé, voix de l'ATC et réponse à la voix. Gratuit, conforme au manuel DGAC.">
     <link rel="canonical" href="https://aeronautique.xyz/phraseologie/">
@@ -98,17 +98,17 @@
         .hero { text-align: center; margin: 10px 0 40px; }
         .hero img {
             width: 150px; height: 150px; border-radius: 50%;
-            box-shadow: 0 0 20px 5px rgba(52, 152, 219, 0.45);
+            box-shadow: 0 0 20px 5px rgba(8, 82, 122, 0.4);
         }
-        h1 { font-family: 'Orbitron', sans-serif; color: var(--primary); font-size: 2.2rem; margin: 20px 0 10px; line-height: 1.25; }
+        [data-theme='dark'] .hero img { box-shadow: 0 0 20px 5px rgba(255, 176, 46, 0.35); }
+        h1 { font-family: 'Space Grotesk', sans-serif; color: var(--primary); font-size: 2.2rem; margin: 20px 0 10px; line-height: 1.25; }
         .accroche { font-size: 1.15rem; max-width: 700px; margin: 0 auto 25px; }
 
         .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
         .btn {
-            display: inline-block; background: var(--primary); color: #fff; text-decoration: none;
+            display: inline-block; background: var(--primary); color: var(--cta-text); text-decoration: none;
             padding: 13px 26px; border-radius: 8px; font-weight: 600; transition: transform 0.1s, filter 0.2s;
         }
-        [data-theme='dark'] .btn { color: #0f172a; }
         .btn:hover { filter: brightness(1.08); }
         .btn:active { transform: scale(0.97); }
         .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
@@ -117,7 +117,7 @@
 
         /* Sections */
         section { margin: 45px 0; }
-        h2 { font-family: 'Orbitron', sans-serif; color: var(--primary); font-size: 1.35rem; margin: 0 0 15px; }
+        h2 { font-family: 'Space Grotesk', sans-serif; color: var(--primary); font-size: 1.35rem; margin: 0 0 15px; }
 
         .grille {
             display: grid; gap: 16px;
@@ -126,6 +126,7 @@
         }
         .grille li {
             background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px;
+            box-shadow: var(--tuile-ombre);
         }
         .grille h3 { margin: 0 0 6px; font-size: 1.05rem; }
         .grille p { margin: 0; font-size: 0.95rem; }
@@ -143,7 +144,7 @@
 
         .encadre {
             background: var(--card-bg); border: 1px solid var(--border); border-left: 4px solid var(--accent);
-            border-radius: 12px; padding: 18px 22px;
+            border-radius: 12px; padding: 18px 22px; box-shadow: var(--tuile-ombre);
         }
         .encadre p:last-child { margin-bottom: 0; }
 

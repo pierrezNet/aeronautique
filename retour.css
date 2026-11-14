@@ -37,7 +37,7 @@
     color: var(--text);
     border: 1px solid var(--border);
     border-radius: 14px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--tuile-ombre), 0 10px 40px rgba(0, 0, 0, 0.3);
     font-family: 'Inter', sans-serif;
     text-align: left;
     line-height: 1.5;
@@ -48,7 +48,7 @@
     backdrop-filter: blur(3px);
 }
 
-.retour a { color: var(--primary); }
+.retour a { color: var(--lien); }
 
 /* hidden doit l'emporter sur les display: flex ci-dessous (formulaire / remerciement) */
 .retour [hidden] { display: none; }
@@ -62,7 +62,7 @@
 }
 
 .retour-entete h2 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 1.1rem;
     color: var(--primary);
     margin: 0;
